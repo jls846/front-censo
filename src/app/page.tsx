@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../app/styles/components/login.scss";
+import "../app/styles/layout/login.scss";
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");

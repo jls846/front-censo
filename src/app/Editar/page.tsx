@@ -1,4 +1,4 @@
-import "../styles/components/editar";
+import "../styles/layout/editar.scss";
 export default function Page() {
   return (
     <form className="editar">

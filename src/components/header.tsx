@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import header from "../app/styles/components/header.module.scss";
+import header from "../app/styles/layout/header.module.scss";
 import Link from "next/link";
 import BarNavigation from "./BarNavigation";
 

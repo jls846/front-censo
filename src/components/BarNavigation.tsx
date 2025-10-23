@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import "../app/styles/components/BarNavigation.scss";
+import "../app/styles/layout/BarNavigation.scss";
 import Link from "next/link";
 
 function BarNavigation() {
