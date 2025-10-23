@@ -24,10 +24,6 @@
   font-size: 1.5rem;
 }
 
-.barNavigation li:hover {
-  background-color: #bd8c01;
-}
-
 .barNavigation ul.active {
   display: flex;
   width: 100%;
@@ -107,11 +103,6 @@
   justify-content: center;
   color: #383838;
   font-size: 1.5rem;
-}
-
-.subMenu:hover > span,
-.subMenu > a:hover > span {
-  color: white;
 }
 
 .containerLinks {
