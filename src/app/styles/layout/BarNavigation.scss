@@ -1,0 +1,191 @@
+.barNavigation {
+  text-align: center;
+  background-color: #ffffff;
+  display: flex;
+  width: 100%;
+  top: 0;
+  height: 45px;
+  max-height: 40px;
+}
+
+.barNavigation ul {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 10px;
+}
+
+.barNavigation li {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: white;
+  width: 100%;
+  transition: background-color 0.3s ease;
+  font-size: 1.5rem;
+}
+
+.barNavigation li:hover {
+  background-color: #bd8c01;
+}
+
+.barNavigation ul.active {
+  display: flex;
+  width: 100%;
+}
+
+.menuToggle {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.menuToggle div {
+  width: 25px;
+  height: 3px;
+  background-color: black;
+  border-radius: 4px;
+}
+
+.subMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  border-radius: 4px 4px 0 0;
+}
+
+.subMenu ul {
+  opacity: 0;
+  max-height: 0;
+  position: absolute;
+  flex-direction: column;
+  top: 100%;
+  width: 100%;
+  background-color: #003e79;
+  transition: color 0.3s ease;
+  transition: opacity 0.4s ease, max-height 0.4s ease;
+}
+
+.subMenu ul a {
+  display: none;
+}
+
+.subMenu.open ul {
+  display: flex;
+  color: rgba(0, 61, 121, 1);
+}
+
+.subMenu ul:hover {
+  color: #5b8cc9;
+}
+
+.subMenu:hover ul {
+  opacity: 1;
+  max-height: 500px;
+}
+
+.subMenu:hover ul a {
+  display: flex;
+}
+
+.subMenu li {
+  padding: 10px 0;
+}
+
+.subMenu span {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #383838;
+  font-size: 1.5rem;
+}
+
+.subMenu:hover > span,
+.subMenu > a:hover > span {
+  color: white;
+}
+
+.containerLinks {
+  padding: 0 !important;
+  border-radius: 0 0 4px 4px;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
+}
+
+thead,
+tbody {
+  font-size: 1.25rem;
+}
+
+@media (max-width: 800px) {
+  .menuToggle {
+    display: flex;
+    position: relative;
+    align-items: end;
+    transition: transform 0.3s ease;
+  }
+  .barNavigation {
+    width: 100vw;
+  }
+
+  .menuToggle.center {
+    align-items: center;
+    margin: 0;
+  }
+
+  .barNavigation {
+    font-size: 15px;
+    display: block;
+  }
+
+  .barNavigation ul {
+    position: absolute;
+    background-color: #003e79;
+    flex-direction: column;
+    padding: 10px 0;
+    align-items: center;
+    display: none;
+    z-index: 1;
+    height: auto;
+  }
+
+  .barNavigation {
+    padding: 0;
+  }
+
+  .barNavigation li:hover {
+    background-color: #d59f0f;
+    color: white;
+    border-radius: 0;
+    border: none;
+  }
+
+  .subMenu ul {
+    width: 100%;
+    border-radius: 4px;
+    position: relative;
+    background-color: rgb(1, 92, 184);
+  }
+
+  thead,
+  tbody {
+    font-size: 1rem;
+  }
+}

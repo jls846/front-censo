@@ -1,0 +1,83 @@
+.dashboard-container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  color: #004aad; // azul marino
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+button {
+  background-color: #d4af37; // dorado
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #b5952e;
+}
+
+input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  flex: 1;
+  font-size: 1rem;
+}
+
+.search-section, .scanner-section, .equipos-section {
+  margin-top: 30px;
+}
+
+.search-section input, .search-section button {
+  margin-right: 10px;
+}
+
+.scanner-section video {
+  border: 2px solid #004aad;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.equipos-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.equipos-section li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  background: white;
+  transition: background 0.3s;
+}
+
+.equipos-section li:hover {
+  background: #e6f0ff;
+}
+
+.estado-disponible {
+  color: green;
+  font-weight: bold;
+}
+
+.estado-reparacion {
+  color: red;
+  font-weight: bold;
+}
