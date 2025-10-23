@@ -18,7 +18,7 @@ function Header() {
       >
         <Image
           className={header.logo}
-          src="/logo_fes.png"
+          src="/logo-blanco.png"
           alt="Logo FES"
           width={200}
           height={50}
