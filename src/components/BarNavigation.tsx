@@ -24,13 +24,13 @@ function BarNavigation() {
 
       <ul className={openMenu ? "active" : ""}>
         <li className="subMenu" onClick={toggleMenu}>
-          <Link href="/QuitarSancion" className="links">
-            <span>Quitar sanción</span>
+          <Link href="/Escanear" className="links">
+            <span>Escanear</span>
           </Link>
         </li>
         <li className="subMenu" onClick={toggleMenu}>
-          <Link href="/CambiarPass" className="links">
-            <span> Cambiar contraseña</span>
+          <Link href="/AgregarEquipo" className="links">
+            <span>Agregar equipo</span>
           </Link>
         </li>
       </ul>

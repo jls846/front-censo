@@ -1,13 +1,20 @@
+.containerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100%;
+  margin: 0 100px;
+}
+
 .login-container {
-  width: 300px;
+  width: 400px;
   margin: 100px auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background: #f8f9fa;
+  padding: 1.5rem;
   text-align: center;
 
-  h2 { margin-bottom: 20px; color: #004aad; }
+  h2 {
+    margin-bottom: 20px;
+    color: #bd8c01;
+  }
 
   input {
     width: 100%;
@@ -27,5 +34,8 @@
     cursor: pointer;
   }
 
-  .error { color: red; margin-bottom: 10px; }
+  .error {
+    color: red;
+    margin-bottom: 10px;
+  }
 }
