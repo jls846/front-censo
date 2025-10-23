@@ -20,8 +20,8 @@ function Header() {
           className={header.logo}
           src="/logo-blanco.png"
           alt="Logo FES"
-          width={200}
-          height={50}
+          width={250}
+          height={60}
         />
       </Link>
       <div className={header.yellowPart}></div>
