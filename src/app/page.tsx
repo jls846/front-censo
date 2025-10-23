@@ -1,7 +1,8 @@
-"use client"; // <-- OBLIGATORIO
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import "../app/styles/base/_globales.scss"
 import "../app/styles/layout/login.scss";
 export default function Login() {
   const router = useRouter();
