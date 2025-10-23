@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif; /* 👈 Fuente principal */
+  font-family: 'Inter', sans-serif; 
   font-style: normal;
   font-size: 2rem;
   font-optical-sizing: auto;
@@ -57,12 +57,7 @@ h3 {
   text-align: center;
 }
 
-img {
-  max-width: 100%;
-  width: 100%;
-  height: auto;
-  display: block;
-}
+
 
 body > section {
   padding: 10rem 0;
