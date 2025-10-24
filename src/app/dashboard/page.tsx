@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BarcodeScanner from "../../components/BarcodeScanner";
-import "../styles/components/dashboard.scss";
+import "../styles/layout/dashboard.scss";
 
 type Equipo = {
   id: string;
