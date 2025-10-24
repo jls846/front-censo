@@ -19,7 +19,7 @@
   transition: all 0.3s ease;
   cursor: pointer;
   color: white;
-  width: 100%;
+  width: auto;
   transition: background-color 0.3s ease;
   font-size: 1.5rem;
 }
@@ -62,8 +62,9 @@
   max-height: 0;
   position: absolute;
   flex-direction: column;
-  top: 100%;
-  width: 100%;
+  min-width: 200px;
+  max-width: 300px; /* Ajusta según tu diseño */
+  left: 0;
   background-color: #003e79;
   transition: color 0.3s ease;
   transition: opacity 0.4s ease, max-height 0.4s ease;
@@ -133,7 +134,7 @@ tbody {
     transition: transform 0.3s ease;
   }
   .barNavigation {
-    width: 100vw;
+    width: 100%;
   }
 
   .menuToggle.center {
