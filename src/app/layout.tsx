@@ -5,7 +5,7 @@ import "../app/styles/base/_globales.scss"; // si tienes estilos globales
 // Carga optimizada de fuentes
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
   variable: "--font-inter",
 });
 const montserrat = Montserrat({

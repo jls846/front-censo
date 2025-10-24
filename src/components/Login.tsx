@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import "../app/styles/layout/login.scss";
 import "../app/styles/base/_globales.scss"; // si tienes estilos globales
+import Image from "next/image";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -40,8 +41,16 @@ export default function Login() {
               required
             />
           </div>
-          <button type="submit">Ingresar</button>
+          <button type="submit">Iniciar sesión</button>
         </form>
+      </div>
+      <div className="imageContainer">
+        <Image src="/Piedra.jpg" alt="Logo FES" width={250} height={150} />
+        <Image src="/image 1.png" alt="Logo FES" width={250} height={150} />
+        <Image src="/estrella.jpg" alt="Logo FES" width={250} height={150} />
+        <Image src="/sorjuana.jpg" alt="Logo FES" width={250} height={150} />
+        <Image src="/fes.jpg" alt="Logo FES" width={250} height={150} />
+        <Image src="/picachu.jpg" alt="Logo FES" width={250} height={150} />
       </div>
     </section>
   );

@@ -21,7 +21,7 @@ function Header() {
           src="/logo-blanco.png"
           alt="Logo FES"
           width={250}
-          height={60}
+          height={70}
         />
       </Link>
       <div className={header.yellowPart}></div>
