@@ -22,14 +22,11 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [lastScan, setLastScan] = useState("");
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("loggedIn");
-    if (!loggedIn) router.push("/");
-  }, [router]);
-
   const buscarEquipo = () => {
     const resultado = equipos.filter(
-      e => e.id.includes(search) || e.nombre.toLowerCase().includes(search.toLowerCase())
+      (e) =>
+        e.id.includes(search) ||
+        e.nombre.toLowerCase().includes(search.toLowerCase())
     );
     setEquipos(resultado);
   };
@@ -42,7 +39,7 @@ export default function Dashboard() {
   const handleScan = (code: string) => {
     setLastScan(code);
 
-    const encontrado = equipos.find(e => e.id === code);
+    const encontrado = equipos.find((e) => e.id === code);
     if (encontrado) {
       alert(`Equipo encontrado: ${encontrado.nombre} (${encontrado.estado})`);
     } else {
@@ -64,7 +61,12 @@ export default function Dashboard() {
       <div className="search-section">
         <h3>Buscar equipo</h3>
         <div style={{ display: "flex", marginTop: "10px" }}>
-          <input type="text" placeholder="ID o nombre" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <input
+            type="text"
+            placeholder="ID o nombre"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <button onClick={buscarEquipo}>Buscar</button>
         </div>
       </div>
@@ -72,7 +74,11 @@ export default function Dashboard() {
       <div className="scanner-section">
         <h3>Escanear código de barras</h3>
         <BarcodeScanner onDetected={handleScan} />
-        {lastScan && <p>Último código escaneado: <strong>{lastScan}</strong></p>}
+        {lastScan && (
+          <p>
+            Último código escaneado: <strong>{lastScan}</strong>
+          </p>
+        )}
       </div>
 
       <div className="equipos-section">
@@ -80,8 +86,18 @@ export default function Dashboard() {
         <ul>
           {equipos.map((e) => (
             <li key={e.id}>
-              <span>{e.id} - {e.nombre}</span>
-              <span className={e.estado === "Disponible" ? "estado-disponible" : "estado-reparacion"}>{e.estado}</span>
+              <span>
+                {e.id} - {e.nombre}
+              </span>
+              <span
+                className={
+                  e.estado === "Disponible"
+                    ? "estado-disponible"
+                    : "estado-reparacion"
+                }
+              >
+                {e.estado}
+              </span>
             </li>
           ))}
         </ul>

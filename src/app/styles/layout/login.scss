@@ -6,7 +6,7 @@
 }
 
 .login-container {
-  width: 400px;
+  width: 300px;
   margin: 100px auto;
   padding: 1.5rem;
   text-align: center;
@@ -20,8 +20,8 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 10px;
+    border: 1px solid #003e79;
   }
 
   button {
@@ -30,7 +30,7 @@
     background-color: #004aad;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
   }
 
@@ -38,4 +38,8 @@
     color: red;
     margin-bottom: 10px;
   }
+}
+
+.imageContainer {
+  border-radius: 20px;
 }
