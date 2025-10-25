@@ -5,6 +5,7 @@ import { useState } from "react";
 import "../app/styles/layout/login.scss";
 import "../app/styles/base/_globales.scss"; // si tienes estilos globales
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -42,6 +43,8 @@ export default function Login() {
             />
           </div>
           <button type="submit">Iniciar sesión</button>
+          <Link href={"#"}>Olvidaste Contraseña?</Link>
+          <Link href={"#"}>Crear Cuenta</Link>
         </form>
       </div>
       <div className="imageContainer">
