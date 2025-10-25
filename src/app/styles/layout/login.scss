@@ -1,13 +1,15 @@
 .containerGrid {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr 1fr;
   min-height: 100%;
   margin: 0 100px;
+  justify-content: center;
+  align-items: center;
+  gap: 150px;
 }
 
 .login-container {
-  width: 300px;
-  margin: 100px auto;
+  width: 350px;
   padding: 1.5rem;
   text-align: center;
 
@@ -41,5 +43,11 @@
 }
 
 .imageContainer {
-  border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 500px;
+  max-height: 450px;
+  border-radius: 10px;
+  overflow: hidden;
+  height: min-content;
 }

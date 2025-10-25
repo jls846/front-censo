@@ -14,15 +14,15 @@ html {
 }
 
 body {
+  display: grid;
+  grid-template-rows: auto 1fr;
   background-color: #f5f5f7;
-  font-family: "Inter", sans-serif; /* 👈 Fuente principal */
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-size: 2rem;
   font-optical-sizing: auto;
   min-height: 100dvh;
   width: 100vw;
-
-  
 }
 
 p {
@@ -31,7 +31,10 @@ p {
 }
 
 a {
+  color: #003e79;
+  display: block;
   text-decoration: none;
+  margin: 10px 5px;
 }
 
 h1,
@@ -59,4 +62,8 @@ label {
   display: block;
   text-align: start;
   width: 100%;
+}
+
+img {
+  object-fit: cover;
 }
