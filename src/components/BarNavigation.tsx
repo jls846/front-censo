@@ -1,9 +1,12 @@
 "use client";
+
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // ✅ Importa useRouter
 import "../app/styles/layout/BarNavigation.scss";
 import Link from "next/link";
 
 function BarNavigation() {
+  const router = useRouter(); // ✅ Para redirigir
   const [openMenu, setOpenMenu] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
 
@@ -14,9 +17,17 @@ function BarNavigation() {
     }
   };
 
+  const cerrarSesion = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("loggedIn");
+      router.push("/"); // ✅ Redirige al inicio
+    }
+    setOpenMenu(false); // Cierra menú móvil
+  };
+
   return (
     <nav className="barNavigation">
-      <div className={`menuToggle ${openMenu ? "" : ""}`} onClick={toggleMenu}>
+      <div className="menuToggle" onClick={toggleMenu}>
         <div></div>
         <div></div>
         <div></div>
@@ -32,6 +43,12 @@ function BarNavigation() {
           <Link href="/AgregarEquipo" className="links">
             <span>Agregar equipo</span>
           </Link>
+        </li>
+        {/* ✅ Botón directo, sin onClick en el <li> */}
+        <li>
+          <button className="logout-button" onClick={cerrarSesion}>
+            Cerrar sesión
+          </button>
         </li>
       </ul>
     </nav>

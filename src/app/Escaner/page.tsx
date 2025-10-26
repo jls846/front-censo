@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import BarcodeScanner from "../../components/BarcodeScanner";
-import "../styles/layout/dashboard.scss";
+import "../styles/layout/escaner.scss"; // Importación global
 
+// Tipos
 type Equipo = {
   id: string;
   nombre: string;
@@ -38,70 +38,49 @@ export default function Dashboard() {
 
   const handleScan = (code: string) => {
     setLastScan(code);
-
     const encontrado = equipos.find((e) => e.id === code);
     if (encontrado) {
       alert(`Equipo encontrado: ${encontrado.nombre} (${encontrado.estado})`);
     } else {
-      const nombre = prompt("Equipo no registrado. Ingresa el nombre:");
-      if (nombre) {
-        setEquipos([...equipos, { id: code, nombre, estado: "Disponible" }]);
+      const codigo = prompt("Equipo no registrado. Ingresa el codigo:");
+      if (codigo) {
+        setEquipos([...equipos, { id: code, nombre: codigo, estado: "Disponible" }]);
         alert("Equipo agregado al inventario");
       }
     }
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="header">
-        <h2>Dashboard Inventario Escolar</h2>
-        <button onClick={cerrarSesion}>Cerrar sesión</button>
-      </div>
+    <div className="dashboardContainer">
 
-      <div className="search-section">
-        <h3>Buscar equipo</h3>
-        <div style={{ display: "flex", marginTop: "10px" }}>
+      {/* VISTA DE ESCANEO */}
+      <main className="scanView">
+        <h3>Escanear Inventario</h3>
+
+        <div className="scannerFrame">
+          <img src="/barcode_scanner.png" alt="Marco de escaneo" />
+        </div>
+
+        <p className="instructions">
+          Enfoca el código de barras dentro del marco
+        </p>
+
+        <button className="scanButton">
+          <img src="/photo_camera.png" alt="camara" /> Escanear
+        </button>
+
+        <div className="searchBox">
           <input
             type="text"
-            placeholder="ID o nombre"
+            placeholder="Buscar por inventario..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button onClick={buscarEquipo}>Buscar</button>
+          <button onClick={buscarEquipo} className="searchButton">
+            <img src="/search.png" alt="Buscar" />
+          </button>
         </div>
-      </div>
-
-      <div className="scanner-section">
-        <h3>Escanear código de barras</h3>
-        <BarcodeScanner onDetected={handleScan} />
-        {lastScan && (
-          <p>
-            Último código escaneado: <strong>{lastScan}</strong>
-          </p>
-        )}
-      </div>
-
-      <div className="equipos-section">
-        <h3>Equipos</h3>
-        <ul>
-          {equipos.map((e) => (
-            <li key={e.id}>
-              <span>
-                {e.id} - {e.nombre}
-              </span>
-              <span
-                className={
-                  e.estado === "Disponible"
-                    ? "estado-disponible"
-                    : "estado-reparacion"
-                }
-              >
-                {e.estado}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      </main>
     </div>
   );
 }

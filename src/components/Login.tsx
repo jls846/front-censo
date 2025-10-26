@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import "../app/styles/layout/login.scss";
-import "../app/styles/base/_globales.scss"; // si tienes estilos globales
+import "../app/styles/base/globales.scss"; 
 import Image from "next/image";
 import Link from "next/link";
 

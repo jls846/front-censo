@@ -1,0 +1,133 @@
+.dashboardContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  background-color: #ffffff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #0056b3;
+  }
+
+  
+}
+
+.scanView {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  gap: 20px;
+
+  h3 {
+    font-size: 16px;
+    font-weight:500;
+    margin: 0;
+  }
+}
+
+.scannerFrame {
+  width: 90%;
+  max-width: 500px;
+  height: 300px;
+  border: 2px solid #0056b3;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  font-size: 80px;
+  color: #000;
+  img{
+    width: 150px;
+    height: auto;
+  }
+}
+
+.instructions {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.scanButton {
+  background-color: #ffb700;
+  color: #000;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color:#003E79 ;
+  &:hover {
+    background-color: #ffcc33;
+  }
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 80%;
+  max-width: 400px;
+  border: 2px solid #0056b3;
+  border-radius: 20px;
+  overflow: hidden;
+
+  input {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+  }
+
+  .searchButton {
+  background-color: #0056b3;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  padding: 0 5px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-right: 10px;
+  display: flex;           // ← Activa Flexbox
+  align-items: center;     // ← Centra verticalmente
+  justify-content: center; // ← Centra horizontalmente
+  width: 36px;             // ← Opcional: da un ancho fijo para que sea cuadrado
+  height: 36px;            // ← Opcional: altura igual al ancho
+
+  &:hover {
+    background-color: #004494;
+  }
+
+  img {
+    display: block;
+    width: 20px;           // ← Ajusta el tamaño del icono
+    height: auto;          // ← Mantiene proporción
+  }
+}
+}
