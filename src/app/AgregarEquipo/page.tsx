@@ -120,6 +120,11 @@ const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
                 <option value="En reparación">En reparación</option>
               </select>
             </div>
+            
+          </div>
+
+          {/* Columna Centro */}
+          <div className="column">
             <div className="formGroup">
               <label>Tipo uso</label>
               <select
@@ -134,10 +139,6 @@ const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
                 <option value="laboratorio">laboratorio</option>
               </select>
             </div>
-          </div>
-
-          {/* Columna Centro */}
-          <div className="column">
             {/* Mostrar SO y Procesador solo si NO es impresora */}
             {mostrarCamposComputadora && (
               <>
