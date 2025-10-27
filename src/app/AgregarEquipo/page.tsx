@@ -232,22 +232,24 @@ export default function page() {
                 className="textAreaLarge"
               />
             </div>
+            <div className="formActions">
+              <button
+                type="button"
+                className="btnGuardar"
+                onClick={handleGuardar}
+              >
+                Guardar
+              </button>
+              <button
+                type="button"
+                className="btnCancelar"
+                onClick={handleCancelar}
+              >
+                Cancelar
+              </button>
+            </div>
           </div>
         </form>
-
-        {/* Botones */}
-        <div className="formActions">
-          <button type="button" className="btnGuardar" onClick={handleGuardar}>
-            Guardar
-          </button>
-          <button
-            type="button"
-            className="btnCancelar"
-            onClick={handleCancelar}
-          >
-            Cancelar
-          </button>
-        </div>
       </div>
     </div>
   );

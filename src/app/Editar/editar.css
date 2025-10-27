@@ -1,5 +1,3 @@
-
-
 /* ====== FORMULARIO ====== */
 .editar {
   max-width: 1000px;
@@ -32,7 +30,6 @@ input:focus {
   box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
 }
 
-
 /* Botón cerrar sesión */
 .boton-cerrar {
   background-color: #e60000;
@@ -55,7 +52,7 @@ input:focus {
   top: 50%;
   left: 50%; /* centra horizontalmente */
   transform: translate(-50%, -50%); /* centra vertical y horizontalmente */
-  
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,34 +75,32 @@ input:focus {
   color: #b8870b;
 }
 
-.recuadro{
-  box-shadow: 0 0 7px 0px black;
-  border-radius: 10px;       /* Bordes redondeados */
-  padding: 10px;             /* Espacio interno */
-  margin: 85px 350px;            /* Separación del resto del contenido */
-  background-color: #f9f9f9; /* Color de fondo */
+.recuadro {
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 10px; /* Espacio interno */
+  margin: 85px 350px; /* Separación del resto del contenido */
 }
 
 .titulo-rec {
   font-size: 20px;
   font-weight: bold;
-  margin-left: 0;       /* alinea el texto con el resto de la columna */
-  text-align: left;     /* asegura que esté alineado a la izquierda */
-  margin-bottom: 8px;   /* un poco de espacio debajo del título */
+  margin-left: 0; /* alinea el texto con el resto de la columna */
+  text-align: left; /* asegura que esté alineado a la izquierda */
+  margin-bottom: 8px; /* un poco de espacio debajo del título */
 }
-.linea{
+.linea {
   border-bottom: 2px solid #003366; /* color y grosor de la línea */
-  width: 100%;                       /* ocupa toda la columna */
-  margin-bottom: 10px;               /* espacio entre línea y los campos */
+  width: 100%; /* ocupa toda la columna */
+  margin-bottom: 10px; /* espacio entre línea y los campos */
 }
 
 .botones {
   display: flex;
-  justify-content: flex-end;  /* Alinea los botones a la derecha */
-  gap: 10px;                  /* Espacio entre ellos */
-  margin-top: 15px;           /* Separación del formulario */
+  justify-content: flex-end; /* Alinea los botones a la derecha */
+  gap: 10px; /* Espacio entre ellos */
+  margin-top: 15px; /* Separación del formulario */
 }
-.guardar{
+.guardar {
   background-color: #b8870b;
   color: #003366;
   border: none;
@@ -113,9 +108,8 @@ input:focus {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-
 }
-.cancelar{
+.cancelar {
   background-color: #003366;
   color: white;
   border: none;

@@ -25,11 +25,6 @@
   font-size: 1.5rem;
 }
 
-.barNavigation ul.active {
-  display: flex;
-  width: 100%;
-}
-
 .menuToggle {
   display: none;
   flex-direction: column;
@@ -157,7 +152,9 @@
   }
 
   .barNavigation ul.active {
+    left: 0;
     display: flex;
+    width: 100vw;
   }
 
   .barNavigation li:hover {
@@ -184,5 +181,9 @@
   thead,
   tbody {
     font-size: 1rem;
+  }
+
+  .subMenu a span {
+    color: #fff;
   }
 }

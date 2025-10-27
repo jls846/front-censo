@@ -3,7 +3,6 @@
   flex-direction: column;
   padding: 0;
   margin: 0;
-  background-color: #ffffff;
 }
 
 .header {
@@ -22,8 +21,6 @@
     font-size: 1.5rem;
     color: #0056b3;
   }
-
-  
 }
 
 .scanView {
@@ -39,7 +36,7 @@
 
   h3 {
     font-size: 16px;
-    font-weight:500;
+    font-weight: 500;
     margin: 0;
   }
 }
@@ -56,7 +53,7 @@
   background-color: #f9f9f9;
   font-size: 80px;
   color: #000;
-  img{
+  img {
     width: 150px;
     height: auto;
   }
@@ -82,7 +79,7 @@
   align-items: center;
   gap: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  color:#003E79 ;
+  color: #003e79;
   &:hover {
     background-color: #ffcc33;
   }
@@ -108,28 +105,28 @@
   }
 
   .searchButton {
-  background-color: #0056b3;
-  color: white;
-  border-radius: 10px;
-  border: none;
-  padding: 0 5px;
-  cursor: pointer;
-  font-size: 18px;
-  margin-right: 10px;
-  display: flex;           // ← Activa Flexbox
-  align-items: center;     // ← Centra verticalmente
-  justify-content: center; // ← Centra horizontalmente
-  width: 36px;             // ← Opcional: da un ancho fijo para que sea cuadrado
-  height: 36px;            // ← Opcional: altura igual al ancho
+    background-color: #0056b3;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 0 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-right: 10px;
+    display: flex; // ← Activa Flexbox
+    align-items: center; // ← Centra verticalmente
+    justify-content: center; // ← Centra horizontalmente
+    width: 36px; // ← Opcional: da un ancho fijo para que sea cuadrado
+    height: 36px; // ← Opcional: altura igual al ancho
 
-  &:hover {
-    background-color: #004494;
-  }
+    &:hover {
+      background-color: #004494;
+    }
 
-  img {
-    display: block;
-    width: 20px;           // ← Ajusta el tamaño del icono
-    height: auto;          // ← Mantiene proporción
+    img {
+      display: block;
+      width: 20px; // ← Ajusta el tamaño del icono
+      height: auto; // ← Mantiene proporción
+    }
   }
-}
 }
