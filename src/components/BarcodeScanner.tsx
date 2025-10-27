@@ -1,42 +1,117 @@
+// components/BarcodeScanner.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
-import { BrowserMultiFormatReader } from "@zxing/library";
+import React, { useEffect, useRef } from "react";
+import Quagga from "@ericblade/quagga2";
 
-type Props = { onDetected: (code: string) => void; };
+// Tipos mínimos para el resultado de Quagga
+interface CodeResult {
+  code: string;
+  format: string;
+}
 
-export default function BarcodeScanner({ onDetected }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+interface QuaggaResult {
+  codeResult: CodeResult | null;
+}
+
+// Tipos para la configuración (opcional, pero mejora legibilidad)
+interface QuaggaConfig {
+  inputStream: {
+    name: string;
+    type: string;
+    target: HTMLElement;
+    constraints: MediaTrackConstraints;
+  };
+  decoder: {
+    readers: string[];
+  };
+  locate: boolean;
+}
+
+interface BarcodeScannerProps {
+  onScan: (code: string) => void;
+}
+
+export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
+  const scannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const codeReader = new BrowserMultiFormatReader();
-    if (!videoRef.current) return;
+    if (!scannerRef.current) return;
 
-    // Obtener la cámara trasera si existe
-    codeReader.listVideoInputDevices().then((devices) => {
-      const backDevice = devices.find(d => d.label.toLowerCase().includes("back"));
-      const deviceId = backDevice ? backDevice.deviceId : devices[0].deviceId;
+    // ✅ Sin `any`: usamos un objeto literal tipado implícitamente
+    const config: QuaggaConfig = {
+      inputStream: {
+        name: "Live",
+        type: "LiveStream",
+        target: scannerRef.current,
+        constraints: {
+          width: 640,
+          height: 480,
+          facingMode: "environment",
+        },
+      },
+      decoder: {
+        readers: [
+          "code_128_reader",
+          "ean_reader",
+          "ean_8_reader",
+          "code_39_reader",
+          "upc_reader",
+        ],
+      },
+      locate: true,
+    };
 
-      // Inicia la cámara inmediatamente
-      codeReader.decodeFromVideoDevice(deviceId, videoRef.current!, (result) => {
-        if (result) onDetected(result.getText());
-      });
-    }).catch(console.error);
+    // El callback de error: tipamos `err` como `unknown`
+    const initCallback = (err: unknown) => {
+      if (err) {
+        console.error("Error al iniciar el escáner:", err);
+        return;
+      }
+      Quagga.start();
+    };
 
-    return () => { codeReader.reset(); };
-  }, [onDetected]);
+    Quagga.init(config as unknown as Record<string, unknown>, initCallback);
+
+    // Handler de detección: `data` es `unknown`, lo validamos
+    const handleDetected = (data: unknown) => {
+      // Validación segura
+      if (
+        data != null &&
+        typeof data === "object" &&
+        "codeResult" in data &&
+        data.codeResult != null &&
+        typeof data.codeResult === "object" &&
+        "code" in data.codeResult &&
+        typeof data.codeResult.code === "string"
+      ) {
+        const code = data.codeResult.code.trim();
+        if (code !== "") {
+          onScan(code);
+          Quagga.stop(); // Opcional
+        }
+      }
+    };
+
+    Quagga.onDetected(handleDetected);
+
+    return () => {
+      Quagga.offDetected(handleDetected);
+      Quagga.stop();
+    };
+  }, [onScan]);
 
   return (
-    <video
-      ref={videoRef}
+    <div
+      ref={scannerRef}
       style={{
         width: "100%",
-        maxWidth: "600px", // Más grande
-        border: "2px solid #004aad",
-        borderRadius: "10px"
+        maxWidth: "500px",
+        height: "300px",
+        borderRadius: "12px",
+        overflow: "hidden",
+        border: "2px solid #0056b3",
       }}
-      autoPlay
-      muted
     />
   );
 }

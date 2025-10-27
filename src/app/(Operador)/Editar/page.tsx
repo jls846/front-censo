@@ -1,8 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/layout/agregarEquipo.scss";
 import "./editar.css";
+import { useSearchParams } from "next/navigation";
+
 export default function Home() {
+  const searchParams = useSearchParams();
+  const equipoId = searchParams.get("equipoId"); // 🔹 Obtener ID del equipo
+
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
@@ -18,12 +23,19 @@ export default function Home() {
     responsable: "",
   });
 
+  // Si viene un equipoId, precargarlo
+  useEffect(() => {
+    if (equipoId) {
+      setFormData((prev) => ({ ...prev, serie: equipoId }));
+    }
+  }, [equipoId]);
+
   // Estado para saber si mostramos los campos de SO y Procesador
   const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
 
   const handleGuardar = () => {
     console.log("Formulario enviado:", formData);
-    alert("Equipo guardado (vista solo)");
+    alert(`Equipo ${formData.serie} guardado (vista solo)`);
   };
 
   const handleCancelar = () => {
@@ -34,10 +46,11 @@ export default function Home() {
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
         <h2 className="information">
-          <span></span>
+          {equipoId ? `Editar Equipo (${equipoId})` : "Agregar Equipo"}
           <span>Inventario:</span>
           <span>Fecha de censo:</span>
         </h2>
+
         <form className="equipoForm">
           {/* Columna 1 */}
           <div className="column">
@@ -113,39 +126,43 @@ export default function Home() {
 
           {/* Columna 2 */}
           <div className="column">
-            <div className="formGroup">
-              <label>Procesador</label>
-              <select
-                value={formData.procesador}
-                onChange={(e) =>
-                  setFormData({ ...formData, procesador: e.target.value })
-                }
-              >
-                <option value="">Selecciona procesador</option>
-                <option value="Ryzen 3">Ryzen 3</option>
-                <option value="Intel i5">Intel i5</option>
-                <option value="AMD Ryzen 5">AMD Ryzen 5</option>
-              </select>
-            </div>
+            {mostrarCamposComputadora && (
+              <>
+                <div className="formGroup">
+                  <label>Procesador</label>
+                  <select
+                    value={formData.procesador}
+                    onChange={(e) =>
+                      setFormData({ ...formData, procesador: e.target.value })
+                    }
+                  >
+                    <option value="">Selecciona procesador</option>
+                    <option value="Ryzen 3">Ryzen 3</option>
+                    <option value="Intel i5">Intel i5</option>
+                    <option value="AMD Ryzen 5">AMD Ryzen 5</option>
+                  </select>
+                </div>
 
-            <div className="formGroup">
-              <label>Sistema operativo</label>
-              <select
-                value={formData.sistemaOperativo}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    sistemaOperativo: e.target.value,
-                  })
-                }
-              >
-                <option value="">Selecciona sistema operativo</option>
-                <option value="Windows 10">Windows 10</option>
-                <option value="Windows 11">Windows 11</option>
-                <option value="Linux">Linux</option>
-                <option value="macOS">macOS</option>
-              </select>
-            </div>
+                <div className="formGroup">
+                  <label>Sistema operativo</label>
+                  <select
+                    value={formData.sistemaOperativo}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        sistemaOperativo: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">Selecciona sistema operativo</option>
+                    <option value="Windows 10">Windows 10</option>
+                    <option value="Windows 11">Windows 11</option>
+                    <option value="Linux">Linux</option>
+                    <option value="macOS">macOS</option>
+                  </select>
+                </div>
+              </>
+            )}
 
             <div className="formGroup">
               <label>Adscripción</label>

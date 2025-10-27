@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../styles/layout/escaner.scss"; // Importación global
+import BarcodeScanner from "@/components/BarcodeScanner";
 
-// Tipos
 type Equipo = {
   id: string;
   nombre: string;
@@ -18,59 +18,82 @@ const initialEquipos: Equipo[] = [
 
 export default function Dashboard() {
   const router = useRouter();
-  const [equipos, setEquipos] = useState<Equipo[]>(initialEquipos);
+  const [isScanning, setIsScanning] = useState(false);
+  const [equipos, setEquipos] = useState(initialEquipos);
   const [search, setSearch] = useState("");
-  const [lastScan, setLastScan] = useState("");
+  const [lastScan, setLastScan] = useState<string | null>(null);
 
+  // 🔍 Buscar equipo manualmente
   const buscarEquipo = () => {
-    const resultado = equipos.filter(
+    const encontrado = equipos.find(
       (e) =>
-        e.id.includes(search) ||
-        e.nombre.toLowerCase().includes(search.toLowerCase())
+        e.id === search.trim() ||
+        e.nombre.toLowerCase() === search.trim().toLowerCase()
     );
-    setEquipos(resultado);
+
+    if (encontrado) {
+      // Redirige a la vista de edición con el ID del equipo
+      router.push(`/Editar?equipoId=${encontrado.id}`);
+    } else {
+      alert("Equipo no encontrado.");
+    }
   };
 
-  const cerrarSesion = () => {
-    localStorage.removeItem("loggedIn");
-    router.push("/");
-  };
-
+  // 📷 Cuando se escanea un código de barras
   const handleScan = (code: string) => {
     setLastScan(code);
+    setIsScanning(false);
+
     const encontrado = equipos.find((e) => e.id === code);
+
     if (encontrado) {
-      alert(`Equipo encontrado: ${encontrado.nombre} (${encontrado.estado})`);
+      // ✅ Si el equipo existe, redirige directamente
+      router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
-      const codigo = prompt("Equipo no registrado. Ingresa el codigo:");
-      if (codigo) {
-        setEquipos([
-          ...equipos,
-          { id: code, nombre: codigo, estado: "Disponible" },
-        ]);
+      // 🚫 Si no existe, se puede registrar
+      const nombre = prompt("Equipo no registrado. Ingresa el nombre:");
+      if (nombre) {
+        const nuevoEquipo = { id: code, nombre, estado: "Disponible" };
+        setEquipos([...equipos, nuevoEquipo]);
         alert("Equipo agregado al inventario");
       }
     }
   };
 
+  // 🔒 Cerrar sesión
+  const cerrarSesion = () => {
+    localStorage.removeItem("loggedIn");
+    router.push("/");
+  };
+
   return (
     <div className="dashboardContainer">
-      {/* VISTA DE ESCANEO */}
       <main className="scanView">
         <h3>Escanear Inventario</h3>
 
-        <div className="scannerFrame">
-          <img src="/barcode_scanner.png" alt="Marco de escaneo" />
-        </div>
+        {isScanning ? (
+          <BarcodeScanner onScan={handleScan} />
+        ) : (
+          <div className="scannerFrame">
+            <img src="/barcode_scanner.png" alt="Marco de escaneo" />
+          </div>
+        )}
 
         <p className="instructions">
-          Enfoca el código de barras dentro del marco
+          {isScanning
+            ? "Enfoca el código de barras dentro del marco"
+            : "Presiona el botón para escanear"}
         </p>
 
-        <button className="scanButton">
-          <img src="/photo_camera.png" alt="camara" /> Escanear
+        <button
+          className="scanButton"
+          onClick={() => setIsScanning(!isScanning)}
+        >
+          <img src="/photo_camera.png" alt="cámara" />
+          {isScanning ? "Cancelar" : "Escanear"}
         </button>
 
+        {/* 🔍 Búsqueda manual */}
         <div className="searchBox">
           <input
             type="text"
