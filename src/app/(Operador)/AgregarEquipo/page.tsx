@@ -1,8 +1,9 @@
 "use client";
+
 import { useState } from "react";
-import "../styles/layout/agregarEquipo.scss";
-import "./editar.css";
-export default function Home() {
+import "../../styles/layout/agregarEquipo.scss"; // Asegúrate de crear este archivo
+
+export default function page() {
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
@@ -30,16 +31,28 @@ export default function Home() {
     alert("Acción cancelada");
   };
 
+  // Función para actualizar el estado y limpiar campos si es impresora
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      let updated = { ...prev, [name]: value };
+
+      // Si es impresora, limpiamos SO y Procesador
+      if (value === "Impresora") {
+        updated.sistemaOperativo = "";
+        updated.procesador = "";
+      }
+
+      return updated;
+    });
+  };
+
   return (
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
-        <h2 className="information">
-          <span></span>
-          <span>Inventario:</span>
-          <span>Fecha de censo:</span>
-        </h2>
+        <h2 className="information">Agregar Nuevo Equipo</h2>
         <form className="equipoForm">
-          {/* Columna 1 */}
+          {/* Columna Izquierda */}
           <div className="column">
             <div className="formGroup">
               <label>Serie</label>
@@ -81,6 +94,19 @@ export default function Home() {
               </select>
             </div>
             <div className="formGroup">
+              <label>Tipo de equipo</label>
+              <select
+                name="tipoEquipo"
+                value={formData.tipoEquipo}
+                onChange={handleChange}
+              >
+                <option value="">Selecciona tipo</option>
+                <option value="PC">PC</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Impresora">Impresora</option>
+              </select>
+            </div>
+            <div className="formGroup">
               <label>Estado</label>
               <select
                 value={formData.estado}
@@ -94,7 +120,10 @@ export default function Home() {
                 <option value="En reparación">En reparación</option>
               </select>
             </div>
+          </div>
 
+          {/* Columna Centro */}
+          <div className="column">
             <div className="formGroup">
               <label>Tipo uso</label>
               <select
@@ -109,43 +138,43 @@ export default function Home() {
                 <option value="laboratorio">laboratorio</option>
               </select>
             </div>
-          </div>
-
-          {/* Columna 2 */}
-          <div className="column">
-            <div className="formGroup">
-              <label>Procesador</label>
-              <select
-                value={formData.procesador}
-                onChange={(e) =>
-                  setFormData({ ...formData, procesador: e.target.value })
-                }
-              >
-                <option value="">Selecciona procesador</option>
-                <option value="Ryzen 3">Ryzen 3</option>
-                <option value="Intel i5">Intel i5</option>
-                <option value="AMD Ryzen 5">AMD Ryzen 5</option>
-              </select>
-            </div>
-
-            <div className="formGroup">
-              <label>Sistema operativo</label>
-              <select
-                value={formData.sistemaOperativo}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    sistemaOperativo: e.target.value,
-                  })
-                }
-              >
-                <option value="">Selecciona sistema operativo</option>
-                <option value="Windows 10">Windows 10</option>
-                <option value="Windows 11">Windows 11</option>
-                <option value="Linux">Linux</option>
-                <option value="macOS">macOS</option>
-              </select>
-            </div>
+            {/* Mostrar SO y Procesador solo si NO es impresora */}
+            {mostrarCamposComputadora && (
+              <>
+                <div className="formGroup">
+                  <label>Procesador</label>
+                  <select
+                    value={formData.procesador}
+                    onChange={(e) =>
+                      setFormData({ ...formData, procesador: e.target.value })
+                    }
+                  >
+                    <option value="">Selecciona procesador</option>
+                    <option value="Ryzen 3">Ryzen 3</option>
+                    <option value="Intel i5">Intel i5</option>
+                    <option value="AMD Ryzen 5">AMD Ryzen 5</option>
+                  </select>
+                </div>
+                <div className="formGroup">
+                  <label>Sistema operativo</label>
+                  <select
+                    value={formData.sistemaOperativo}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        sistemaOperativo: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">Selecciona sistema operativo</option>
+                    <option value="Windows 10">Windows 10</option>
+                    <option value="Windows 11">Windows 11</option>
+                    <option value="Linux">Linux</option>
+                    <option value="macOS">macOS</option>
+                  </select>
+                </div>
+              </>
+            )}
 
             <div className="formGroup">
               <label>Adscripción</label>
@@ -161,7 +190,6 @@ export default function Home() {
                 <option value="Administración">Administración</option>
               </select>
             </div>
-
             <div className="formGroup">
               <label>Responsable</label>
               <select
@@ -178,7 +206,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Columna 3 */}
+          {/* Columna Derecha */}
           <div className="column">
             <div className="formGroup">
               <label>Lugar</label>
@@ -192,7 +220,6 @@ export default function Home() {
                 className="textAreaLarge"
               />
             </div>
-
             <div className="formGroup">
               <label>Observaciones</label>
               <textarea
@@ -205,7 +232,6 @@ export default function Home() {
                 className="textAreaLarge"
               />
             </div>
-
             <div className="formActions">
               <button
                 type="button"

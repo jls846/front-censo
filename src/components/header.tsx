@@ -3,8 +3,11 @@ import Image from "next/image";
 import header from "../app/styles/layout/header.module.scss";
 import Link from "next/link";
 import BarNavigation from "./BarNavigation";
+import { usePathname } from "next/navigation";
 
 function Header() {
+  const pathname = usePathname(); // obtenemos la ruta actual
+
   return (
     <header className={header.header}>
       <Link
@@ -34,9 +37,8 @@ function Header() {
           maxHeight: "50%",
           alignItems: "end",
         }}
-        className=""
       >
-        <BarNavigation />
+        {pathname !== "/" && <BarNavigation />}
       </div>
     </header>
   );

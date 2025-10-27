@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../styles/layout/escaner.scss"; // Importación global
+import "../../styles/layout/escaner.scss"; // Importación global
 
 // Tipos
 type Equipo = {
@@ -44,7 +44,10 @@ export default function Dashboard() {
     } else {
       const codigo = prompt("Equipo no registrado. Ingresa el codigo:");
       if (codigo) {
-        setEquipos([...equipos, { id: code, nombre: codigo, estado: "Disponible" }]);
+        setEquipos([
+          ...equipos,
+          { id: code, nombre: codigo, estado: "Disponible" },
+        ]);
         alert("Equipo agregado al inventario");
       }
     }
@@ -52,7 +55,6 @@ export default function Dashboard() {
 
   return (
     <div className="dashboardContainer">
-
       {/* VISTA DE ESCANEO */}
       <main className="scanView">
         <h3>Escanear Inventario</h3>
