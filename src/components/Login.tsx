@@ -17,38 +17,34 @@ export default function Login() {
   };
 
   return (
-    <section className="login-page">
-      <div className="login-form-container">
-        <h2>Inicio sesión</h2>
+    <section className="containerGrid">
+      <div className="login-container">
+        <h2>Inicio de sesión</h2>
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
+          <div>
             <label>Usuario</label>
             <input
               type="email"
-              placeholder="Ingresa tu usuario"
+              placeholder="Correo"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="input-group">
+          <div>
             <label>Contraseña</label>
             <input
               type="password"
-              placeholder="Ingresa tu usuario"
+              placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <button type="submit">Iniciar sesión</button>
-          <Link href="#" className="forgot-password">
-            Olvidaste Contraseña?
-          </Link>
-          <Link href="#" className="create-account">
-            Crear Cuenta
-          </Link>
+          <Link href={"#"}>Olvidaste Contraseña?</Link>
+          <Link href={"#"}>Crear Cuenta</Link>
         </form>
       </div>
 

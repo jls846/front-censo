@@ -30,7 +30,7 @@ function Header() {
           display: "flex",
           width: "100%",
           marginLeft: "40px",
-          marginTop: "45px",
+          marginTop: "40px",
           maxHeight: "50%",
           alignItems: "end",
         }}
