@@ -29,8 +29,8 @@ function Header() {
         style={{
           display: "flex",
           width: "100%",
-          marginLeft: "40px",
-          marginTop: "40px",
+          height: "100%",
+          paddingLeft: "40px",
           maxHeight: "50%",
           alignItems: "end",
         }}

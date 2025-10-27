@@ -44,8 +44,7 @@ function BarNavigation() {
             <span>Agregar equipo</span>
           </Link>
         </li>
-        {/* ✅ Botón directo, sin onClick en el <li> */}
-        <li>
+        <li className="subMenu">
           <button className="logout-button" onClick={cerrarSesion}>
             Cerrar sesión
           </button>
@@ -56,3 +55,4 @@ function BarNavigation() {
 }
 
 export default BarNavigation;
+//IO

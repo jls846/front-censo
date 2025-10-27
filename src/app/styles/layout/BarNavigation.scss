@@ -1,5 +1,6 @@
 .barNavigation {
   text-align: center;
+  justify-content: end;
   background-color: #ffffff;
   display: flex;
   width: 100%;
@@ -11,7 +12,7 @@
 .barNavigation ul {
   display: flex;
   justify-content: space-around;
-  width: 100%;
+  width: 90%;
   gap: 10px;
 }
 
@@ -93,7 +94,7 @@
   align-items: center;
   justify-content: center;
   color: #383838;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .links {
@@ -115,7 +116,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,7 +129,7 @@
 }
 
 /* ✅ Ajustes para móvil */
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   .menuToggle {
     display: flex;
     position: relative;
@@ -172,7 +173,6 @@
     position: relative;
     background-color: rgb(1, 92, 184);
   }
-
 
   .logout-button {
     margin-top: 10px;

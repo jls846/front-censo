@@ -20,7 +20,7 @@ export default function page() {
   });
 
   // Estado para saber si mostramos los campos de SO y Procesador
-const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
+  const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
 
   const handleGuardar = () => {
     console.log("Formulario enviado:", formData);
@@ -32,7 +32,7 @@ const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
   };
 
   // Función para actualizar el estado y limpiar campos si es impresora
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => {
       let updated = { ...prev, [name]: value };
@@ -120,7 +120,6 @@ const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
                 <option value="En reparación">En reparación</option>
               </select>
             </div>
-            
           </div>
 
           {/* Columna Centro */}
@@ -161,7 +160,10 @@ const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
                   <select
                     value={formData.sistemaOperativo}
                     onChange={(e) =>
-                      setFormData({ ...formData, sistemaOperativo: e.target.value })
+                      setFormData({
+                        ...formData,
+                        sistemaOperativo: e.target.value,
+                      })
                     }
                   >
                     <option value="">Selecciona sistema operativo</option>
@@ -238,7 +240,11 @@ const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
           <button type="button" className="btnGuardar" onClick={handleGuardar}>
             Guardar
           </button>
-          <button type="button" className="btnCancelar" onClick={handleCancelar}>
+          <button
+            type="button"
+            className="btnCancelar"
+            onClick={handleCancelar}
+          >
             Cancelar
           </button>
         </div>
