@@ -19,13 +19,9 @@
   transition: all 0.3s ease;
   cursor: pointer;
   color: white;
-  width: 100%;
+  width: auto;
   transition: background-color 0.3s ease;
   font-size: 1.5rem;
-}
-
-.barNavigation li:hover {
-  background-color: #bd8c01;
 }
 
 .barNavigation ul.active {
@@ -66,24 +62,15 @@
   max-height: 0;
   position: absolute;
   flex-direction: column;
-  top: 100%;
-  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+  left: 0;
   background-color: #003e79;
-  transition: color 0.3s ease;
   transition: opacity 0.4s ease, max-height 0.4s ease;
 }
 
 .subMenu ul a {
   display: none;
-}
-
-.subMenu.open ul {
-  display: flex;
-  color: rgba(0, 61, 121, 1);
-}
-
-.subMenu ul:hover {
-  color: #5b8cc9;
 }
 
 .subMenu:hover ul {
@@ -109,16 +96,6 @@
   font-size: 1.5rem;
 }
 
-.subMenu:hover > span,
-.subMenu > a:hover > span {
-  color: white;
-}
-
-.containerLinks {
-  padding: 0 !important;
-  border-radius: 0 0 4px 4px;
-}
-
 .links {
   display: flex;
   justify-content: center;
@@ -129,11 +106,28 @@
   font-size: 1.5rem;
 }
 
-thead,
-tbody {
-  font-size: 1.25rem;
+/* Estilo del botón de cierre de sesión */
+.logout-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 200px;
+
+  &:hover {
+    background-color: #e63939;
+  }
 }
 
+/* ✅ Ajustes para móvil */
 @media (max-width: 800px) {
   .menuToggle {
     display: flex;
@@ -141,18 +135,12 @@ tbody {
     align-items: end;
     transition: transform 0.3s ease;
   }
-  .barNavigation {
-    width: 100vw;
-  }
-
-  .menuToggle.center {
-    align-items: center;
-    margin: 0;
-  }
 
   .barNavigation {
     font-size: 15px;
     display: block;
+    padding: 0;
+    width: 100%;
   }
 
   .barNavigation ul {
@@ -164,10 +152,11 @@ tbody {
     display: none;
     z-index: 1;
     height: auto;
+    width: 100%;
   }
 
-  .barNavigation {
-    padding: 0;
+  .barNavigation ul.active {
+    display: flex;
   }
 
   .barNavigation li:hover {
@@ -182,6 +171,14 @@ tbody {
     border-radius: 4px;
     position: relative;
     background-color: rgb(1, 92, 184);
+  }
+
+
+  .logout-button {
+    margin-top: 10px;
+    font-size: 1rem;
+    padding: 6px 12px;
+    max-width: 180px;
   }
 
   thead,

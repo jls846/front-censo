@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import header from "../app/styles/components/header.module.scss";
+import header from "../app/styles/layout/header.module.scss";
 import Link from "next/link";
 import BarNavigation from "./BarNavigation";
 
@@ -18,10 +18,10 @@ function Header() {
       >
         <Image
           className={header.logo}
-          src="/logo_fes.png"
+          src="/logo-blanco.png"
           alt="Logo FES"
-          width={200}
-          height={50}
+          width={250}
+          height={70}
         />
       </Link>
       <div className={header.yellowPart}></div>
@@ -30,7 +30,7 @@ function Header() {
           display: "flex",
           width: "100%",
           marginLeft: "40px",
-          marginTop: "45px",
+          marginTop: "40px",
           maxHeight: "50%",
           alignItems: "end",
         }}
