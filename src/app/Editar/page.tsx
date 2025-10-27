@@ -33,7 +33,11 @@ export default function Home() {
   return (
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
-        <h2 className="information"></h2>
+        <h2 className="information">
+          <span></span>
+          <span>Inventario:</span>
+          <span>Fecha de censo:</span>
+        </h2>
         <form className="equipoForm">
           {/* Columna 1 */}
           <div className="column">
@@ -184,7 +188,7 @@ export default function Home() {
                 onChange={(e) =>
                   setFormData({ ...formData, lugar: e.target.value })
                 }
-                rows={4}
+                rows={5}
                 className="textAreaLarge"
               />
             </div>
@@ -197,7 +201,7 @@ export default function Home() {
                 onChange={(e) =>
                   setFormData({ ...formData, observaciones: e.target.value })
                 }
-                rows={4}
+                rows={5}
                 className="textAreaLarge"
               />
             </div>
