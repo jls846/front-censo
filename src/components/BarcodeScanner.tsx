@@ -46,7 +46,7 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
         target: scannerRef.current,
         constraints: {
           width: 640,
-          height: 480,
+          height: 370,
           facingMode: "environment",
         },
       },

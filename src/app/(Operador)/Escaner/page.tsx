@@ -47,16 +47,10 @@ export default function Dashboard() {
     const encontrado = equipos.find((e) => e.id === code);
 
     if (encontrado) {
-      // ✅ Si el equipo existe, redirige directamente
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
       // 🚫 Si no existe, se puede registrar
-      const nombre = prompt("Equipo no registrado. Ingresa el nombre:");
-      if (nombre) {
-        const nuevoEquipo = { id: code, nombre, estado: "Disponible" };
-        setEquipos([...equipos, nuevoEquipo]);
-        alert("Equipo agregado al inventario");
-      }
+      router.push(`/AgregarEquipo`);
     }
   };
 
