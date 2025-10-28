@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../styles/layout/escaner.scss";
-import BarcodeScanner from "@/components/BarcodeScanner"; // Ajusta la ruta si es necesario
+import "../../styles/layout/escaner.scss"; // Importación global
+import BarcodeScanner from "@/components/BarcodeScanner";
 
 type Equipo = {
   id: string;
@@ -47,16 +47,19 @@ export default function Dashboard() {
     const encontrado = equipos.find((e) => e.id === code);
 
     if (encontrado) {
-      // ✅ Si el equipo existe, redirige directamente
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
       // 🚫 Si no existe, se puede registrar
+<<<<<<< HEAD:src/app/Escaner/page.tsx
       const marca = prompt("Equipo no registrado. Ingresa la marca:");
       if (marca) {
         const nuevoEquipo = { id: code, marca, estado: "Desactivado" };
         setEquipos([...equipos, nuevoEquipo]);
         alert("Equipo agregado al inventario");
       }
+=======
+      router.push(`/AgregarEquipo`);
+>>>>>>> 374ce02350db05430bc40286bdff9fe767e82eae:src/app/(Operador)/Escaner/page.tsx
     }
   };
 

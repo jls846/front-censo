@@ -69,6 +69,14 @@
 }
 @media (max-width: 800px) {
   .yellowPart {
+    left: 0;
     background: #bd8c01;
+    transform: skew(0deg);
+  }
+  .header::after {
+    left: -100px;
+  }
+  .header::before {
+    left: -80px;
   }
 }

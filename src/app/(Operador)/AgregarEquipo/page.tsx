@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import "../styles/layout/agregarEquipo.scss"; // Asegúrate de crear este archivo
+import "../../styles/layout/agregarEquipo.scss"; // Asegúrate de crear este archivo
 
 export default function page() {
   const [formData, setFormData] = useState({
@@ -50,7 +50,7 @@ export default function page() {
   return (
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
-        <h2>Agregar Nuevo Equipo</h2>
+        <h2 className="information">Agregar Nuevo Equipo</h2>
         <form className="equipoForm">
           {/* Columna Izquierda */}
           <div className="column">
@@ -216,7 +216,7 @@ export default function page() {
                 onChange={(e) =>
                   setFormData({ ...formData, lugar: e.target.value })
                 }
-                rows={4}
+                rows={5}
                 className="textAreaLarge"
               />
             </div>
@@ -228,7 +228,7 @@ export default function page() {
                 onChange={(e) =>
                   setFormData({ ...formData, observaciones: e.target.value })
                 }
-                rows={4}
+                rows={5}
                 className="textAreaLarge"
               />
             </div>

@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import "../styles/layout/agregarEquipo.scss";
+import { useEffect, useState } from "react";
+import "../../styles/layout/agregarEquipo.scss";
 import "./editar.css";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -47,6 +47,8 @@ export default function Home() {
       <div className="innerContainer">
         <h2 className="information">
           {equipoId ? `Editar Equipo (${equipoId})` : "Agregar Equipo"}
+          <span>Inventario:</span>
+          <span>Fecha de censo:</span>
         </h2>
 
         <form className="equipoForm">
@@ -203,7 +205,7 @@ export default function Home() {
                 onChange={(e) =>
                   setFormData({ ...formData, lugar: e.target.value })
                 }
-                rows={4}
+                rows={5}
                 className="textAreaLarge"
               />
             </div>
@@ -216,7 +218,7 @@ export default function Home() {
                 onChange={(e) =>
                   setFormData({ ...formData, observaciones: e.target.value })
                 }
-                rows={4}
+                rows={5}
                 className="textAreaLarge"
               />
             </div>
