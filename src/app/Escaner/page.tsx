@@ -7,13 +7,13 @@ import BarcodeScanner from "@/components/BarcodeScanner"; // Ajusta la ruta si e
 
 type Equipo = {
   id: string;
-  nombre: string;
+  marca: string;
   estado: string;
 };
 
 const initialEquipos: Equipo[] = [
-  { id: "001", nombre: "PC Aula 1", estado: "Disponible" },
-  { id: "002", nombre: "PC Aula 2", estado: "En reparación" },
+  { id: "E0030463", marca: "Dell", estado: "Activo" },
+  { id: "E0030464", marca: "HP", estado: "Desactivado" },
 ];
 
 export default function Dashboard() {
@@ -28,7 +28,7 @@ export default function Dashboard() {
     const encontrado = equipos.find(
       (e) =>
         e.id === search.trim() ||
-        e.nombre.toLowerCase() === search.trim().toLowerCase()
+        e.marca.toLowerCase() === search.trim().toLowerCase()
     );
 
     if (encontrado) {
@@ -51,9 +51,9 @@ export default function Dashboard() {
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
       // 🚫 Si no existe, se puede registrar
-      const nombre = prompt("Equipo no registrado. Ingresa el nombre:");
-      if (nombre) {
-        const nuevoEquipo = { id: code, nombre, estado: "Disponible" };
+      const marca = prompt("Equipo no registrado. Ingresa la marca:");
+      if (marca) {
+        const nuevoEquipo = { id: code, marca, estado: "Desactivado" };
         setEquipos([...equipos, nuevoEquipo]);
         alert("Equipo agregado al inventario");
       }
