@@ -50,16 +50,7 @@ export default function Dashboard() {
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
       // 🚫 Si no existe, se puede registrar
-<<<<<<< HEAD:src/app/Escaner/page.tsx
-      const marca = prompt("Equipo no registrado. Ingresa la marca:");
-      if (marca) {
-        const nuevoEquipo = { id: code, marca, estado: "Desactivado" };
-        setEquipos([...equipos, nuevoEquipo]);
-        alert("Equipo agregado al inventario");
-      }
-=======
       router.push(`/AgregarEquipo`);
->>>>>>> 374ce02350db05430bc40286bdff9fe767e82eae:src/app/(Operador)/Escaner/page.tsx
     }
   };
 
