@@ -6,25 +6,35 @@ import "../app/styles/base/globales.scss";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    try{
-      const response = await axios.post('/api/login', { email, password });
+    try {
+      const response = await axios.post(`${process.env.API_URL}/auth/login`, {
+        nombre,
+        contraseña: password,
+      });
+      const token = response.data;
+
+      document.cookie = `token=${token}; path=/; SameSite=Strict`;
     } catch (err) {
       console.error("Error en la solicitud:", err);
       setError("Error al conectar con el servidor");
     } finally {
       setLoading(false);
+      router.push("/Escaner");
     }
   };
 
@@ -37,10 +47,10 @@ export default function Login() {
           <div>
             <label>Usuario</label>
             <input
-              type="email"
-              placeholder="Correo"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Coloca tu nombre de usuario"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
               required
             />
           </div>
@@ -48,7 +58,7 @@ export default function Login() {
             <label>Contraseña</label>
             <input
               type="password"
-              placeholder="Contraseña"
+              placeholder="Coloca tu contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -62,22 +72,52 @@ export default function Login() {
 
       <div className="image-collage">
         <div className="collage-item collage-1">
-          <Image src="/Piedra.jpg" alt="UNAM Icatlán" fill style={{ objectFit: 'cover' }} />
+          <Image
+            src="/Piedra.jpg"
+            alt="UNAM Icatlán"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="collage-item collage-2">
-          <Image src="/image 1.png" alt="UNAM Icatlán" fill style={{ objectFit: 'cover' }} />
+          <Image
+            src="/image 1.png"
+            alt="UNAM Icatlán"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="collage-item collage-3">
-          <Image src="/estrella.jpg" alt="UNAM Icatlán" fill style={{ objectFit: 'cover' }} />
+          <Image
+            src="/estrella.jpg"
+            alt="UNAM Icatlán"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="collage-item collage-4">
-          <Image src="/sorjuana.jpg" alt="UNAM Icatlán" fill style={{ objectFit: 'cover' }} />
+          <Image
+            src="/sorjuana.jpg"
+            alt="UNAM Icatlán"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="collage-item collage-5">
-          <Image src="/fes.jpg" alt="UNAM Icatlán" fill style={{ objectFit: 'cover' }} />
+          <Image
+            src="/fes.jpg"
+            alt="UNAM Icatlán"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="collage-item collage-6">
-          <Image src="/picachu.jpg" alt="UNAM Icatlán" fill style={{ objectFit: 'cover' }} />
+          <Image
+            src="/picachu.jpg"
+            alt="UNAM Icatlán"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
       </div>
     </section>

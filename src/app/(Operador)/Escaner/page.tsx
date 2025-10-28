@@ -13,8 +13,12 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [lastScan, setLastScan] = useState<string | null>(null);
 
+  interface equipo {
+    id: number;
+  }
+
   const buscarEquipo = async () => {
-    const encontrado = await axios.get("");
+    const encontrado: equipo = await axios.get("");
 
     if (encontrado) {
       // Redirige a la vista de edición con el ID del equipo
@@ -28,17 +32,12 @@ export default function Dashboard() {
     setLastScan(code);
     setIsScanning(false);
 
-    const encontrado = await axios.get("");
+    const encontrado: equipo = await axios.get("");
 
     if (encontrado) {
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
-<<<<<<< HEAD
       router.push(`/AgregarEquipo?equipoId=${code}`);
-=======
-      // 🚫 Si no existe, se puede registrar
-      router.push(`/AgregarEquipo`);
->>>>>>> 8457542e8b63924894ebfa2f3148c3bc24a14a59
     }
   };
 
