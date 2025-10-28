@@ -33,7 +33,12 @@ export default function Dashboard() {
     if (encontrado) {
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
+<<<<<<< HEAD
       router.push(`/AgregarEquipo?equipoId=${code}`);
+=======
+      // 🚫 Si no existe, se puede registrar
+      router.push(`/AgregarEquipo`);
+>>>>>>> 8457542e8b63924894ebfa2f3148c3bc24a14a59
     }
   };
 

@@ -5,15 +5,27 @@ import "../app/styles/layout/login.scss";
 import "../app/styles/base/globales.scss";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Autenticacion simulada
+    setError("");
+    setLoading(true);
+
+    try{
+      const response = await axios.post('/api/login', { email, password });
+    } catch (err) {
+      console.error("Error en la solicitud:", err);
+      setError("Error al conectar con el servidor");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
