@@ -23,7 +23,6 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [lastScan, setLastScan] = useState<string | null>(null);
 
-  // 🔍 Buscar equipo manualmente
   const buscarEquipo = () => {
     const encontrado = equipos.find(
       (e) =>
