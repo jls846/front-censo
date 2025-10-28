@@ -4,31 +4,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../styles/layout/escaner.scss"; // Importación global
 import BarcodeScanner from "@/components/BarcodeScanner";
-
-type Equipo = {
-  id: string;
-  nombre: string;
-  estado: string;
-};
-
-const initialEquipos: Equipo[] = [
-  { id: "001", nombre: "PC Aula 1", estado: "Disponible" },
-  { id: "002", nombre: "PC Aula 2", estado: "En reparación" },
-];
+import axios from "axios";
 
 export default function Dashboard() {
   const router = useRouter();
   const [isScanning, setIsScanning] = useState(false);
-  const [equipos, setEquipos] = useState(initialEquipos);
+  const [equipos, setEquipos] = useState();
   const [search, setSearch] = useState("");
   const [lastScan, setLastScan] = useState<string | null>(null);
 
-  const buscarEquipo = () => {
-    const encontrado = equipos.find(
-      (e) =>
-        e.id === search.trim() ||
-        e.nombre.toLowerCase() === search.trim().toLowerCase()
-    );
+  const buscarEquipo = async () => {
+    const encontrado = await axios.get("");
 
     if (encontrado) {
       // Redirige a la vista de edición con el ID del equipo
@@ -38,18 +24,16 @@ export default function Dashboard() {
     }
   };
 
-  // 📷 Cuando se escanea un código de barras
-  const handleScan = (code: string) => {
+  const handleScan = async (code: string) => {
     setLastScan(code);
     setIsScanning(false);
 
-    const encontrado = equipos.find((e) => e.id === code);
+    const encontrado = await axios.get("");
 
     if (encontrado) {
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
-      // 🚫 Si no existe, se puede registrar
-      router.push(`/AgregarEquipo`);
+      router.push(`/AgregarEquipo?equipoId=${code}`);
     }
   };
 
