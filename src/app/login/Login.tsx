@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import "../app/styles/layout/login.scss";
-import "../app/styles/base/globales.scss";
+import "../styles/layout/login.scss";
+import "../styles/base/globales.scss";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [nombre, setNombre] = useState("");
@@ -22,7 +22,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${process.env.API_URL}/auth/login`, {
+      const response = await axios.post(`http://localhost:3000/auth/login`, {
         nombre,
         contraseña: password,
       });
