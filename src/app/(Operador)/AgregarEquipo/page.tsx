@@ -360,18 +360,6 @@ export default function page() {
                 </ul>
               )}
             </div>
-
-            <div className="formGroup">
-              <label>Responsable</label>
-              <input
-                type="text"
-                placeholder="Selecciona responsable"
-                value={formData.responsable}
-                onChange={(e) =>
-                  setFormData({ ...formData, responsable: e.target.value })
-                }
-              />
-            </div>
           </div>
 
           {/* Columna Derecha */}
