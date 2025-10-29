@@ -24,10 +24,7 @@ export default function RootLayout({
     <html lang="es" className={`${inter.variable} ${montserrat.variable}`}>
       <body suppressHydrationWarning>
         <Header />
-        <Toaster
-  position="top-left"
-  reverseOrder={false}
-/>
+        <Toaster position="top-left" reverseOrder={false} />
         {children}
       </body>
     </html>
