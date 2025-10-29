@@ -97,13 +97,13 @@ export default function Page() {
     setSuggestions((prev) => ({ ...prev, [field]: [] }));
   };
 
-  const handleGuardar = () => {
-    console.log("Formulario enviado:", formData);
-    alert("Equipo guardado (vista solo)");
+  const handleGuardar = async () => {
+    await axios.post(`${api_url}/equipos/crear`, formData);
+    toast.success("Equipo guardado");
   };
 
   const handleCancelar = () => {
-    alert("Acción cancelada");
+    toast.success("Acción cancelada");
   };
 
   return (

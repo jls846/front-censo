@@ -6,6 +6,7 @@ import "../../styles/layout/escaner.scss"; // Importación global
 import BarcodeScanner from "@/components/BarcodeScanner";
 import axios from "axios";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -20,10 +21,9 @@ export default function Dashboard() {
     const encontrado: equipo = await axios.get("");
 
     if (encontrado) {
-      // Redirige a la vista de edición con el ID del equipo
       router.push(`/Editar?equipoId=${encontrado.id}`);
     } else {
-      alert("Equipo no encontrado.");
+      toast.error("Equipo no encontrado");
     }
   };
 
@@ -67,7 +67,7 @@ export default function Dashboard() {
           className="scanButton"
           onClick={() => setIsScanning(!isScanning)}
         >
-          <img src="/photo_camera.png" alt="cámara" />
+          <Image src="/photo_camera.png" alt="cámara" width={20} height={20} />
           {isScanning ? "Cancelar" : "Escanear"}
         </button>
 
@@ -80,7 +80,7 @@ export default function Dashboard() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button onClick={buscarEquipo} className="searchButton">
-            <img src="/search.png" alt="Buscar" />
+            <Image src="/search.png" alt="Buscar" width={50} height={50} />
           </button>
         </div>
       </main>

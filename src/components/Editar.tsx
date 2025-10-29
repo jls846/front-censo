@@ -38,7 +38,6 @@ export default function Editar() {
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
 
-  // 🔹 Cargar datos de catálogo (listas)
   useEffect(() => {
     const fetchCatalogos = async () => {
       const token = Cookies.get("token");
@@ -79,7 +78,6 @@ export default function Editar() {
     fetchCatalogos();
   }, []);
 
-  // 🔹 Cargar datos del equipo actual
   useEffect(() => {
     const fetchEquipo = async () => {
       try {

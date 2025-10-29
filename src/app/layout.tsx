@@ -1,9 +1,8 @@
 import Header from "../components/header";
 import { Inter, Montserrat } from "next/font/google";
-import "../app/styles/base/globales.scss"; // si tienes estilos globales
+import "../app/styles/base/globales.scss";
 import { Toaster } from "react-hot-toast";
 
-// Carga optimizada de fuentes
 const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
