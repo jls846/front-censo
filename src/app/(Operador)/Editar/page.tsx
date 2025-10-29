@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import "../../styles/layout/agregarEquipo.scss";
 import "./editar.css";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 export default function Home() {
   const searchParams = useSearchParams();
-  const equipoId = searchParams.get("equipoId"); // 🔹 Obtener ID del equipo
+  const equipoId = searchParams.get("equipoId");
 
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
     modelo: "",
-    tipoEquipo: "", // Nuevo campo
+    tipoEquipo: "",
     estado: "",
     sistemaOperativo: "",
     procesador: "",
@@ -23,19 +24,38 @@ export default function Home() {
     responsable: "",
   });
 
-  // Si viene un equipoId, precargarlo
   useEffect(() => {
+    const fetchEquipo = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/equipos/${equipoId}`
+        );
+
+        setFormData(response.data);
+      } catch (error) {
+        console.error("Error al obtener el equipo:", error);
+        alert("No se pudo cargar la información del equipo.");
+      }
+    };
+
     if (equipoId) {
-      setFormData((prev) => ({ ...prev, serie: equipoId }));
+      fetchEquipo();
     }
   }, [equipoId]);
 
-  // Estado para saber si mostramos los campos de SO y Procesador
   const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
 
-  const handleGuardar = () => {
-    console.log("Formulario enviado:", formData);
-    alert(`Equipo ${formData.serie} guardado (vista solo)`);
+  const handleGuardar = async () => {
+    try {
+      await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/equipos/update/${equipoId}`,
+        formData
+      );
+      alert("Equipo actualizado correctamente");
+    } catch (error) {
+      console.error("Error al guardar:", error);
+      alert("Hubo un error al guardar el equipo.");
+    }
   };
 
   const handleCancelar = () => {
