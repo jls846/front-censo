@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../../styles/layout/escaner.scss"; // Importación global
+import "../../styles/layout/escaner.scss";
 import BarcodeScanner from "@/components/BarcodeScanner";
 import axios from "axios";
 import Image from "next/image";
@@ -13,16 +13,20 @@ export default function Dashboard() {
   const [isScanning, setIsScanning] = useState(false);
   const [search, setSearch] = useState("");
 
-  interface equipo {
-    id: number;
-  }
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
 
   const buscarEquipo = async () => {
-    const encontrado: equipo = await axios.get("");
+    if (!search) return toast.error("Ingresa un número de inventario");
 
-    if (encontrado) {
-      router.push(`/Editar?equipoId=${encontrado.id}`);
-    } else {
+    try {
+      const { data } = await axios.get(`${api_url}/equipos/${search}`);
+
+      if (data) {
+        router.push(`/Editar?equipoId=${data.id}`);
+      } else {
+        toast.error("Equipo no encontrado");
+      }
+    } catch (error) {
       toast.error("Equipo no encontrado");
     }
   };
@@ -30,11 +34,17 @@ export default function Dashboard() {
   const handleScan = async (code: string) => {
     setIsScanning(false);
 
-    const encontrado: equipo = await axios.get("");
+    if (!code) return;
 
-    if (encontrado) {
-      router.push(`/Editar?equipoId=${encontrado.id}`);
-    } else {
+    try {
+      const { data } = await axios.get(`${api_url}/equipos/${code}`);
+
+      if (data) {
+        router.push(`/Editar?equipoId=${data.id}`);
+      } else {
+        router.push(`/AgregarEquipo?equipoId=${code}`);
+      }
+    } catch (error) {
       router.push(`/AgregarEquipo?equipoId=${code}`);
     }
   };
@@ -71,7 +81,6 @@ export default function Dashboard() {
           {isScanning ? "Cancelar" : "Escanear"}
         </button>
 
-        {/* 🔍 Búsqueda manual */}
         <div className="searchBox">
           <input
             type="text"
