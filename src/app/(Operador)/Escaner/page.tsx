@@ -5,13 +5,12 @@ import { useRouter } from "next/navigation";
 import "../../styles/layout/escaner.scss"; // Importación global
 import BarcodeScanner from "@/components/BarcodeScanner";
 import axios from "axios";
+import Image from "next/image";
 
 export default function Dashboard() {
   const router = useRouter();
   const [isScanning, setIsScanning] = useState(false);
-  const [equipos, setEquipos] = useState();
   const [search, setSearch] = useState("");
-  const [lastScan, setLastScan] = useState<string | null>(null);
 
   interface equipo {
     id: number;
@@ -29,7 +28,6 @@ export default function Dashboard() {
   };
 
   const handleScan = async (code: string) => {
-    setLastScan(code);
     setIsScanning(false);
 
     const encontrado: equipo = await axios.get("");
@@ -41,12 +39,6 @@ export default function Dashboard() {
     }
   };
 
-  // 🔒 Cerrar sesión
-  const cerrarSesion = () => {
-    localStorage.removeItem("loggedIn");
-    router.push("/");
-  };
-
   return (
     <div className="dashboardContainer">
       <main className="scanView">
@@ -56,7 +48,12 @@ export default function Dashboard() {
           <BarcodeScanner onScan={handleScan} />
         ) : (
           <div className="scannerFrame">
-            <img src="/barcode_scanner.png" alt="Marco de escaneo" />
+            <Image
+              src="/barcode_scanner.png"
+              alt="Marco de escaneo"
+              width={200}
+              height={200}
+            />
           </div>
         )}
 

@@ -1,13 +1,10 @@
-import './reporte.css';
+import "./reporte.css";
 
 export default function Reporte() {
   return (
     <div>
       <header className="encabezado">
         <div className="encabezado-sup"></div>
-        <div className="logo">
-          <img src="fes-logo.jpg" alt="" className="logo-img" />
-        </div>
 
         <div className="pestaña">
           <span>Escanear código</span>
@@ -20,8 +17,8 @@ export default function Reporte() {
         </nav>
       </header>
 
-      <div className='contenedor'>
-        <div className='titulo-reporte'>
+      <div className="contenedor">
+        <div className="titulo-reporte">
           <p>REPORTE</p>
         </div>
 
@@ -30,10 +27,10 @@ export default function Reporte() {
           <button type="submit">Buscar</button>
         </form>
       </div>
-      <div className='tabla-rec'></div>
-      <button className='boton-descargar'>Descargar</button>
+      <div className="tabla-rec"></div>
+      <button className="boton-descargar">Descargar</button>
 
-      <div className='filtro-rec'>
+      <div className="filtro-rec">
         <form className="editar">
           {/* Columna 1 */}
           <div className="columna">
@@ -78,9 +75,13 @@ export default function Reporte() {
             </select>
           </div>
           <div className="botones-filtro">
-          <button type="reset" className="limpiar">Limpiar filtros</button>
-          <button type="submit" className="aplicar">Aplicar filtros</button>
-           </div>
+            <button type="reset" className="limpiar">
+              Limpiar filtros
+            </button>
+            <button type="submit" className="aplicar">
+              Aplicar filtros
+            </button>
+          </div>
         </form>
       </div>
     </div>

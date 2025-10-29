@@ -8,14 +8,8 @@ import Link from "next/link";
 function BarNavigation() {
   const router = useRouter(); // ✅ Para redirigir
   const [openMenu, setOpenMenu] = useState(false);
-  const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
 
   const toggleMenu = () => setOpenMenu(!openMenu);
-  const toggleSubMenu = (index: number) => {
-    if (typeof window !== "undefined" && window.innerWidth <= 800) {
-      setOpenSubMenu(openSubMenu === index ? null : index);
-    }
-  };
 
   const cerrarSesion = () => {
     if (typeof window !== "undefined") {

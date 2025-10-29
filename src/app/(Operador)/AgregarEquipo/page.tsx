@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie"; // Para leer cookies en el cliente
-import "../../styles/layout/agregarEquipo.scss";
 import toast from "react-hot-toast";
+import "../../styles/layout/agregarEquipo.scss";
 
-export default function page() {
+export default function Page() {
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
@@ -76,7 +76,7 @@ export default function page() {
         setTiposEquipo(tiposEquipoRes.data);
         setSistemasOperativos(sistemasOperativosRes.data);
         setProcesadores(procesadoresRes.data);
-      } catch (err: any) {
+      } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {
             toast.error(
@@ -127,17 +127,17 @@ export default function page() {
     alert("Acción cancelada");
   };
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prev) => {
-      let updated = { ...prev, [name]: value };
-      if (value === "Impresora") {
-        updated.sistemaOperativo = "";
-        updated.procesador = "";
-      }
-      return updated;
-    });
-  };
+  // const handleChange = (e: any) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => {
+  //     let updated = { ...prev, [name]: value };
+  //     if (value === "Impresora") {
+  //       updated.sistemaOperativo = "";
+  //       updated.procesador = "";
+  //     }
+  //     return updated;
+  //   });
+  // };
 
   return (
     <div className="agregarEquipoContainer">
@@ -303,6 +303,9 @@ export default function page() {
 
                 <div className="formGroup">
                   <label>Sistema operativo</label>
+                  <select>
+                    <option value=""></option>
+                  </select>
                   <input
                     type="text"
                     placeholder="Selecciona sistema operativo"
