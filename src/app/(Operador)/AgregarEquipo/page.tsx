@@ -98,7 +98,10 @@ export default function Page() {
   };
 
   const handleGuardar = async () => {
-    await axios.post(`${api_url}/equipos/crear`, formData);
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    await axios.post(`${api_url}/equipos/crear`, formData, { headers });
     toast.success("Equipo guardado");
   };
 

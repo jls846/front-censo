@@ -80,8 +80,13 @@ export default function Editar() {
 
   useEffect(() => {
     const fetchEquipo = async () => {
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
       try {
-        const response = await axios.get(`${api_url}/equipos/${equipoId}`);
+        const response = await axios.get(`${api_url}/equipos/${equipoId}`, {
+          headers,
+        });
         setFormData(response.data);
       } catch (error) {
         console.error("Error al obtener el equipo:", error);
