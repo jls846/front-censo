@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import "../../styles/layout/agregarEquipo.scss"; // Asegúrate de crear este archivo
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie"; // Para leer cookies en el cliente
+import "../../styles/layout/agregarEquipo.scss";
+import toast from "react-hot-toast";
 
 export default function page() {
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
     modelo: "",
-    tipoEquipo: "", // Nuevo campo
+    tipoEquipo: "",
     estado: "",
     sistemaOperativo: "",
     procesador: "",
@@ -19,8 +22,101 @@ export default function page() {
     responsable: "",
   });
 
-  // Estado para saber si mostramos los campos de SO y Procesador
+  const [tiposUso, setTiposUso] = useState<string[]>([]);
+  const [marcas, setMarcas] = useState<string[]>([]);
+  const [estados, setEstados] = useState<string[]>([]);
+  const [adscripciones, setAdscripciones] = useState<string[]>([]);
+  const [tiposEquipo, setTiposEquipo] = useState<string[]>([]);
+  const [sistemasOperativos, setSistemasOperativos] = useState<string[]>([]);
+  const [procesadores, setProcesadores] = useState<string[]>([]);
+
+  const [suggestions, setSuggestions] = useState({
+    marca: [] as string[],
+    modelo: [] as string[],
+    estado: [] as string[],
+    adscripcion: [] as string[],
+    tipoEquipo: [] as string[],
+    sistemaOperativo: [] as string[],
+    procesador: [] as string[],
+    tipoUso: [] as string[],
+  });
+
   const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
+
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = Cookies.get("token"); // Token desde cookies
+      const headers = { Authorization: `Bearer ${token}` };
+
+      try {
+        const [
+          usosRes,
+          marcasRes,
+          estadosRes,
+          adscripcionesRes,
+          tiposEquipoRes,
+          sistemasOperativosRes,
+          procesadoresRes,
+        ] = await Promise.all([
+          axios.get(`${api_url}/equipos/usos`, { headers }),
+          axios.get(`${api_url}/equipos/marcas`, { headers }),
+          axios.get(`${api_url}/equipos/estados`, { headers }),
+          axios.get(`${api_url}/equipos/adscripciones`, { headers }),
+          axios.get(`${api_url}/equipos/tipos-equipo`, { headers }),
+          axios.get(`${api_url}/equipos/sistemas-operativos`, { headers }),
+          axios.get(`${api_url}/equipos/procesadores`, { headers }),
+        ]);
+
+        setTiposUso(usosRes.data);
+        setMarcas(marcasRes.data);
+        setEstados(estadosRes.data);
+        setAdscripciones(adscripcionesRes.data);
+        setTiposEquipo(tiposEquipoRes.data);
+        setSistemasOperativos(sistemasOperativosRes.data);
+        setProcesadores(procesadoresRes.data);
+      } catch (err: any) {
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            toast.error(
+              err.response.data?.message || "No se pudo conectar con el api"
+            );
+          } else if (err.request) {
+            toast.error("No se pudo conectar con el servidor");
+          } else {
+            toast.error("Ocurrió un error inesperado");
+          }
+        } else {
+          toast.error("Ocurrió un error inesperado");
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleInputChange = (
+    field: string,
+    value: string,
+    options: string[]
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+    if (value.length >= 3) {
+      const filtered = options.filter((opt) =>
+        opt.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestions((prev) => ({ ...prev, [field]: filtered }));
+    } else {
+      setSuggestions((prev) => ({ ...prev, [field]: [] }));
+    }
+  };
+
+  const handleSelectSuggestion = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setSuggestions((prev) => ({ ...prev, [field]: [] }));
+  };
 
   const handleGuardar = () => {
     console.log("Formulario enviado:", formData);
@@ -31,18 +127,14 @@ export default function page() {
     alert("Acción cancelada");
   };
 
-  // Función para actualizar el estado y limpiar campos si es impresora
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => {
       let updated = { ...prev, [name]: value };
-
-      // Si es impresora, limpiamos SO y Procesador
       if (value === "Impresora") {
         updated.sistemaOperativo = "";
         updated.procesador = "";
       }
-
       return updated;
     });
   };
@@ -65,60 +157,89 @@ export default function page() {
                 }
               />
             </div>
+
             <div className="formGroup">
               <label>Marca</label>
-              <select
+              <input
+                type="text"
+                placeholder="Ingresa marca"
                 value={formData.marca}
                 onChange={(e) =>
-                  setFormData({ ...formData, marca: e.target.value })
+                  handleInputChange("marca", e.target.value, marcas)
                 }
-              >
-                <option value="">Ingresa marca</option>
-                <option value="Dell">Dell</option>
-                <option value="HP">HP</option>
-                <option value="Lenovo">Lenovo</option>
-              </select>
+              />
+              {suggestions.marca.length > 0 && (
+                <ul className="suggestions">
+                  {suggestions.marca.map((s) => (
+                    <li
+                      key={s}
+                      onClick={() => handleSelectSuggestion("marca", s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
+
             <div className="formGroup">
               <label>Modelo</label>
-              <select
+              <input
+                type="text"
+                placeholder="Ingresa modelo"
                 value={formData.modelo}
                 onChange={(e) =>
-                  setFormData({ ...formData, modelo: e.target.value })
+                  handleInputChange("modelo", e.target.value, [])
                 }
-              >
-                <option value="">Ingresa modelo</option>
-                <option value="XPS 15">XPS 15</option>
-                <option value="EliteBook">EliteBook</option>
-                <option value="ThinkPad">ThinkPad</option>
-              </select>
+              />
             </div>
+
             <div className="formGroup">
               <label>Tipo de equipo</label>
-              <select
-                name="tipoEquipo"
+              <input
+                type="text"
+                placeholder="Selecciona tipo"
                 value={formData.tipoEquipo}
-                onChange={handleChange}
-              >
-                <option value="">Selecciona tipo</option>
-                <option value="PC">PC</option>
-                <option value="Laptop">Laptop</option>
-                <option value="Impresora">Impresora</option>
-              </select>
+                onChange={(e) =>
+                  handleInputChange("tipoEquipo", e.target.value, tiposEquipo)
+                }
+              />
+              {suggestions.tipoEquipo.length > 0 && (
+                <ul className="suggestions">
+                  {suggestions.tipoEquipo.map((s) => (
+                    <li
+                      key={s}
+                      onClick={() => handleSelectSuggestion("tipoEquipo", s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
+
             <div className="formGroup">
               <label>Estado</label>
-              <select
+              <input
+                type="text"
+                placeholder="Selecciona estado"
                 value={formData.estado}
                 onChange={(e) =>
-                  setFormData({ ...formData, estado: e.target.value })
+                  handleInputChange("estado", e.target.value, estados)
                 }
-              >
-                <option value="">Selecciona estado</option>
-                <option value="Activado">Activado</option>
-                <option value="Desactivado">Desactivado</option>
-                <option value="En reparación">En reparación</option>
-              </select>
+              />
+              {suggestions.estado.length > 0 && (
+                <ul className="suggestions">
+                  {suggestions.estado.map((s) => (
+                    <li
+                      key={s}
+                      onClick={() => handleSelectSuggestion("estado", s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
 
@@ -126,83 +247,130 @@ export default function page() {
           <div className="column">
             <div className="formGroup">
               <label>Tipo uso</label>
-              <select
+              <input
+                type="text"
+                placeholder="Ingresa tipo de uso"
                 value={formData.tipoUso}
                 onChange={(e) =>
-                  setFormData({ ...formData, tipoUso: e.target.value })
+                  handleInputChange("tipoUso", e.target.value, tiposUso)
                 }
-              >
-                <option value="">Ingresa tipo de uso</option>
-                <option value="administrativo">administrativo</option>
-                <option value="educacional">educacional</option>
-                <option value="laboratorio">laboratorio</option>
-              </select>
+              />
+              {suggestions.tipoUso.length > 0 && (
+                <ul className="suggestions">
+                  {suggestions.tipoUso.map((s) => (
+                    <li
+                      key={s}
+                      onClick={() => handleSelectSuggestion("tipoUso", s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-            {/* Mostrar SO y Procesador solo si NO es impresora */}
+
             {mostrarCamposComputadora && (
               <>
                 <div className="formGroup">
                   <label>Procesador</label>
-                  <select
+                  <input
+                    type="text"
+                    placeholder="Selecciona procesador"
                     value={formData.procesador}
                     onChange={(e) =>
-                      setFormData({ ...formData, procesador: e.target.value })
+                      handleInputChange(
+                        "procesador",
+                        e.target.value,
+                        procesadores
+                      )
                     }
-                  >
-                    <option value="">Selecciona procesador</option>
-                    <option value="Ryzen 3">Ryzen 3</option>
-                    <option value="Intel i5">Intel i5</option>
-                    <option value="AMD Ryzen 5">AMD Ryzen 5</option>
-                  </select>
+                  />
+                  {suggestions.procesador.length > 0 && (
+                    <ul className="suggestions">
+                      {suggestions.procesador.map((s) => (
+                        <li
+                          key={s}
+                          onClick={() =>
+                            handleSelectSuggestion("procesador", s)
+                          }
+                        >
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
+
                 <div className="formGroup">
                   <label>Sistema operativo</label>
-                  <select
+                  <input
+                    type="text"
+                    placeholder="Selecciona sistema operativo"
                     value={formData.sistemaOperativo}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        sistemaOperativo: e.target.value,
-                      })
+                      handleInputChange(
+                        "sistemaOperativo",
+                        e.target.value,
+                        sistemasOperativos
+                      )
                     }
-                  >
-                    <option value="">Selecciona sistema operativo</option>
-                    <option value="Windows 10">Windows 10</option>
-                    <option value="Windows 11">Windows 11</option>
-                    <option value="Linux">Linux</option>
-                    <option value="macOS">macOS</option>
-                  </select>
+                  />
+                  {suggestions.sistemaOperativo.length > 0 && (
+                    <ul className="suggestions">
+                      {suggestions.sistemaOperativo.map((s) => (
+                        <li
+                          key={s}
+                          onClick={() =>
+                            handleSelectSuggestion("sistemaOperativo", s)
+                          }
+                        >
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </>
             )}
 
             <div className="formGroup">
               <label>Adscripción</label>
-              <select
+              <input
+                type="text"
+                placeholder="Selecciona adscripción"
                 value={formData.adscripcion}
                 onChange={(e) =>
-                  setFormData({ ...formData, adscripcion: e.target.value })
+                  handleInputChange(
+                    "adscripcion",
+                    e.target.value,
+                    adscripciones
+                  )
                 }
-              >
-                <option value="">Selecciona adscripción</option>
-                <option value="Cedetec">Cedetec</option>
-                <option value="Laboratorio">Laboratorio</option>
-                <option value="Administración">Administración</option>
-              </select>
+              />
+              {suggestions.adscripcion.length > 0 && (
+                <ul className="suggestions">
+                  {suggestions.adscripcion.map((s) => (
+                    <li
+                      key={s}
+                      onClick={() => handleSelectSuggestion("adscripcion", s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
+
             <div className="formGroup">
               <label>Responsable</label>
-              <select
+              <input
+                type="text"
+                placeholder="Selecciona responsable"
                 value={formData.responsable}
                 onChange={(e) =>
                   setFormData({ ...formData, responsable: e.target.value })
                 }
-              >
-                <option value="">Selecciona responsable</option>
-                <option value="Lino">Lino</option>
-                <option value="Ana">Ana</option>
-                <option value="Carlos">Carlos</option>
-              </select>
+              />
             </div>
           </div>
 
