@@ -1,10 +1,12 @@
 "use client";
+
 import { useSearchParams } from "next/navigation";
 import "../app/styles/layout/agregarEquipo.scss";
 import "./editar.css";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 export default function Editar() {
   const searchParams = useSearchParams();
@@ -25,42 +27,85 @@ export default function Editar() {
     responsable: "",
   });
 
-  useEffect(() => {
-    const fetchEquipo = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/equipos/${equipoId}`
-        );
+  const [tiposUso, setTiposUso] = useState<string[]>([]);
+  const [marcas, setMarcas] = useState<string[]>([]);
+  const [estados, setEstados] = useState<string[]>([]);
+  const [adscripciones, setAdscripciones] = useState<string[]>([]);
+  const [tiposEquipo, setTiposEquipo] = useState<string[]>([]);
+  const [sistemasOperativos, setSistemasOperativos] = useState<string[]>([]);
+  const [procesadores, setProcesadores] = useState<string[]>([]);
 
-        setFormData(response.data);
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
+  const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
+
+  // 🔹 Cargar datos de catálogo (listas)
+  useEffect(() => {
+    const fetchCatalogos = async () => {
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      try {
+        const [
+          usosRes,
+          marcasRes,
+          estadosRes,
+          adscripcionesRes,
+          tiposEquipoRes,
+          sistemasOperativosRes,
+          procesadoresRes,
+        ] = await Promise.all([
+          axios.get(`${api_url}/equipos/usos`, { headers }),
+          axios.get(`${api_url}/equipos/marcas`, { headers }),
+          axios.get(`${api_url}/equipos/estados`, { headers }),
+          axios.get(`${api_url}/equipos/adscripciones`, { headers }),
+          axios.get(`${api_url}/equipos/tipos-equipo`, { headers }),
+          axios.get(`${api_url}/equipos/sistemas-operativos`, { headers }),
+          axios.get(`${api_url}/equipos/procesadores`, { headers }),
+        ]);
+
+        setTiposUso(usosRes.data);
+        setMarcas(marcasRes.data);
+        setEstados(estadosRes.data);
+        setAdscripciones(adscripcionesRes.data);
+        setTiposEquipo(tiposEquipoRes.data);
+        setSistemasOperativos(sistemasOperativosRes.data);
+        setProcesadores(procesadoresRes.data);
       } catch (error) {
-        console.error("Error al obtener el equipo:", error);
-        alert("No se pudo cargar la información del equipo.");
+        console.error("Error cargando catálogos:", error);
+        toast.error("No se pudieron cargar los catálogos de datos");
       }
     };
 
-    if (equipoId) {
-      fetchEquipo();
-    }
-  }, [equipoId]);
+    fetchCatalogos();
+  }, []);
 
-  const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
+  // 🔹 Cargar datos del equipo actual
+  useEffect(() => {
+    const fetchEquipo = async () => {
+      try {
+        const response = await axios.get(`${api_url}/equipos/${equipoId}`);
+        setFormData(response.data);
+      } catch (error) {
+        console.error("Error al obtener el equipo:", error);
+        toast.error("No se pudo cargar la información del equipo.");
+      }
+    };
+
+    if (equipoId) fetchEquipo();
+  }, [equipoId]);
 
   const handleGuardar = async () => {
     try {
-      await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/equipos/update/${equipoId}`,
-        formData
-      );
-      alert("Equipo actualizado correctamente");
+      await axios.patch(`${api_url}/equipos/update/${equipoId}`, formData);
+      toast.success("Equipo actualizado correctamente");
     } catch (error) {
       console.error("Error al guardar:", error);
-      alert("Hubo un error al guardar el equipo.");
+      toast.error("Hubo un error al guardar el equipo.");
     }
   };
 
   const handleCancelar = () => {
-    alert("Acción cancelada");
+    toast("Acción cancelada");
   };
 
   return (
@@ -68,8 +113,6 @@ export default function Editar() {
       <div className="innerContainer">
         <h2 className="information">
           {equipoId ? `Editar Equipo (${equipoId})` : "Agregar Equipo"}
-          <span>Inventario:</span>
-          <span>Fecha de censo:</span>
         </h2>
 
         <form className="equipoForm">
@@ -86,6 +129,7 @@ export default function Editar() {
                 }
               />
             </div>
+
             <div className="formGroup">
               <label>Marca</label>
               <select
@@ -94,26 +138,44 @@ export default function Editar() {
                   setFormData({ ...formData, marca: e.target.value })
                 }
               >
-                <option value="">Ingresa marca</option>
-                <option value="Dell">Dell</option>
-                <option value="HP">HP</option>
-                <option value="Lenovo">Lenovo</option>
+                <option value="">Selecciona marca</option>
+                {marcas.map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
               </select>
             </div>
+
             <div className="formGroup">
               <label>Modelo</label>
-              <select
+              <input
+                type="text"
+                placeholder="Ingresa modelo"
                 value={formData.modelo}
                 onChange={(e) =>
                   setFormData({ ...formData, modelo: e.target.value })
                 }
+              />
+            </div>
+
+            <div className="formGroup">
+              <label>Tipo de equipo</label>
+              <select
+                value={formData.tipoEquipo}
+                onChange={(e) =>
+                  setFormData({ ...formData, tipoEquipo: e.target.value })
+                }
               >
-                <option value="">Ingresa modelo</option>
-                <option value="XPS 15">XPS 15</option>
-                <option value="EliteBook">EliteBook</option>
-                <option value="ThinkPad">ThinkPad</option>
+                <option value="">Selecciona tipo de equipo</option>
+                {tiposEquipo.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
               </select>
             </div>
+
             <div className="formGroup">
               <label>Estado</label>
               <select
@@ -123,30 +185,34 @@ export default function Editar() {
                 }
               >
                 <option value="">Selecciona estado</option>
-                <option value="Activado">Activado</option>
-                <option value="Desactivado">Desactivado</option>
-                <option value="En reparación">En reparación</option>
-              </select>
-            </div>
-
-            <div className="formGroup">
-              <label>Tipo uso</label>
-              <select
-                value={formData.tipoUso}
-                onChange={(e) =>
-                  setFormData({ ...formData, tipoUso: e.target.value })
-                }
-              >
-                <option value="">Ingresa tipo de uso</option>
-                <option value="administrativo">administrativo</option>
-                <option value="educacional">educacional</option>
-                <option value="laboratorio">laboratorio</option>
+                {estados.map((e) => (
+                  <option key={e} value={e}>
+                    {e}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
 
           {/* Columna 2 */}
           <div className="column">
+            <div className="formGroup">
+              <label>Tipo de uso</label>
+              <select
+                value={formData.tipoUso}
+                onChange={(e) =>
+                  setFormData({ ...formData, tipoUso: e.target.value })
+                }
+              >
+                <option value="">Selecciona tipo de uso</option>
+                {tiposUso.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {mostrarCamposComputadora && (
               <>
                 <div className="formGroup">
@@ -158,9 +224,11 @@ export default function Editar() {
                     }
                   >
                     <option value="">Selecciona procesador</option>
-                    <option value="Ryzen 3">Ryzen 3</option>
-                    <option value="Intel i5">Intel i5</option>
-                    <option value="AMD Ryzen 5">AMD Ryzen 5</option>
+                    {procesadores.map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -176,10 +244,11 @@ export default function Editar() {
                     }
                   >
                     <option value="">Selecciona sistema operativo</option>
-                    <option value="Windows 10">Windows 10</option>
-                    <option value="Windows 11">Windows 11</option>
-                    <option value="Linux">Linux</option>
-                    <option value="macOS">macOS</option>
+                    {sistemasOperativos.map((so) => (
+                      <option key={so} value={so}>
+                        {so}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </>
@@ -194,17 +263,22 @@ export default function Editar() {
                 }
               >
                 <option value="">Selecciona adscripción</option>
-                <option value="Cedetec">Cedetec</option>
-                <option value="Laboratorio">Laboratorio</option>
-                <option value="Administración">Administración</option>
+                {adscripciones.map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div className="formGroup">
               <label>Responsable</label>
-              <select value={formData.responsable} disabled={true}>
-                <option value="">Responsable</option>
-              </select>
+              <input
+                type="text"
+                value={formData.responsable}
+                disabled
+                placeholder="Responsable asignado"
+              />
             </div>
           </div>
 
