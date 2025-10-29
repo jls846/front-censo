@@ -6,35 +6,46 @@ import "../app/styles/base/globales.scss";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
-      const response = await axios.post(`${process.env.API_URL}/auth/login`, {
-        nombre,
-        contraseña: password,
-      });
-      const token = response.data;
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        {
+          nombre,
+          contraseña: password,
+        }
+      );
+      const { token } = response.data;
 
       document.cookie = `token=${token}; path=/; SameSite=Strict`;
-    } catch (err) {
-      console.error("Error en la solicitud:", err);
-      setError("Error al conectar con el servidor");
+      router.push("/Escaner");
+    } catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          toast.error(            err.response.data?.message || "Usuario o contraseña incorrectos")
+        } else if (err.request) {
+          toast.error("No se pudo conectar con el servidor")
+        } else {
+          toast.error("Ocurrió un error inesperado")
+        }
+      } else {
+          toast.error("Ocurrió un error inesperado")
+      }
     } finally {
       setLoading(false);
-      router.push("/Escaner");
     }
   };
 
@@ -42,7 +53,6 @@ export default function Login() {
     <section className="containerGrid">
       <div className="login-container">
         <h2>Inicio de sesión</h2>
-        {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div>
             <label>Usuario</label>
