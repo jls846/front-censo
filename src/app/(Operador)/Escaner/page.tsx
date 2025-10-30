@@ -41,7 +41,7 @@ export default function Dashboard() {
     }
   };
 
-  // 🔒 Cerrar sesión
+  //  Cerrar sesión
   const cerrarSesion = () => {
     localStorage.removeItem("loggedIn");
     router.push("/");

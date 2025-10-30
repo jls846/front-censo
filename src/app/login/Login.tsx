@@ -32,7 +32,7 @@ export default function Login() {
 
       document.cookie = `token=${token}; path=/; SameSite=Strict`;
       router.push("/Escaner");
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
           toast.error(
@@ -77,8 +77,8 @@ export default function Login() {
             />
           </div>
           <button type="submit">Iniciar sesión</button>
-          <Link href={"#"}>Olvidaste Contraseña?</Link>
-          <Link href={"#"}>Crear Cuenta</Link>
+          <Link href={"/forgotPassword"}>Olvidaste Contraseña?</Link>
+          <Link href={"/crearCuenta"}>Crear Cuenta</Link>
         </form>
       </div>
 
