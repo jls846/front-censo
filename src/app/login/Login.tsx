@@ -30,11 +30,7 @@ export default function Login() {
 
       document.cookie = `token=${token}; path=/; SameSite=Strict`;
       router.push("/Escaner");
-<<<<<<< HEAD
-    } catch (err: unknown) {
-=======
     } catch (err) {
->>>>>>> c46e561af1c3cf0aa2835fee6eec718099d403cd
       if (axios.isAxiosError(err)) {
         if (err.response) {
           toast.error(
