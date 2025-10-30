@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import "../app/styles/layout/agregarEquipo.scss";
+import "./editar.css";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import "../../styles/layout/agregarEquipo.scss";
 
-export default function Page() {
+export default function Editar() {
+  const searchParams = useSearchParams();
+  const equipoId = searchParams.get("equipoId");
+
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
@@ -30,15 +35,11 @@ export default function Page() {
   const [sistemasOperativos, setSistemasOperativos] = useState<string[]>([]);
   const [procesadores, setProcesadores] = useState<string[]>([]);
 
-  const [suggestions, setSuggestions] = useState({
-    adscripcion: [] as string[],
-  });
-
-  const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
   const api_url = process.env.NEXT_PUBLIC_API_URL;
+  const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCatalogos = async () => {
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
 
@@ -68,53 +69,57 @@ export default function Page() {
         setTiposEquipo(tiposEquipoRes.data);
         setSistemasOperativos(sistemasOperativosRes.data);
         setProcesadores(procesadoresRes.data);
-      } catch (err) {
-        if (axios.isAxiosError(err)) {
-          if (err.response) {
-            toast.error(
-              err.response.data?.message || "No se pudo conectar con el API"
-            );
-          } else if (err.request) {
-            toast.error("No se pudo conectar con el servidor");
-          } else {
-            toast.error("Ocurrió un error inesperado");
-          }
-        } else {
-          toast.error("Ocurrió un error inesperado");
-        }
+      } catch (error) {
+        console.error("Error cargando catálogos:", error);
+        toast.error("No se pudieron cargar los catálogos de datos");
       }
     };
 
-    fetchData();
+    fetchCatalogos();
   }, []);
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  useEffect(() => {
+    const fetchEquipo = async () => {
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
 
-  const handleSelectSuggestion = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setSuggestions((prev) => ({ ...prev, [field]: [] }));
-  };
+      try {
+        const response = await axios.get(`${api_url}/equipos/${equipoId}`, {
+          headers,
+        });
+        setFormData(response.data);
+      } catch (error) {
+        console.error("Error al obtener el equipo:", error);
+        toast.error("No se pudo cargar la información del equipo.");
+      }
+    };
+
+    if (equipoId) fetchEquipo();
+  }, [equipoId]);
 
   const handleGuardar = async () => {
-    const token = Cookies.get("token");
-    const headers = { Authorization: `Bearer ${token}` };
-
-    await axios.post(`${api_url}/equipos/crear`, formData, { headers });
-    toast.success("Equipo guardado");
+    try {
+      await axios.patch(`${api_url}/equipos/update/${equipoId}`, formData);
+      toast.success("Equipo actualizado correctamente");
+    } catch (error) {
+      console.error("Error al guardar:", error);
+      toast.error("Hubo un error al guardar el equipo.");
+    }
   };
 
   const handleCancelar = () => {
-    toast.success("Acción cancelada");
+    toast("Acción cancelada");
   };
 
   return (
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
-        <h2 className="information">Agregar Nuevo Equipo</h2>
+        <h2 className="information">
+          {equipoId ? `Editar Equipo (${equipoId})` : "Agregar Equipo"}
+        </h2>
+
         <form className="equipoForm">
-          {/* Columna Izquierda */}
+          {/* Columna 1 */}
           <div className="column">
             <div className="formGroup">
               <label>Serie</label>
@@ -122,7 +127,9 @@ export default function Page() {
                 type="text"
                 placeholder="Ingresa serie"
                 value={formData.serie}
-                onChange={(e) => handleInputChange("serie", e.target.value)}
+                onChange={(e) =>
+                  setFormData({ ...formData, serie: e.target.value })
+                }
               />
             </div>
 
@@ -130,9 +137,11 @@ export default function Page() {
               <label>Marca</label>
               <select
                 value={formData.marca}
-                onChange={(e) => handleInputChange("marca", e.target.value)}
+                onChange={(e) =>
+                  setFormData({ ...formData, marca: e.target.value })
+                }
               >
-                <option value="">Selecciona una marca</option>
+                <option value="">Selecciona marca</option>
                 {marcas.map((m) => (
                   <option key={m} value={m}>
                     {m}
@@ -147,7 +156,9 @@ export default function Page() {
                 type="text"
                 placeholder="Ingresa modelo"
                 value={formData.modelo}
-                onChange={(e) => handleInputChange("modelo", e.target.value)}
+                onChange={(e) =>
+                  setFormData({ ...formData, modelo: e.target.value })
+                }
               />
             </div>
 
@@ -156,7 +167,7 @@ export default function Page() {
               <select
                 value={formData.tipoEquipo}
                 onChange={(e) =>
-                  handleInputChange("tipoEquipo", e.target.value)
+                  setFormData({ ...formData, tipoEquipo: e.target.value })
                 }
               >
                 <option value="">Selecciona tipo de equipo</option>
@@ -172,7 +183,9 @@ export default function Page() {
               <label>Estado</label>
               <select
                 value={formData.estado}
-                onChange={(e) => handleInputChange("estado", e.target.value)}
+                onChange={(e) =>
+                  setFormData({ ...formData, estado: e.target.value })
+                }
               >
                 <option value="">Selecciona estado</option>
                 {estados.map((e) => (
@@ -184,13 +197,15 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Columna Centro */}
+          {/* Columna 2 */}
           <div className="column">
             <div className="formGroup">
-              <label>Tipo uso</label>
+              <label>Tipo de uso</label>
               <select
                 value={formData.tipoUso}
-                onChange={(e) => handleInputChange("tipoUso", e.target.value)}
+                onChange={(e) =>
+                  setFormData({ ...formData, tipoUso: e.target.value })
+                }
               >
                 <option value="">Selecciona tipo de uso</option>
                 {tiposUso.map((t) => (
@@ -208,7 +223,7 @@ export default function Page() {
                   <select
                     value={formData.procesador}
                     onChange={(e) =>
-                      handleInputChange("procesador", e.target.value)
+                      setFormData({ ...formData, procesador: e.target.value })
                     }
                   >
                     <option value="">Selecciona procesador</option>
@@ -225,7 +240,10 @@ export default function Page() {
                   <select
                     value={formData.sistemaOperativo}
                     onChange={(e) =>
-                      handleInputChange("sistemaOperativo", e.target.value)
+                      setFormData({
+                        ...formData,
+                        sistemaOperativo: e.target.value,
+                      })
                     }
                   >
                     <option value="">Selecciona sistema operativo</option>
@@ -241,37 +259,42 @@ export default function Page() {
 
             <div className="formGroup">
               <label>Adscripción</label>
-              <input
-                type="text"
-                placeholder="Selecciona adscripción"
+              <select
                 value={formData.adscripcion}
                 onChange={(e) =>
-                  handleInputChange("adscripcion", e.target.value)
+                  setFormData({ ...formData, adscripcion: e.target.value })
                 }
+              >
+                <option value="">Selecciona adscripción</option>
+                {adscripciones.map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="formGroup">
+              <label>Responsable</label>
+              <input
+                type="text"
+                value={formData.responsable}
+                disabled
+                placeholder="Responsable asignado"
               />
-              {suggestions.adscripcion.length > 0 && (
-                <ul className="suggestions">
-                  {suggestions.adscripcion.map((s) => (
-                    <li
-                      key={s}
-                      onClick={() => handleSelectSuggestion("adscripcion", s)}
-                    >
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>
           </div>
 
-          {/* Columna Derecha */}
+          {/* Columna 3 */}
           <div className="column">
             <div className="formGroup">
               <label>Lugar</label>
               <textarea
                 placeholder="Ingresa lugar"
                 value={formData.lugar}
-                onChange={(e) => handleInputChange("lugar", e.target.value)}
+                onChange={(e) =>
+                  setFormData({ ...formData, lugar: e.target.value })
+                }
                 rows={5}
                 className="textAreaLarge"
               />
@@ -283,7 +306,7 @@ export default function Page() {
                 placeholder="Ingresa observaciones"
                 value={formData.observaciones}
                 onChange={(e) =>
-                  handleInputChange("observaciones", e.target.value)
+                  setFormData({ ...formData, observaciones: e.target.value })
                 }
                 rows={5}
                 className="textAreaLarge"

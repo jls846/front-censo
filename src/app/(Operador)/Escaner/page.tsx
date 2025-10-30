@@ -2,51 +2,62 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../../styles/layout/escaner.scss"; // Importación global
+import "../../styles/layout/escaner.scss";
 import BarcodeScanner from "@/components/BarcodeScanner";
 import axios from "axios";
+import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const router = useRouter();
   const [isScanning, setIsScanning] = useState(false);
-  const [equipos, setEquipos] = useState();
   const [search, setSearch] = useState("");
-  const [lastScan, setLastScan] = useState<string | null>(null);
 
-  interface equipo {
-    id: number;
-  }
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
 
   const buscarEquipo = async () => {
-    const encontrado: equipo = await axios.get("");
+    if (!search) return toast.error("Ingresa un número de inventario");
 
-    if (encontrado) {
-      // Redirige a la vista de edición con el ID del equipo
-      router.push(`/Editar?equipoId=${encontrado.id}`);
-    } else {
-      alert("Equipo no encontrado.");
+    try {
+      const { data } = await axios.get(`${api_url}/equipos/${search}`);
+
+      if (data) {
+        router.push(`/Editar?equipoId=${data.id}`);
+      } else {
+        toast.error("Equipo no encontrado");
+      }
+    } catch (error) {
+      toast.error("Equipo no encontrado");
     }
   };
 
   const handleScan = async (code: string) => {
-    setLastScan(code);
     setIsScanning(false);
 
-    const encontrado: equipo = await axios.get("");
+    if (!code) return;
 
-    if (encontrado) {
-      router.push(`/Editar?equipoId=${encontrado.id}`);
-    } else {
+    try {
+      const { data } = await axios.get(`${api_url}/equipos/${code}`);
+
+      if (data) {
+        router.push(`/Editar?equipoId=${data.id}`);
+      } else {
+        router.push(`/AgregarEquipo?equipoId=${code}`);
+      }
+    } catch (error) {
       router.push(`/AgregarEquipo?equipoId=${code}`);
     }
   };
 
+<<<<<<< HEAD
   //  Cerrar sesión
   const cerrarSesion = () => {
     localStorage.removeItem("loggedIn");
     router.push("/");
   };
 
+=======
+>>>>>>> c46e561af1c3cf0aa2835fee6eec718099d403cd
   return (
     <div className="dashboardContainer">
       <main className="scanView">
@@ -56,7 +67,12 @@ export default function Dashboard() {
           <BarcodeScanner onScan={handleScan} />
         ) : (
           <div className="scannerFrame">
-            <img src="/barcode_scanner.png" alt="Marco de escaneo" />
+            <Image
+              src="/barcode_scanner.png"
+              alt="Marco de escaneo"
+              width={200}
+              height={200}
+            />
           </div>
         )}
 
@@ -70,11 +86,10 @@ export default function Dashboard() {
           className="scanButton"
           onClick={() => setIsScanning(!isScanning)}
         >
-          <img src="/photo_camera.png" alt="cámara" />
+          <Image src="/photo_camera.png" alt="cámara" width={20} height={20} />
           {isScanning ? "Cancelar" : "Escanear"}
         </button>
 
-        {/* 🔍 Búsqueda manual */}
         <div className="searchBox">
           <input
             type="text"
@@ -83,7 +98,7 @@ export default function Dashboard() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button onClick={buscarEquipo} className="searchButton">
-            <img src="/search.png" alt="Buscar" />
+            <Image src="/search.png" alt="Buscar" width={50} height={50} />
           </button>
         </div>
       </main>

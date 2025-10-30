@@ -1,18 +1,7 @@
-// components/BarcodeScanner.tsx
 "use client";
 
 import React, { useEffect, useRef } from "react";
 import Quagga from "@ericblade/quagga2";
-
-// Tipos mínimos para el resultado de Quagga
-interface CodeResult {
-  code: string;
-  format: string;
-}
-
-interface QuaggaResult {
-  codeResult: CodeResult | null;
-}
 
 // Tipos para la configuración (opcional, pero mejora legibilidad)
 interface QuaggaConfig {

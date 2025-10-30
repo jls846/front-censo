@@ -6,7 +6,7 @@ import BarNavigation from "./BarNavigation";
 import { usePathname } from "next/navigation";
 
 function Header() {
-  const pathname = usePathname(); // obtenemos la ruta actual
+  const pathname = usePathname();
 
   return (
     <header className={header.header}>

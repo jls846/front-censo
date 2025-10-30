@@ -1,28 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ Importa useRouter
+import { useRouter } from "next/navigation";
 import "../app/styles/layout/BarNavigation.scss";
 import Link from "next/link";
 
 function BarNavigation() {
-  const router = useRouter(); // ✅ Para redirigir
+  const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
-  const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
 
   const toggleMenu = () => setOpenMenu(!openMenu);
-  const toggleSubMenu = (index: number) => {
-    if (typeof window !== "undefined" && window.innerWidth <= 800) {
-      setOpenSubMenu(openSubMenu === index ? null : index);
-    }
-  };
 
   const cerrarSesion = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("loggedIn");
-      router.push("/"); // ✅ Redirige al inicio
+      router.push("/");
     }
-    setOpenMenu(false); // Cierra menú móvil
+    setOpenMenu(false);
   };
 
   return (

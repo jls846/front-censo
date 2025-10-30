@@ -12,13 +12,11 @@ import toast from "react-hot-toast";
 export default function Login() {
   const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -32,7 +30,11 @@ export default function Login() {
 
       document.cookie = `token=${token}; path=/; SameSite=Strict`;
       router.push("/Escaner");
+<<<<<<< HEAD
     } catch (err: unknown) {
+=======
+    } catch (err) {
+>>>>>>> c46e561af1c3cf0aa2835fee6eec718099d403cd
       if (axios.isAxiosError(err)) {
         if (err.response) {
           toast.error(
@@ -46,8 +48,6 @@ export default function Login() {
       } else {
         toast.error("Ocurrió un error inesperado");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
