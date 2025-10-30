@@ -73,8 +73,9 @@ export default function Login() {
             />
           </div>
           <button type="submit">Iniciar sesión</button>
-          <Link href={"/forgotPassword"}>Olvidaste Contraseña?</Link>
-          <Link href={"/crearCuenta"}>Crear Cuenta</Link>
+
+          {/* <Link href={"/forgotPassword"}>Olvidaste Contraseña?</Link> */}
+          {/* <Link href={"/crearCuenta"}>Crear Cuenta</Link> */}
         </form>
       </div>
 
@@ -121,7 +122,7 @@ export default function Login() {
         </div>
         <div className="collage-item collage-6">
           <Image
-            src="/picachu.jpg"
+            src="/Picachu.jpg"
             alt="UNAM Icatlán"
             fill
             style={{ objectFit: "cover" }}
