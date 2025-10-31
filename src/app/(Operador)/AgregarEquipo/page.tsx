@@ -107,6 +107,7 @@ export default function Page() {
         setTiposEquipo(tiposEquipoRes.data);
         setSistemasOperativos(sistemasOperativosRes.data);
         setProcesadores(procesadoresRes.data);
+        console.log(adscripciones);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {

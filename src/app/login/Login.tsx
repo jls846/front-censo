@@ -4,7 +4,6 @@ import { useState } from "react";
 import "../styles/layout/login.scss";
 import "../styles/base/globales.scss";
 import Image from "next/image";
-import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";

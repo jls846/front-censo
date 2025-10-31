@@ -27,7 +27,7 @@ export default function Dashboard() {
         toast.error("Equipo no encontrado");
       }
     } catch (error) {
-      toast.error("Equipo no encontrado");
+      toast.error(`Equipo no encontrado,${error}`);
     }
   };
 
