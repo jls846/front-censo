@@ -10,9 +10,10 @@ import toast from "react-hot-toast";
 
 export default function Editar() {
   const searchParams = useSearchParams();
-  const equipoId = searchParams.get("equipoId");
+  const inventario = searchParams.get("equipoId");
 
   const [formData, setFormData] = useState({
+    inventario: "",
     serie: "",
     marca: "",
     modelo: "",
@@ -38,6 +39,7 @@ export default function Editar() {
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
 
+  // 🔹 Cargar catálogos
   useEffect(() => {
     const fetchCatalogos = async () => {
       const token = Cookies.get("token");
@@ -78,28 +80,58 @@ export default function Editar() {
     fetchCatalogos();
   }, []);
 
+  // 🔹 Obtener equipo por inventario
   useEffect(() => {
     const fetchEquipo = async () => {
+      if (!inventario) return;
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
 
       try {
-        const response = await axios.get(`${api_url}/equipos/${equipoId}`, {
-          headers,
+        const response = await axios.get(
+          `${api_url}/equipos/buscar/${inventario}`,
+          {
+            headers,
+          }
+        );
+
+        const equipo = response.data;
+
+        setFormData({
+          inventario: equipo.inventario || "",
+          serie: equipo.serie || "",
+          marca: equipo.marca?.marca || "", // <- relación
+          modelo: equipo.modelo || "",
+          tipoEquipo: equipo.tipoEquipo?.tipo || "",
+          estado: equipo.estado?.estado || "",
+          sistemaOperativo: equipo.sistemaOperativo?.nombre || "",
+          procesador: equipo.procesador?.nombre || "",
+          tipoUso: equipo.tipoUso?.tipo || "",
+          observaciones: equipo.observaciones || "",
+          adscripcion: equipo.adscripcion?.adscripcion || "",
+          lugar: equipo.lugar || "",
+          responsable: equipo.responsable || "", // <- devuelto por searchResponsable
         });
-        setFormData(response.data);
       } catch (error) {
         console.error("Error al obtener el equipo:", error);
         toast.error("No se pudo cargar la información del equipo.");
       }
     };
 
-    if (equipoId) fetchEquipo();
-  }, [equipoId]);
+    fetchEquipo();
+  }, [inventario]);
 
+  // 🔹 Guardar cambios
   const handleGuardar = async () => {
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
     try {
-      await axios.patch(`${api_url}/equipos/update/${equipoId}`, formData);
+      await axios.patch(
+        `${api_url}/equipos/update/${formData.inventario}`,
+        formData,
+        { headers }
+      );
       toast.success("Equipo actualizado correctamente");
     } catch (error) {
       console.error("Error al guardar:", error);
@@ -115,17 +147,21 @@ export default function Editar() {
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
         <h2 className="information">
-          {equipoId ? `Editar Equipo (${equipoId})` : "Agregar Equipo"}
+          {inventario ? `Editar Equipo (${inventario})` : "Agregar Equipo"}
         </h2>
 
         <form className="equipoForm">
           {/* Columna 1 */}
           <div className="column">
             <div className="formGroup">
+              <label>Inventario</label>
+              <input type="text" value={formData.inventario} disabled />
+            </div>
+
+            <div className="formGroup">
               <label>Serie</label>
               <input
                 type="text"
-                placeholder="Ingresa serie"
                 value={formData.serie}
                 onChange={(e) =>
                   setFormData({ ...formData, serie: e.target.value })
@@ -154,7 +190,6 @@ export default function Editar() {
               <label>Modelo</label>
               <input
                 type="text"
-                placeholder="Ingresa modelo"
                 value={formData.modelo}
                 onChange={(e) =>
                   setFormData({ ...formData, modelo: e.target.value })
@@ -170,7 +205,7 @@ export default function Editar() {
                   setFormData({ ...formData, tipoEquipo: e.target.value })
                 }
               >
-                <option value="">Selecciona tipo de equipo</option>
+                <option value="">Selecciona tipo</option>
                 {tiposEquipo.map((t) => (
                   <option key={t} value={t}>
                     {t}
@@ -207,7 +242,7 @@ export default function Editar() {
                   setFormData({ ...formData, tipoUso: e.target.value })
                 }
               >
-                <option value="">Selecciona tipo de uso</option>
+                <option value="">Selecciona uso</option>
                 {tiposUso.map((t) => (
                   <option key={t} value={t}>
                     {t}
@@ -276,12 +311,7 @@ export default function Editar() {
 
             <div className="formGroup">
               <label>Responsable</label>
-              <input
-                type="text"
-                value={formData.responsable}
-                disabled
-                placeholder="Responsable asignado"
-              />
+              <input type="text" value={formData.responsable} disabled />
             </div>
           </div>
 
@@ -290,7 +320,6 @@ export default function Editar() {
             <div className="formGroup">
               <label>Lugar</label>
               <textarea
-                placeholder="Ingresa lugar"
                 value={formData.lugar}
                 onChange={(e) =>
                   setFormData({ ...formData, lugar: e.target.value })
@@ -303,7 +332,6 @@ export default function Editar() {
             <div className="formGroup">
               <label>Observaciones</label>
               <textarea
-                placeholder="Ingresa observaciones"
                 value={formData.observaciones}
                 onChange={(e) =>
                   setFormData({ ...formData, observaciones: e.target.value })

@@ -22,13 +22,52 @@ export default function Page() {
     responsable: "",
   });
 
-  const [tiposUso, setTiposUso] = useState<string[]>([]);
-  const [marcas, setMarcas] = useState<string[]>([]);
-  const [estados, setEstados] = useState<string[]>([]);
-  const [adscripciones, setAdscripciones] = useState<string[]>([]);
-  const [tiposEquipo, setTiposEquipo] = useState<string[]>([]);
-  const [sistemasOperativos, setSistemasOperativos] = useState<string[]>([]);
-  const [procesadores, setProcesadores] = useState<string[]>([]);
+  // Tipos de datos
+  interface TipoUso {
+    id_tipo_uso: number;
+    tipo_uso: string;
+  }
+
+  interface Estado {
+    id_estado: number;
+    estado: string;
+  }
+
+  interface TipoEquipo {
+    id_tipo_de_equipo: number;
+    tipo_equipo: string;
+  }
+
+  interface SistemaOperativo {
+    id_sistema_operativo: number;
+    sistema_operativo: string;
+  }
+
+  interface Procesador {
+    id_procesador: number;
+    procesador: string;
+  }
+
+  interface Marca {
+    id_marca: number;
+    tipo_marca: string;
+  }
+
+  interface Adscripcion {
+    id_adscripcion: number;
+    adscripcion: string;
+  }
+
+  // Estados
+  const [tiposUso, setTiposUso] = useState<TipoUso[]>([]);
+  const [marcas, setMarcas] = useState<Marca[]>([]);
+  const [estados, setEstados] = useState<Estado[]>([]);
+  const [adscripciones, setAdscripciones] = useState<Adscripcion[]>([]);
+  const [tiposEquipo, setTiposEquipo] = useState<TipoEquipo[]>([]);
+  const [sistemasOperativos, setSistemasOperativos] = useState<
+    SistemaOperativo[]
+  >([]);
+  const [procesadores, setProcesadores] = useState<Procesador[]>([]);
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
@@ -86,7 +125,7 @@ export default function Page() {
     };
 
     fetchData();
-  }, []);
+  }, [api_url]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -98,15 +137,32 @@ export default function Page() {
   };
 
   const handleGuardar = async () => {
-    const token = Cookies.get("token");
-    const headers = { Authorization: `Bearer ${token}` };
-
-    await axios.post(`${api_url}/equipos/crear`, formData, { headers });
-    toast.success("Equipo guardado");
+    try {
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+      await axios.post(`${api_url}/equipos/crear`, formData, { headers });
+      toast.success("Equipo guardado correctamente");
+      setFormData({
+        serie: "",
+        marca: "",
+        modelo: "",
+        tipoEquipo: "",
+        estado: "",
+        sistemaOperativo: "",
+        procesador: "",
+        tipoUso: "",
+        observaciones: "",
+        adscripcion: "",
+        lugar: "",
+        responsable: "",
+      });
+    } catch (err) {
+      toast.error("Error al guardar el equipo");
+    }
   };
 
   const handleCancelar = () => {
-    toast.success("Acción cancelada");
+    toast.error("Acción cancelada");
   };
 
   return (
@@ -119,6 +175,7 @@ export default function Page() {
             <div className="formGroup">
               <label>Serie</label>
               <input
+                required
                 type="text"
                 placeholder="Ingresa serie"
                 value={formData.serie}
@@ -129,13 +186,14 @@ export default function Page() {
             <div className="formGroup">
               <label>Marca</label>
               <select
+                required
                 value={formData.marca}
                 onChange={(e) => handleInputChange("marca", e.target.value)}
               >
                 <option value="">Selecciona una marca</option>
                 {marcas.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
+                  <option key={m.id_marca} value={m.tipo_marca}>
+                    {m.tipo_marca}
                   </option>
                 ))}
               </select>
@@ -154,6 +212,7 @@ export default function Page() {
             <div className="formGroup">
               <label>Tipo de equipo</label>
               <select
+                required
                 value={formData.tipoEquipo}
                 onChange={(e) =>
                   handleInputChange("tipoEquipo", e.target.value)
@@ -161,8 +220,8 @@ export default function Page() {
               >
                 <option value="">Selecciona tipo de equipo</option>
                 {tiposEquipo.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                  <option key={t.id_tipo_de_equipo} value={t.tipo_equipo}>
+                    {t.tipo_equipo}
                   </option>
                 ))}
               </select>
@@ -171,13 +230,14 @@ export default function Page() {
             <div className="formGroup">
               <label>Estado</label>
               <select
+                required
                 value={formData.estado}
                 onChange={(e) => handleInputChange("estado", e.target.value)}
               >
                 <option value="">Selecciona estado</option>
                 {estados.map((e) => (
-                  <option key={e} value={e}>
-                    {e}
+                  <option key={e.id_estado} value={e.estado}>
+                    {e.estado}
                   </option>
                 ))}
               </select>
@@ -187,15 +247,16 @@ export default function Page() {
           {/* Columna Centro */}
           <div className="column">
             <div className="formGroup">
-              <label>Tipo uso</label>
+              <label>Tipo de uso</label>
               <select
+                required
                 value={formData.tipoUso}
                 onChange={(e) => handleInputChange("tipoUso", e.target.value)}
               >
                 <option value="">Selecciona tipo de uso</option>
                 {tiposUso.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                  <option key={t.id_tipo_uso} value={t.tipo_uso}>
+                    {t.tipo_uso}
                   </option>
                 ))}
               </select>
@@ -213,8 +274,8 @@ export default function Page() {
                   >
                     <option value="">Selecciona procesador</option>
                     {procesadores.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
+                      <option key={p.id_procesador} value={p.procesador}>
+                        {p.procesador}
                       </option>
                     ))}
                   </select>
@@ -230,8 +291,11 @@ export default function Page() {
                   >
                     <option value="">Selecciona sistema operativo</option>
                     {sistemasOperativos.map((so) => (
-                      <option key={so} value={so}>
-                        {so}
+                      <option
+                        key={so.id_sistema_operativo}
+                        value={so.sistema_operativo}
+                      >
+                        {so.sistema_operativo}
                       </option>
                     ))}
                   </select>
@@ -242,6 +306,7 @@ export default function Page() {
             <div className="formGroup">
               <label>Adscripción</label>
               <input
+                required
                 type="text"
                 placeholder="Selecciona adscripción"
                 value={formData.adscripcion}
@@ -264,7 +329,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Columna Derecha */}
           <div className="column">
             <div className="formGroup">
               <label>Lugar</label>

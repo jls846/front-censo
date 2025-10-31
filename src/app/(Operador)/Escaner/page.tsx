@@ -42,11 +42,13 @@ export default function Dashboard() {
       if (data) {
         router.push(`/Editar?equipoId=${data.id}`);
       } else {
-        router.push(`/AgregarEquipo?equipoId=${code}`);
+        toast.error(`No se encontro el equipo ${data.id}`);
+        router.push(`/Editar?equipoId=${data.id}`);
       }
     } catch (error) {
-      router.push(`/AgregarEquipo?equipoId=${code}`);
+      toast.error("Error No se encontro el equipo");
     }
+    toast(`${code}`);
   };
 
   return (

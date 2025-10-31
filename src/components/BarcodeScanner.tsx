@@ -27,7 +27,6 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   useEffect(() => {
     if (!scannerRef.current) return;
 
-    // ✅ Sin `any`: usamos un objeto literal tipado implícitamente
     const config: QuaggaConfig = {
       inputStream: {
         name: "Live",
