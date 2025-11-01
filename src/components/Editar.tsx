@@ -1,12 +1,13 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import "../app/styles/layout/agregarEquipo.scss";
-import "./editar.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+
+import "../app/styles/layout/agregarEquipo.scss";
+import "./editar.css";
 
 export default function Editar() {
   const searchParams = useSearchParams();
@@ -196,6 +197,7 @@ export default function Editar() {
               <input
                 type="text"
                 value={formData.serie}
+                placeholder="Ingresa serie"
                 onChange={(e) =>
                   setFormData({ ...formData, serie: e.target.value })
                 }
@@ -224,6 +226,7 @@ export default function Editar() {
               <input
                 type="text"
                 value={formData.modelo}
+                placeholder="Ingresa modelo"
                 onChange={(e) =>
                   setFormData({ ...formData, modelo: e.target.value })
                 }

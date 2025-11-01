@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import "../app/styles/layout/agregarEquipo.scss";
 
-import { useSearchParams } from "next/navigation";
+import "../app/styles/layout/agregarEquipo.scss";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -96,7 +96,6 @@ export default function Page() {
           adscripcionesRes,
           tiposEquipoRes,
           sistemasOperativosRes,
-          procesadoresRes,
         ] = await Promise.all([
           axios.get(`${api_url}/equipos/usos`, { headers }),
           axios.get(`${api_url}/equipos/marcas`, { headers }),
@@ -104,7 +103,6 @@ export default function Page() {
           axios.get(`${api_url}/equipos/adscripciones`, { headers }),
           axios.get(`${api_url}/equipos/tipos-equipo`, { headers }),
           axios.get(`${api_url}/equipos/sistemas-operativos`, { headers }),
-          axios.get(`${api_url}/equipos/procesadores`, { headers }),
         ]);
 
         setTiposUso(usosRes.data);
@@ -113,7 +111,6 @@ export default function Page() {
         setAdscripciones(adscripcionesRes.data);
         setTiposEquipo(tiposEquipoRes.data);
         setSistemasOperativos(sistemasOperativosRes.data);
-        setProcesadores(procesadoresRes.data);
         console.log(adscripciones);
       } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -134,6 +131,23 @@ export default function Page() {
 
     fetchData();
   }, [api_url]);
+
+  useEffect(() => {
+    const fetchProcesador = async () => {
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const response = await axios.get(
+        `${api_url}/equipos/procesador-tipo-equipos/${formData.tipoEquipo}`,
+        {
+          headers,
+        }
+      );
+
+      setProcesadores(response.data);
+    };
+    fetchProcesador();
+  }, [tiposEquipo]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -325,7 +339,7 @@ export default function Page() {
               <input
                 required
                 type="text"
-                placeholder="Escribe la adscripcion"
+                placeholder="Ingresa adscripcion"
                 value={formData.adscripcion}
                 onChange={(e) =>
                   handleInputChange("adscripcion", e.target.value)
