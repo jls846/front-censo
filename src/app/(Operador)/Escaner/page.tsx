@@ -42,8 +42,7 @@ export default function Dashboard() {
       if (data) {
         router.push(`/Editar?equipoId=${data.id}`);
       } else {
-        toast.error(`No se encontro el equipo ${data.id}`);
-        router.push(`/Editar?equipoId=${data.id}`);
+        router.push(`/AgregarEquipo?equipoId=${data.id}`);
       }
     } catch (error) {
       toast.error("Error No se encontro el equipo");

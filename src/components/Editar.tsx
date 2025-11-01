@@ -28,13 +28,50 @@ export default function Editar() {
     responsable: "",
   });
 
-  const [tiposUso, setTiposUso] = useState<string[]>([]);
-  const [marcas, setMarcas] = useState<string[]>([]);
-  const [estados, setEstados] = useState<string[]>([]);
-  const [adscripciones, setAdscripciones] = useState<string[]>([]);
-  const [tiposEquipo, setTiposEquipo] = useState<string[]>([]);
-  const [sistemasOperativos, setSistemasOperativos] = useState<string[]>([]);
-  const [procesadores, setProcesadores] = useState<string[]>([]);
+  interface TipoUso {
+    id_tipo_uso: number;
+    tipo_uso: string;
+  }
+
+  interface Estado {
+    id_estado: number;
+    estado: string;
+  }
+
+  interface TipoEquipo {
+    id_tipo_de_equipo: number;
+    tipo_equipo: string;
+  }
+
+  interface SistemaOperativo {
+    id_sistema_operativo: number;
+    sistema_operativo: string;
+  }
+
+  interface Procesador {
+    id_procesador: number;
+    procesador: string;
+  }
+
+  interface Marca {
+    id_marca: number;
+    tipo_marca: string;
+  }
+
+  interface Adscripcion {
+    id_adscripcion: number;
+    adscripcion: string;
+  }
+
+  const [tiposUso, setTiposUso] = useState<TipoUso[]>([]);
+  const [marcas, setMarcas] = useState<Marca[]>([]);
+  const [estados, setEstados] = useState<Estado[]>([]);
+  const [adscripciones, setAdscripciones] = useState<Adscripcion[]>([]);
+  const [tiposEquipo, setTiposEquipo] = useState<TipoEquipo[]>([]);
+  const [sistemasOperativos, setSistemasOperativos] = useState<
+    SistemaOperativo[]
+  >([]);
+  const [procesadores, setProcesadores] = useState<Procesador[]>([]);
 
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
@@ -80,7 +117,6 @@ export default function Editar() {
     fetchCatalogos();
   }, []);
 
-  // 🔹 Obtener equipo por inventario
   useEffect(() => {
     const fetchEquipo = async () => {
       if (!inventario) return;
@@ -179,8 +215,8 @@ export default function Editar() {
               >
                 <option value="">Selecciona marca</option>
                 {marcas.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
+                  <option key={m.id_marca} value={m.tipo_marca}>
+                    {m.tipo_marca}
                   </option>
                 ))}
               </select>
@@ -207,8 +243,8 @@ export default function Editar() {
               >
                 <option value="">Selecciona tipo</option>
                 {tiposEquipo.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                  <option key={t.id_tipo_de_equipo} value={t.tipo_equipo}>
+                    {t.tipo_equipo}
                   </option>
                 ))}
               </select>
@@ -224,8 +260,8 @@ export default function Editar() {
               >
                 <option value="">Selecciona estado</option>
                 {estados.map((e) => (
-                  <option key={e} value={e}>
-                    {e}
+                  <option key={e.id_estado} value={e.estado}>
+                    {e.estado}
                   </option>
                 ))}
               </select>
@@ -244,8 +280,8 @@ export default function Editar() {
               >
                 <option value="">Selecciona uso</option>
                 {tiposUso.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                  <option key={t.id_tipo_uso} value={t.tipo_uso}>
+                    {t.tipo_uso}
                   </option>
                 ))}
               </select>
@@ -263,8 +299,8 @@ export default function Editar() {
                   >
                     <option value="">Selecciona procesador</option>
                     {procesadores.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
+                      <option key={p.id_procesador} value={p.procesador}>
+                        {p.procesador}
                       </option>
                     ))}
                   </select>
@@ -283,8 +319,11 @@ export default function Editar() {
                   >
                     <option value="">Selecciona sistema operativo</option>
                     {sistemasOperativos.map((so) => (
-                      <option key={so} value={so}>
-                        {so}
+                      <option
+                        key={so.id_sistema_operativo}
+                        value={so.sistema_operativo}
+                      >
+                        {so.sistema_operativo}
                       </option>
                     ))}
                   </select>
@@ -302,8 +341,8 @@ export default function Editar() {
               >
                 <option value="">Selecciona adscripción</option>
                 {adscripciones.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
+                  <option key={a.id_adscripcion} value={a.adscripcion}>
+                    {a.adscripcion}
                   </option>
                 ))}
               </select>
