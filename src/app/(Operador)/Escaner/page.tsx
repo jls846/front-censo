@@ -46,6 +46,7 @@ export default function Dashboard() {
       }
     } catch (error) {
       toast.error("Error No se encontro el equipo");
+      router.push(`/AgregarEquipo?equipoId=${code}`);
     }
     toast(`${code}`);
   };
