@@ -181,12 +181,22 @@ export default function Page() {
           {/* Columna Izquierda */}
           <div className="column">
             <div className="formGroup">
+              <label>Numero de Inventario</label>
+              <input
+                required
+                type="text"
+                placeholder="Ingresa Inventario"
+                value={formData.serie}
+                onChange={(e) => handleInputChange("serie", e.target.value)}
+              />
+            </div>
+            <div className="formGroup">
               <label>Serie</label>
               <input
                 required
                 type="text"
                 placeholder="Ingresa serie"
-                value={formData.serie}
+                value={""}
                 onChange={(e) => handleInputChange("serie", e.target.value)}
               />
             </div>
@@ -234,7 +244,9 @@ export default function Page() {
                 ))}
               </select>
             </div>
+          </div>
 
+          <div className="column">
             <div className="formGroup">
               <label>Estado</label>
               <select
@@ -250,10 +262,7 @@ export default function Page() {
                 ))}
               </select>
             </div>
-          </div>
 
-          {/* Columna Centro */}
-          <div className="column">
             <div className="formGroup">
               <label>Tipo de uso</label>
               <select
@@ -316,7 +325,7 @@ export default function Page() {
               <input
                 required
                 type="text"
-                placeholder="Selecciona adscripción"
+                placeholder="Escribe la adscripcion"
                 value={formData.adscripcion}
                 onChange={(e) =>
                   handleInputChange("adscripcion", e.target.value)

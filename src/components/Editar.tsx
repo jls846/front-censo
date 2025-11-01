@@ -347,7 +347,12 @@ export default function Editar() {
 
             <div className="formGroup">
               <label>Responsable</label>
-              <input type="text" value={formData.responsable} disabled />
+              <input
+                type="text"
+                value={formData.responsable}
+                disabled
+                placeholder="Selecciona una Adscripcion"
+              />
             </div>
           </div>
 

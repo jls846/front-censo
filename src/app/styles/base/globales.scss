@@ -69,16 +69,28 @@ label {
   display: block;
   text-align: start;
   width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
 }
 
 img {
   object-fit: cover;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+select {
   color: #333;
-  font-size: 14px;
+  width: 100%;
+  display: block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 12px;
 }
