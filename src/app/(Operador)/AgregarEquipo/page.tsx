@@ -5,8 +5,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import "../../styles/layout/agregarEquipo.scss";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const inventario = searchParams.get("equipoId");
+
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
@@ -21,6 +25,8 @@ export default function Page() {
     lugar: "",
     responsable: "",
   });
+
+  formData.serie = inventario ? inventario : "";
 
   // Tipos de datos
   interface TipoUso {

@@ -183,17 +183,14 @@ export default function Editar() {
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
         <h2 className="information">
-          {inventario ? `Editar Equipo (${inventario})` : "Agregar Equipo"}
+          <span>{formData.tipoEquipo}</span>
+          <span>Inventario:{formData.inventario}</span>
+          <span>Fecha de censo:</span>
         </h2>
 
         <form className="equipoForm">
           {/* Columna 1 */}
           <div className="column">
-            <div className="formGroup">
-              <label>Inventario</label>
-              <input type="text" value={formData.inventario} disabled />
-            </div>
-
             <div className="formGroup">
               <label>Serie</label>
               <input
