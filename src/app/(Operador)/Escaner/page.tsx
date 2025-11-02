@@ -49,15 +49,6 @@ export default function Dashboard() {
     }
   };
 
-<<<<<<< HEAD
-  //  Cerrar sesión
-  const cerrarSesion = () => {
-    localStorage.removeItem("loggedIn");
-    router.push("/");
-  };
-
-=======
->>>>>>> c46e561af1c3cf0aa2835fee6eec718099d403cd
   return (
     <div className="dashboardContainer">
       <main className="scanView">
