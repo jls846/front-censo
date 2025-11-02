@@ -1,163 +1,169 @@
-.pestaña {
-  position: absolute;
-  top: 50%;
-  left: 62%; 
-  transform: translate(-50%, -50%);
-  
+/* Contenedor principal del reporte */
+.reporte-layout {
   display: flex;
-  justify-content: space-around; /* espacio igual entre los tres textos */
-  align-items: center;
-  width: 45%; /* controla el ancho total del bloque central */
-  font-size: 18px;
-  color: #003366;
-  font-weight: bold;
-  z-index: 5; /* por encima del logo */
+  flex-wrap: wrap;
+  gap: 50px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 20px;
 }
 
-.pestaña span {
+/* Panel izquierdo: contenedor + tabla */
+.panel-izquierdo {
   flex: 1;
+  min-width: 300px; /* evita que se colapse demasiado en móviles */
+}
+
+/* Panel derecho: filtro */
+.panel-derecho {
+  width: 320px; /* ancho fijo razonable para filtros */
+  min-width: 280px;
+}
+
+.titulo-reporte {
+  font-weight: bold;
+  font-size: 24px;
   text-align: center;
-  cursor: pointer;
-  transition: color 0.3s;
+  margin-bottom: 15px;
+  color: #0056b3;
 }
 
-.pestaña span:hover {
-  color: #b8870b; /* cambia de color al pasar el cursor */
-}
-
-.titulo-reporte{
-  font-weight: bold;  /* negrita */
-  font-size: 24px;    /* tamaño de texto */
-  font-family: Arial, sans-serif;
-}
-
-/*BUSCADOR*/
-
-input[type="text"] {
-  width: 500px;   /* más ancho, más largo */
-  padding: 7px;  /* mantiene espacio cómodo dentro */
-  font-size: 18px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  padding: 8px 12px;
-  font-size: 16px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-.contenedor{
-  margin-left: 80px;
-}
-
-.filtro-rec{
-  border: 2px solid #003366; /* Color del borde */
-  border-radius: 10px;       /* Bordes redondeados */
-  padding: 10px;             /* Espacio interno */
-  margin: 80px 550px;            /* Separación del resto del contenido */
-  background-color: #f9f9f9; 
-  position: relative;
-  left: 380px; 
-  font-family: Arial, sans-serif;
-  top: -570px; /* sube 50px respecto a su posición original */
-  
-
-}
-
-/* Estilos para los selects */
-select {
-  padding: 8px 12px;
-  border: 1px solid #003366;
-  border-radius: 5px;
-  background-color: white;
-  font-size: 14px;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-select:focus {
-  border-color: #003366;
-  box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
-  outline: none;
-}
-
-/* Botón de buscar */
+/* Buscador */
 form[action="/buscar"] {
   display: flex;
   gap: 10px;
-  margin: 20px 0;
-  
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 form[action="/buscar"] input {
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 300px;
+  font-size: 16px;
+  flex: 1;
+  min-width: 200px;
 }
 
 form[action="/buscar"] button {
-  background-color: #003366;
+  background-color: #0056b3;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
 
+form[action="/buscar"] button:hover {
+  background-color: #0056b3;
+}
+
+/* Tabla de reporte */
+.tabla-rec {
+  border: 2px solid #0056b3;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  min-height: 400px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Filtro */
+.filtro-rec {
+  border: 2px solid #0056b3;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filtro-rec .titulo-rec {
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #0056b3;
+}
+
+.filtro-rec label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.filtro-rec select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #0056b3;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Botones del filtro */
 .botones-filtro {
   display: flex;
-  justify-content: flex-end; /* botones a la derecha */
-  gap: 10px;                 /* espacio entre botones */
-  margin-top: 15px;          /* separación del resto del formulario */
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.aplicar {
-  background-color: #003366;
-  color: white;
+.botones-filtro .aplicar,
+.botones-filtro .limpiar {
+  flex: 1;
+  padding: 8px;
   border: none;
-  padding: 8px 16px;
   border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.limpiar {
-  background-color: #b8870b;
   color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
   font-size: 14px;
+  cursor: pointer;
 }
 
-.tabla-rec{
-  border: 2px solid #003366; /* Color del borde */
-  border-radius: 10px;        /* Bordes redondeados */
-  padding: 10px;              /* Espacio interno */
-  margin: 50px 700px 0 80px;      /* superior, derecha, inferior, izquierda */
-  background-color: #f9f9f9; 
-  font-family: Arial, sans-serif;
-   height: 400px;
+.botones-filtro .aplicar {
+  background-color: #0056b3;
 }
 
-.boton-descargar{
-  padding: 8px 12px;
+.botones-filtro .limpiar {
+  background-color: #ffb700;
+  color: #0056b3;
+  font-weight: bold;
+}
+
+/* Botón descargar */
+.boton-descargar {
+  margin-top: 25px;
+  padding: 10px 20px;
   font-size: 16px;
   border: none;
-  background-color: #003366;
+  background-color: #0056b3;
   color: white;
   border-radius: 4px;
   cursor: pointer;
-  right: 30px;
-  margin-left: 700px;
+  width: 100%;
+}
+
+/* Responsive: en pantallas pequeñas (iPad portrait, etc.) */
+@media (max-width: 768px) {
+  .reporte-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .panel-derecho {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .panel-izquierdo {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .boton-descargar {
+    max-width: 500px;
+  }
 }

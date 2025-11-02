@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 function Header() {
   const pathname = usePathname();
 
-  const rutasConBar = ["/Escaner", "/AgregarEquipo"];
+  const rutasConBar = ["/Escaner", "/AgregarEquipo","/reporte"];
 
   return (
     <header className={header.header}>
