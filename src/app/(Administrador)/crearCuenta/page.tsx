@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import "../styles/layout/login.scss"; // puedes usar los mismos estilos
-import "../styles/base/globales.scss";
+import "../../styles/layout/login.scss";
+import "../../styles/base/globales.scss";
 
 import Link from "next/link";
 import axios from "axios";
@@ -29,23 +29,21 @@ function CrearCuenta() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-        {
-          nombre,
-          correo,
-          contraseña: password,
-        }
-      );
+      // const response = await axios.post(
+      //   `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+      //   {
+      //     nombre,
+      //     correo,
+      //     contraseña: password,
+      //   }
+      // );
 
       toast.success("Cuenta creada correctamente");
       router.push("/"); // redirige al login
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
-          toast.error(
-            err.response.data?.message || "Error al crear la cuenta"
-          );
+          toast.error(err.response.data?.message || "Error al crear la cuenta");
         } else if (err.request) {
           toast.error("No se pudo conectar con el servidor");
         } else {
@@ -57,7 +55,6 @@ function CrearCuenta() {
     } finally {
       setLoading(false);
     }
-    
   };
 
   return (
@@ -116,8 +113,6 @@ function CrearCuenta() {
           <Link href="/">¿Ya tienes cuenta? Inicia sesión</Link>
         </form>
       </div>
-
-      
     </section>
   );
 }

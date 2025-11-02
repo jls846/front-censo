@@ -27,7 +27,7 @@ export default function Dashboard() {
         toast.error("Equipo no encontrado");
       }
     } catch (error) {
-      toast.error("Equipo no encontrado");
+      toast.error(`Equipo no encontrado,${error}`);
     }
   };
 
@@ -42,11 +42,12 @@ export default function Dashboard() {
       if (data) {
         router.push(`/Editar?equipoId=${data.id}`);
       } else {
-        router.push(`/AgregarEquipo?equipoId=${code}`);
+        router.push(`/AgregarEquipo?equipoId=${data.id}`);
       }
     } catch (error) {
-      router.push(`/AgregarEquipo?equipoId=${code}`);
+      toast.error("Error No se encontro el equipo");
     }
+    toast(`${code}`);
   };
 
   return (

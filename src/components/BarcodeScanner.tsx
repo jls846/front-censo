@@ -27,7 +27,6 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   useEffect(() => {
     if (!scannerRef.current) return;
 
-    // ✅ Sin `any`: usamos un objeto literal tipado implícitamente
     const config: QuaggaConfig = {
       inputStream: {
         name: "Live",
@@ -40,19 +39,8 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
         },
       },
       decoder: {
-  readers: [
-    "code_128_reader",
-    "code_39_reader",
-    "code_39_vin_reader",
-    "ean_reader",
-    "ean_8_reader",
-    "upc_reader",
-    "upc_e_reader",
-    "i2of5_reader",
-    "2of5_reader",
-    "code_93_reader",
-  ],
-},
+        readers: ["code_128_reader"],
+      },
       locate: true,
     };
 
