@@ -8,6 +8,8 @@ import { usePathname } from "next/navigation";
 function Header() {
   const pathname = usePathname();
 
+  const rutasConBar = ["/escaner", "/AgregarEquipo"];
+
   return (
     <header className={header.header}>
       <Link
@@ -38,7 +40,7 @@ function Header() {
           alignItems: "end",
         }}
       >
-        {pathname !== "/" && <BarNavigation />}
+        {rutasConBar.includes(pathname) && <BarNavigation />}
       </div>
     </header>
   );
