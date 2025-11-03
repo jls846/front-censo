@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 
 import "../app/styles/layout/agregarEquipo.scss";
 import "./editar.css";
+import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
+import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
 
 export default function Editar() {
   const searchParams = useSearchParams();
@@ -56,7 +58,7 @@ export default function Editar() {
 
   interface Marca {
     id_marca: number;
-    tipo_marca: string;
+    marca: string;
   }
 
   interface Adscripcion {
@@ -75,7 +77,7 @@ export default function Editar() {
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
 
   const api_url = process.env.NEXT_PUBLIC_API_URL;
-  const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
+  const mostrarCamposComputadora = formData.tipoEquipo !== "PERIFÉRICO";
 
   // 🔹 Cargar catálogos
   useEffect(() => {
@@ -214,8 +216,8 @@ export default function Editar() {
               >
                 <option value="">Selecciona marca</option>
                 {marcas.map((m) => (
-                  <option key={m.id_marca} value={m.tipo_marca}>
-                    {m.tipo_marca}
+                  <option key={m.id_marca} value={m.marca}>
+                    {m.marca}
                   </option>
                 ))}
               </select>
@@ -298,9 +300,9 @@ export default function Editar() {
                     }
                   >
                     <option value="">Selecciona procesador</option>
-                    {procesadores.map((p) => (
-                      <option key={p.id_procesador} value={p.procesador}>
-                        {p.procesador}
+                    {PROCESADORES_POR_EQUIPO[formData.tipoEquipo]?.map((p) => (
+                      <option key={p} value={p}>
+                        {p}
                       </option>
                     ))}
                   </select>
@@ -318,17 +320,23 @@ export default function Editar() {
                     }
                   >
                     <option value="">Selecciona sistema operativo</option>
-                    {sistemasOperativos.map((so) => (
-                      <option
-                        key={so.id_sistema_operativo}
-                        value={so.sistema_operativo}
-                      >
-                        {so.sistema_operativo}
+                    {SO_POR_EQUIPO[formData.tipoEquipo]?.map((so) => (
+                      <option key={so} value={so}>
+                        {so}
                       </option>
                     ))}
                   </select>
                 </div>
               </>
+            )}
+
+            {!mostrarCamposComputadora && (
+              <div className="formGroup">
+                <label>Tipos de Perifericos</label>
+                <select>
+                  <option value="">Selecciona periferico</option>
+                </select>
+              </div>
             )}
 
             <div className="formGroup">

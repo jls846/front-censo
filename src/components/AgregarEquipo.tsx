@@ -7,10 +7,16 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
 import "../app/styles/layout/agregarEquipo.scss";
+import { AREAS } from "@/data/areas";
+import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
+import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const searchParams = useSearchParams();
   const inventario = searchParams.get("equipoId");
+
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     serie: "",
@@ -57,7 +63,7 @@ export default function Page() {
 
   interface Marca {
     id_marca: number;
-    tipo_marca: string;
+    marca: string;
   }
 
   interface Adscripcion {
@@ -80,7 +86,7 @@ export default function Page() {
     adscripcion: [] as string[],
   });
 
-  const mostrarCamposComputadora = formData.tipoEquipo !== "Impresora";
+  const mostrarCamposComputadora = formData.tipoEquipo !== "PERIFÉRICO";
   const api_url = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -151,6 +157,30 @@ export default function Page() {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    if (field === "adscripcion") {
+      if (value.length < 3) {
+        // Si no hay al menos 3 letras, no mostrar sugerencias
+        setSuggestions((prev) => ({ ...prev, adscripcion: [] }));
+        return;
+      }
+
+      // Función para normalizar: minúsculas y quitar acentos
+      const normalize = (str: string) =>
+        str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .trim();
+
+      const searchValue = normalize(value);
+
+      const matches = AREAS.map((a) => a.label)
+        .filter((label) => normalize(label).includes(searchValue))
+        .slice(0, 5); // máximo 10 sugerencias
+
+      setSuggestions((prev) => ({ ...prev, adscripcion: matches }));
+    }
   };
 
   const handleSelectSuggestion = (field: string, value: string) => {
@@ -159,6 +189,12 @@ export default function Page() {
   };
 
   const handleGuardar = async () => {
+    const adscripcionesValidas = AREAS.map((a) => a.label);
+    if (!adscripcionesValidas.includes(formData.adscripcion)) {
+      toast.error("Debes seleccionar una adscripción válida.");
+      return;
+    }
+
     try {
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
@@ -184,7 +220,7 @@ export default function Page() {
   };
 
   const handleCancelar = () => {
-    toast.error("Acción cancelada");
+    router.push("/Escaner");
   };
 
   return (
@@ -224,8 +260,8 @@ export default function Page() {
               >
                 <option value="">Selecciona una marca</option>
                 {marcas.map((m) => (
-                  <option key={m.id_marca} value={m.tipo_marca}>
-                    {m.tipo_marca}
+                  <option key={m.id_marca} value={m.marca}>
+                    {m.marca}
                   </option>
                 ))}
               </select>
@@ -304,9 +340,9 @@ export default function Page() {
                     }
                   >
                     <option value="">Selecciona procesador</option>
-                    {procesadores.map((p) => (
-                      <option key={p.id_procesador} value={p.procesador}>
-                        {p.procesador}
+                    {PROCESADORES_POR_EQUIPO[formData.tipoEquipo]?.map((p) => (
+                      <option key={p} value={p}>
+                        {p}
                       </option>
                     ))}
                   </select>
@@ -321,12 +357,9 @@ export default function Page() {
                     }
                   >
                     <option value="">Selecciona sistema operativo</option>
-                    {sistemasOperativos.map((so) => (
-                      <option
-                        key={so.id_sistema_operativo}
-                        value={so.sistema_operativo}
-                      >
-                        {so.sistema_operativo}
+                    {SO_POR_EQUIPO[formData.tipoEquipo]?.map((so) => (
+                      <option key={so} value={so}>
+                        {so}
                       </option>
                     ))}
                   </select>
@@ -334,7 +367,16 @@ export default function Page() {
               </>
             )}
 
-            <div className="formGroup">
+            {!mostrarCamposComputadora && (
+              <div className="formGroup">
+                <label>Tipos de Perifericos</label>
+                <select>
+                  <option value="">Selecciona periferico</option>
+                </select>
+              </div>
+            )}
+
+            <div className="formGroup" style={{ position: "relative" }}>
               <label>Adscripción</label>
               <input
                 required

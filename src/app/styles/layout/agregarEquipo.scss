@@ -116,6 +116,36 @@ textarea {
   }
 }
 
+.formGroup {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute; // mantiene fuera del flujo
+  top: 100%; // justo debajo del input
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  list-style: none;
+  margin: 4px 0 0 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  font-size: 12px;
+}
+
+.suggestions li {
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f2f2f2;
+  }
+}
+
 @media (max-width: 1075px) {
   .equipoForm {
     flex-wrap: wrap;
