@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import "../../styles/layout/agregarEquipo.scss";
 import "./editar.css";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 export default function Home() {
   const searchParams = useSearchParams();
   const equipoId = searchParams.get("equipoId"); // 🔹 Obtener ID del equipo
-
+  const [marca, setMarca]=useState([])
   const [formData, setFormData] = useState({
     serie: "",
     marca: "",
@@ -22,6 +23,13 @@ export default function Home() {
     lugar: "",
     responsable: "",
   });
+
+  
+  async function Marca(){
+  const response=await axios.get("http");
+  setMarca(response.data);
+  }
+  
 
   // Si viene un equipoId, precargarlo
   useEffect(() => {
