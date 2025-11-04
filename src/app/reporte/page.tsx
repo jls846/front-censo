@@ -2,22 +2,9 @@ import "./reporte.css";
 
 export default function Reporte() {
   return (
-    <div>
-      <header className="encabezado">
-        <div className="encabezado-sup"></div>
-
-        <div className="pestaña">
-          <span>Escanear código</span>
-          <span>Equipo</span>
-          <span>Reportes</span>
-        </div>
-
-        <nav className="Sesion">
-          <button className="boton-cerrar">Cerrar sesión</button>
-        </nav>
-      </header>
-
-      <div className="contenedor">
+    <div className="reporte-layout">
+      {/* Panel izquierdo: título, buscador y tabla */}
+      <div className="panel-izquierdo">
         <div className="titulo-reporte">
           <p>REPORTE</p>
         </div>
@@ -26,14 +13,17 @@ export default function Reporte() {
           <input type="text" name="q" placeholder="Buscar equipo" />
           <button type="submit">Buscar</button>
         </form>
-      </div>
-      <div className="tabla-rec"></div>
-      <button className="boton-descargar">Descargar</button>
 
-      <div className="filtro-rec">
-        <form className="editar">
-          {/* Columna 1 */}
-          <div className="columna">
+        <div className="tabla-rec">
+          {/* Aquí irá tu tabla real */}
+          <p>Tabla de equipos...</p>
+        </div>
+      </div>
+
+      {/* Panel derecho: filtros + botón descargar */}
+      <div className="panel-derecho">
+        <div className="filtro-rec">
+          <form className="editar">
             <p className="titulo-rec">Filtro</p>
             <div className="linea"></div>
 
@@ -73,16 +63,19 @@ export default function Reporte() {
               <option value="3-5">3 a 5 años</option>
               <option value="mas5">Más de 5 años</option>
             </select>
-          </div>
-          <div className="botones-filtro">
-            <button type="reset" className="limpiar">
-              Limpiar filtros
-            </button>
-            <button type="submit" className="aplicar">
-              Aplicar filtros
-            </button>
-          </div>
-        </form>
+
+            <div className="botones-filtro">
+              <button type="reset" className="limpiar">
+                Limpiar filtros
+              </button>
+              <button type="submit" className="aplicar">
+                Aplicar filtros
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <button className="boton-descargar">Descargar</button>
       </div>
     </div>
   );

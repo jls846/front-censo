@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import "../../styles/base/globales.scss"; // ajusta ruta si tu proyecto la tiene en otro sitio
+import "../../styles/layout/ForgotPasswordPage.scss"; // ajusta ruta si tu proyecto la tiene en otro sitio
 import Link from "next/link";
 
 export default function Page() {
@@ -46,7 +46,6 @@ export default function Page() {
   return (
     <main
       className="forgot-password-page"
-      style={{ maxWidth: 520, margin: "4rem auto", padding: "1.5rem" }}
     >
       <h1>¿Olvidaste tu contraseña?</h1>
       <p>
@@ -67,22 +66,11 @@ export default function Page() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="tu@correo.com"
           required
-          style={{
-            padding: "0.6rem",
-            borderRadius: 8,
-            border: "1px solid #ccc",
-          }}
         />
 
         <button
           type="submit"
           disabled={loading}
-          style={{
-            padding: "0.7rem 1rem",
-            borderRadius: 8,
-            border: "none",
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
         >
           {loading ? "Enviando..." : "Enviar instrucciones"}
         </button>

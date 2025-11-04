@@ -26,7 +26,7 @@ input {
 }
 
 input:focus {
-  border-color: #003366;
+  border-color: #0056b3;
   box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
 }
 
@@ -59,7 +59,7 @@ input:focus {
   width: 35%; /* ajusta el ancho del bloque de texto */
   font-size: 18px;
   font-weight: bold;
-  color: #003366;
+  color: #0056b3;
   z-index: 5;
 }
 
@@ -89,7 +89,7 @@ input:focus {
   margin-bottom: 8px; /* un poco de espacio debajo del título */
 }
 .linea {
-  border-bottom: 2px solid #003366; /* color y grosor de la línea */
+  border-bottom: 2px solid #0056b3; /* color y grosor de la línea */
   width: 100%; /* ocupa toda la columna */
   margin-bottom: 10px; /* espacio entre línea y los campos */
 }
@@ -102,7 +102,7 @@ input:focus {
 }
 .guardar {
   background-color: #b8870b;
-  color: #003366;
+  color: #0056b3;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -110,7 +110,7 @@ input:focus {
   font-size: 14px;
 }
 .cancelar {
-  background-color: #003366;
+  background-color: #0056b3;
   color: white;
   border: none;
   padding: 8px 16px;
