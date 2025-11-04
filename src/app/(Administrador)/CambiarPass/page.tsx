@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import "../../styles/layout/ForgotPasswordPage.scss"; // ajusta ruta si tu proyecto la tiene en otro sitio
 import Link from "next/link";
 
-export default function ForgotPasswordPage() {
+export default function Page() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();

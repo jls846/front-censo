@@ -1,7 +1,7 @@
 import Header from "../components/header";
 import { Inter, Montserrat } from "next/font/google";
-import "../app/styles/base/globales.scss";
 import { Toaster } from "react-hot-toast";
+import "../app/styles/base/globales.scss";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} ${montserrat.variable}`}>
-      <body suppressHydrationWarning>
+      <body>
         <Header />
         <Toaster position="top-left" reverseOrder={false} />
         {children}

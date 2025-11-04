@@ -1,3 +1,10 @@
+.pestaña {
+  position: absolute;
+  top: 50%;
+  left: 62%;
+  transform: translate(-50%, -50%);
+}
+
 /* Contenedor principal del reporte */
 .reporte-layout {
   display: flex;
@@ -28,7 +35,61 @@
   color: #0056b3;
 }
 
-/* Buscador */
+.pestaña span:hover {
+  color: #b8870b; /* cambia de color al pasar el cursor */
+}
+
+.titulo-reporte {
+  font-weight: bold; /* negrita */
+  font-size: 24px; /* tamaño de texto */
+  font-family: Arial, sans-serif;
+}
+
+/*BUSCADOR*/
+
+input[type="text"] {
+  width: 500px; /* más ancho, más largo */
+  padding: 7px; /* mantiene espacio cómodo dentro */
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.contenedor {
+  margin-left: 80px;
+}
+
+.filtro-rec {
+  border: 2px solid #003366; /* Color del borde */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 10px; /* Espacio interno */
+  margin: 80px 550px; /* Separación del resto del contenido */
+  background-color: #f9f9f9;
+  position: relative;
+  left: 380px;
+  font-family: Arial, sans-serif;
+  top: -570px; /* sube 50px respecto a su posición original */
+}
+
+select:focus {
+  border-color: #003366;
+  box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
+  outline: none;
+}
+
 form[action="/buscar"] {
   display: flex;
   gap: 10px;
@@ -108,8 +169,9 @@ form[action="/buscar"] button:hover {
 /* Botones del filtro */
 .botones-filtro {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  justify-content: flex-end; /* botones a la derecha */
+  gap: 10px; /* espacio entre botones */
+  margin-top: 15px; /* separación del resto del formulario */
 }
 
 .botones-filtro .aplicar,
@@ -123,6 +185,19 @@ form[action="/buscar"] button:hover {
   cursor: pointer;
 }
 
+.tabla-rec {
+  border: 2px solid #003366; /* Color del borde */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 10px; /* Espacio interno */
+  margin: 50px 700px 0 80px; /* superior, derecha, inferior, izquierda */
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  height: 400px;
+}
+
+.boton-descargar {
+  padding: 8px 12px;
+}
 .botones-filtro .aplicar {
   background-color: #0056b3;
 }
@@ -143,6 +218,8 @@ form[action="/buscar"] button:hover {
   color: white;
   border-radius: 4px;
   cursor: pointer;
+  right: 30px;
+  margin-left: 700px;
   width: 100%;
 }
 

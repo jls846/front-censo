@@ -9,7 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-function CrearCuenta() {
+export default function Page() {
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
@@ -116,4 +116,3 @@ function CrearCuenta() {
     </section>
   );
 }
-export default CrearCuenta;

@@ -33,8 +33,8 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
         type: "LiveStream",
         target: scannerRef.current,
         constraints: {
-          width: 640,
-          height: 370,
+          width: 300,
+          height: 500,
           facingMode: "environment",
         },
       },
