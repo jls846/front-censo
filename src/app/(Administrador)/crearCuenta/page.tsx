@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+
 export default function Page() {
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
@@ -17,6 +18,18 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+
+  const [crearCuenta,setCrearCuenta]=useState();
+
+  async function CrearCuenta() {
+    const res=await axios.post("https",{
+      nombre,
+      correo,
+      password
+    });
+    setCrearCuenta(res.data);
+  }
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

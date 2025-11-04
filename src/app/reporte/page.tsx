@@ -1,6 +1,18 @@
+"use client"
+import { useState } from "react";
 import "./reporte.css";
+import axios from "axios";
 
 export default function Reporte() {
+
+const [report,setReport]=useState();
+
+  async function Report() {
+    const res=await axios.get("https");
+    setReport(res.data);
+  }
+
+  
   return (
     <div className="reporte-layout">
       {/* Panel izquierdo: título, buscador y tabla */}
