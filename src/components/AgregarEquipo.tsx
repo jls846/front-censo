@@ -19,6 +19,7 @@ export default function Page() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
+    inventario: "",
     serie: "",
     marca: "",
     modelo: "",
@@ -31,9 +32,14 @@ export default function Page() {
     adscripcion: "",
     lugar: "",
     responsable: "",
+    tipoPeriferico: "",
   });
 
-  formData.serie = inventario ? inventario : "";
+  useEffect(() => {
+    if (inventario) {
+      setFormData((prev) => ({ ...prev, inventario }));
+    }
+  }, [inventario]);
 
   // Tipos de datos
   interface TipoUso {
@@ -81,6 +87,7 @@ export default function Page() {
     SistemaOperativo[]
   >([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
+  const [perifericos, setPerifericos] = useState([]);
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
@@ -155,6 +162,27 @@ export default function Page() {
     fetchProcesador();
   }, [tiposEquipo]);
 
+  useEffect(() => {
+    const fetchPerifericos = async () => {
+      if (formData.tipoEquipo !== "PERIFÉRICO") return;
+
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      try {
+        const response = await axios.get(`${api_url}/equipos/perifericos`, {
+          headers,
+        });
+        setPerifericos(response.data);
+      } catch (err) {
+        console.error(err);
+        toast.error("No se pudieron cargar los periféricos");
+      }
+    };
+
+    fetchPerifericos();
+  }, [formData.tipoEquipo]);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
@@ -201,6 +229,7 @@ export default function Page() {
       await axios.post(`${api_url}/equipos/crear`, formData, { headers });
       toast.success("Equipo guardado correctamente");
       setFormData({
+        inventario: "",
         serie: "",
         marca: "",
         modelo: "",
@@ -213,6 +242,7 @@ export default function Page() {
         adscripcion: "",
         lugar: "",
         responsable: "",
+        tipoPeriferico: "",
       });
     } catch (err) {
       toast.error("Error al guardar el equipo");
@@ -236,8 +266,10 @@ export default function Page() {
                 required
                 type="text"
                 placeholder="Ingresa Inventario"
-                value={formData.serie}
-                onChange={(e) => handleInputChange("serie", e.target.value)}
+                value={formData.inventario}
+                onChange={(e) =>
+                  handleInputChange("inventario", e.target.value)
+                }
               />
             </div>
             <div className="formGroup">
@@ -246,7 +278,7 @@ export default function Page() {
                 required
                 type="text"
                 placeholder="Ingresa serie"
-                value={""}
+                value={formData.serie}
                 onChange={(e) => handleInputChange("serie", e.target.value)}
               />
             </div>
@@ -369,9 +401,19 @@ export default function Page() {
 
             {!mostrarCamposComputadora && (
               <div className="formGroup">
-                <label>Tipos de Perifericos</label>
-                <select>
-                  <option value="">Selecciona periferico</option>
+                <label>Tipos de Periféricos</label>
+                <select
+                  value={formData.tipoPeriferico || ""}
+                  onChange={(e) =>
+                    handleInputChange("tipoPeriferico", e.target.value)
+                  }
+                >
+                  <option value="">Selecciona periférico</option>
+                  {perifericos.map((p: any) => (
+                    <option key={p.id_periferico} value={p.nombre}>
+                      {p.nombre}
+                    </option>
+                  ))}
                 </select>
               </div>
             )}

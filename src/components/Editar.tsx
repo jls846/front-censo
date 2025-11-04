@@ -5,15 +5,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
+import { AREAS } from "@/data/areas";
 
 import "../app/styles/layout/agregarEquipo.scss";
 import "./editar.css";
-import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
 import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
+import { useRouter } from "next/navigation";
 
 export default function Editar() {
   const searchParams = useSearchParams();
   const inventario = searchParams.get("equipoId");
+
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     inventario: "",
@@ -75,6 +79,10 @@ export default function Editar() {
     SistemaOperativo[]
   >([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
+
+  const [suggestions, setSuggestions] = useState({
+    adscripcion: [] as string[],
+  });
 
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const mostrarCamposComputadora = formData.tipoEquipo !== "PERIFÉRICO";
@@ -178,8 +186,42 @@ export default function Editar() {
     }
   };
 
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+    if (field === "adscripcion") {
+      if (value.length < 3) {
+        // Si no hay al menos 3 letras, no mostrar sugerencias
+        setSuggestions((prev) => ({ ...prev, adscripcion: [] }));
+        return;
+      }
+
+      // Normaliza para quitar acentos y poner en minúsculas
+      const normalize = (str: string) =>
+        str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .trim();
+
+      const searchValue = normalize(value);
+
+      // Busca coincidencias
+      const matches = AREAS.map((a) => a.label)
+        .filter((label) => normalize(label).includes(searchValue))
+        .slice(0, 10); // máximo 10 sugerencias
+
+      setSuggestions((prev) => ({ ...prev, adscripcion: matches }));
+    }
+  };
+
+  const handleSelectSuggestion = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setSuggestions((prev) => ({ ...prev, [field]: [] }));
+  };
+
   const handleCancelar = () => {
-    toast("Acción cancelada");
+    router.push("/Escaner");
   };
 
   return (
@@ -339,21 +381,29 @@ export default function Editar() {
               </div>
             )}
 
-            <div className="formGroup">
+            <div className="formGroup" style={{ position: "relative" }}>
               <label>Adscripción</label>
-              <select
+              <input
+                required
+                type="text"
+                placeholder="Ingresa adscripción"
                 value={formData.adscripcion}
                 onChange={(e) =>
-                  setFormData({ ...formData, adscripcion: e.target.value })
+                  handleInputChange("adscripcion", e.target.value)
                 }
-              >
-                <option value="">Selecciona adscripción</option>
-                {adscripciones.map((a) => (
-                  <option key={a.id_adscripcion} value={a.adscripcion}>
-                    {a.adscripcion}
-                  </option>
-                ))}
-              </select>
+              />
+              {suggestions.adscripcion.length > 0 && (
+                <ul className="suggestions">
+                  {suggestions.adscripcion.map((s) => (
+                    <li
+                      key={s}
+                      onClick={() => handleSelectSuggestion("adscripcion", s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="formGroup">

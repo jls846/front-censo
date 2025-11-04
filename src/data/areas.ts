@@ -1,4 +1,4 @@
-//Esto es culpa de los webservices
+//Esto es culpa de los webservices y de santi(wizard) attentamente IO
 
 export const AREAS: Array<{ id: number; label: string }> = [
   { id: 128, label: "Coordinación de Actividades Deportivas y Recreativas" },

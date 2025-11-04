@@ -8,7 +8,8 @@ import { usePathname } from "next/navigation";
 function Header() {
   const pathname = usePathname();
 
-  const rutasConBar = ["/Escaner", "/AgregarEquipo"];
+  const publicNav = ["/Escaner", "/AgregarEquipo", "/Editar"];
+  const privateNav = ["/Reporte", "/CrearCuenta", "/CambiarPass"];
 
   return (
     <header className={header.header}>
@@ -40,7 +41,8 @@ function Header() {
           alignItems: "end",
         }}
       >
-        {rutasConBar.includes(pathname) && <BarNavigation />}
+        {publicNav.includes(pathname) && <BarNavigation />}
+        {privateNav.includes(pathname) && <BarNavigation />}
       </div>
     </header>
   );
