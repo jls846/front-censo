@@ -8,7 +8,7 @@ import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
-export default function Dashboard() {
+export default function Page() {
   const router = useRouter();
   const [isScanning, setIsScanning] = useState(false);
   const [search, setSearch] = useState("");
