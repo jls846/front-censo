@@ -4,79 +4,82 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import "../../styles/layout/ForgotPasswordPage.scss"; // ajusta ruta si tu proyecto la tiene en otro sitio
+import "../../styles/layout/ForgotPasswordPage.scss";
 import Link from "next/link";
 
 export default function Page() {
-  const [email, setEmail] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [contraseña, setContraseña] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const validateEmail = (e: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-  };
-
   const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    if (!validateEmail(email)) {
-      toast.error("Ingresa un correo válido.");
+
+    if (nombre.trim().length < 3) {
+      toast.error("El nombre debe tener al menos 3 caracteres.");
+      return;
+    }
+
+    if (contraseña.trim().length < 6) {
+      toast.error("La contraseña debe tener al menos 6 caracteres.");
       return;
     }
 
     try {
       setLoading(true);
-      const res = await axios.post("/api/auth/forgot-password", { email });
+      const res = await axios.post("/api/admin/change-password", {
+        nombre,
+        contraseña,
+      });
+
       if (res.status === 200) {
-        toast.success(
-          "Si existe esa cuenta, recibirás un correo con instrucciones."
-        );
-        // Opcional: redirigir al login después de enviar
-        setTimeout(() => router.push("/"), 1200);
+        toast.success("Contraseña actualizada correctamente.");
+        setNombre("");
+        setContraseña("");
       } else {
-        toast.error("Ocurrió un error. Intenta de nuevo.");
+        toast.error("No se pudo cambiar la contraseña.");
       }
     } catch (error) {
-      // manejar mensajes de error desde el servidor si vienen
-      console.log(error);
+      console.error(error);
+      toast.error("Ocurrió un error al cambiar la contraseña.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main
-      className="forgot-password-page"
-    >
-      <h1>¿Olvidaste tu contraseña?</h1>
-      <p>
-        Escribe el correo asociado a tu cuenta y te enviaremos instrucciones
-        para restablecerla.
-      </p>
+    <main className="forgot-password-page">
+      <h1>Cambiar contraseña</h1>
+      <p>Ingresa el nombre del usuario y su nueva contraseña.</p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="forgot-form"
-        style={{ display: "grid", gap: 12 }}
-      >
-        <label htmlFor="email">Correo electrónico</label>
+      <form onSubmit={handleSubmit} className="forgot-form">
+        <label htmlFor="nombre">Nombre de usuario</label>
         <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="tu@correo.com"
+          id="nombre"
+          type="text"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          placeholder="Nombre de usuario"
           required
         />
 
-        <button
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Enviando..." : "Enviar instrucciones"}
+        <label htmlFor="contraseña">Nueva contraseña</label>
+        <input
+          id="contraseña"
+          type="password"
+          value={contraseña}
+          onChange={(e) => setContraseña(e.target.value)}
+          placeholder="Nueva contraseña"
+          required
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Actualizando..." : "Cambiar contraseña"}
         </button>
 
         <div style={{ marginTop: 8 }}>
-          <Link href="/">Recordé mi contraseña — Iniciar sesión</Link>
+          <Link href="/">Regresar al inicio</Link>
         </div>
       </form>
     </main>

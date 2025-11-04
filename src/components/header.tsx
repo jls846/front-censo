@@ -3,6 +3,7 @@ import Image from "next/image";
 import header from "../app/styles/layout/header.module.scss";
 import Link from "next/link";
 import BarNavigation from "./BarNavigation";
+import BarNavigationAdmin from "./BarNavigationAdmin";
 import { usePathname } from "next/navigation";
 
 function Header() {
@@ -42,7 +43,7 @@ function Header() {
         }}
       >
         {publicNav.includes(pathname) && <BarNavigation />}
-        {privateNav.includes(pathname) && <BarNavigation />}
+        {privateNav.includes(pathname) && <BarNavigationAdmin />}
       </div>
     </header>
   );
