@@ -77,6 +77,11 @@ export default function Page() {
     adscripcion: string;
   }
 
+  interface Perifericos {
+    id_periferico: number;
+    periferico: string;
+  }
+
   // Estados
   const [tiposUso, setTiposUso] = useState<TipoUso[]>([]);
   const [marcas, setMarcas] = useState<Marca[]>([]);
@@ -87,7 +92,7 @@ export default function Page() {
     SistemaOperativo[]
   >([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
-  const [perifericos, setPerifericos] = useState([]);
+  const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
@@ -409,9 +414,9 @@ export default function Page() {
                   }
                 >
                   <option value="">Selecciona periférico</option>
-                  {perifericos.map((p: any) => (
-                    <option key={p.id_periferico} value={p.nombre}>
-                      {p.nombre}
+                  {perifericos.map((p) => (
+                    <option key={p.id_periferico} value={p.periferico}>
+                      {p.periferico}
                     </option>
                   ))}
                 </select>

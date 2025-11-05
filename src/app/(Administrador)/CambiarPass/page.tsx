@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import "../../styles/layout/ForgotPasswordPage.scss";
 import Link from "next/link";
@@ -11,7 +10,6 @@ export default function Page() {
   const [nombre, setNombre] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
