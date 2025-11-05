@@ -9,8 +9,8 @@ import { usePathname } from "next/navigation";
 function Header() {
   const pathname = usePathname();
 
-  const publicNav = ["/Escaner", "/AgregarEquipo", "/Editar"];
-  const privateNav = ["/Reporte", "/CrearCuenta", "/CambiarPass"];
+  const publicNav = ["/escaner", "/agregarEquipo", "/editar"];
+  const privateNav = ["/reporte", "/crearCuenta", "/cambiarPass"];
 
   return (
     <header className={header.header}>
