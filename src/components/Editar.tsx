@@ -221,7 +221,7 @@ export default function Editar() {
   };
 
   const handleCancelar = () => {
-    router.push("/Escaner");
+    router.push("/escaner");
   };
 
   return (

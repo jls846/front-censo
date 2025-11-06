@@ -28,7 +28,7 @@ export default function Login() {
       const { token } = response.data;
 
       document.cookie = `token=${token}; path=/; SameSite=Strict`;
-      router.push("/Escaner");
+      router.push("/escaner");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {

@@ -22,7 +22,7 @@ export default function Page() {
       const { data } = await axios.get(`${api_url}/equipos/${search}`);
 
       if (data) {
-        router.push(`/Editar?equipoId=${data.id}`);
+        router.push(`/editar?equipoId=${data.id}`);
       } else {
         toast.error("Equipo no encontrado");
       }
@@ -40,13 +40,13 @@ export default function Page() {
       const { data } = await axios.get(`${api_url}/equipos/${code}`);
 
       if (data) {
-        router.push(`/Editar?equipoId=${data.id}`);
+        router.push(`/editar?equipoId=${data.id}`);
       } else {
-        router.push(`/AgregarEquipo?equipoId=${data.id}`);
+        router.push(`/agregarEquipo?equipoId=${data.id}`);
       }
     } catch (error) {
       toast.error("Error No se encontro el equipo");
-      router.push(`/AgregarEquipo?equipoId=${code}`);
+      router.push(`/agregarEquipo?equipoId=${code}`);
     }
     toast(`${code}`);
   };

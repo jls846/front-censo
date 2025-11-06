@@ -41,9 +41,8 @@ export default function Page() {
     }
   }, [inventario]);
 
-  // Tipos de datos
   interface TipoUso {
-    id_tipo_uso: number;
+    id_uso: number;
     tipo_uso: string;
   }
 
@@ -255,7 +254,7 @@ export default function Page() {
   };
 
   const handleCancelar = () => {
-    router.push("/Escaner");
+    router.push("/escaner");
   };
 
   return (
@@ -359,7 +358,7 @@ export default function Page() {
               >
                 <option value="">Selecciona tipo de uso</option>
                 {tiposUso.map((t) => (
-                  <option key={t.id_tipo_uso} value={t.tipo_uso}>
+                  <option key={t.id_uso} value={t.tipo_uso}>
                     {t.tipo_uso}
                   </option>
                 ))}
