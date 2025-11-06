@@ -6,11 +6,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
-import "../app/styles/layout/agregarEquipo.scss";
 import { AREAS } from "@/data/areas";
 import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
 import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
 import { useRouter } from "next/navigation";
+import "../app/styles/layout/agregarEquipo.scss";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -192,12 +192,10 @@ export default function Page() {
 
     if (field === "adscripcion") {
       if (value.length < 3) {
-        // Si no hay al menos 3 letras, no mostrar sugerencias
         setSuggestions((prev) => ({ ...prev, adscripcion: [] }));
         return;
       }
 
-      // Función para normalizar: minúsculas y quitar acentos
       const normalize = (str: string) =>
         str
           .normalize("NFD")
@@ -209,7 +207,7 @@ export default function Page() {
 
       const matches = AREAS.map((a) => a.label)
         .filter((label) => normalize(label).includes(searchValue))
-        .slice(0, 5); // máximo 10 sugerencias
+        .slice(0, 5);
 
       setSuggestions((prev) => ({ ...prev, adscripcion: matches }));
     }
@@ -495,3 +493,4 @@ export default function Page() {
     </div>
   );
 }
+//IO

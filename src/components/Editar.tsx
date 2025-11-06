@@ -33,10 +33,12 @@ export default function Editar() {
     adscripcion: "",
     lugar: "",
     responsable: "",
+    periferico: "",
+    fechaFactura: "",
   });
 
   interface TipoUso {
-    id_tipo_uso: number;
+    id_uso: number;
     tipo_uso: string;
   }
 
@@ -70,6 +72,11 @@ export default function Editar() {
     adscripcion: string;
   }
 
+  interface Perifericos {
+    id_periferico: number;
+    periferico: string;
+  }
+
   const [tiposUso, setTiposUso] = useState<TipoUso[]>([]);
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [estados, setEstados] = useState<Estado[]>([]);
@@ -79,6 +86,7 @@ export default function Editar() {
     SistemaOperativo[]
   >([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
+  const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
@@ -129,6 +137,46 @@ export default function Editar() {
   }, []);
 
   useEffect(() => {
+    interface UnidadResponsable {
+      idUnidadResponsable: number;
+      unidadResponsable: string;
+      cargo: string;
+      titulo: string;
+      nombre: string;
+      apellidos: string;
+      telefono: string;
+      correo: string;
+      nivel: number;
+      idUnidadResponsablePapa: number;
+      unidadResponsablePapa: string;
+    }
+
+    interface EquipoResponse {
+      [key: string]: unknown;
+      id_equipo: number;
+      inventario: string;
+      serie: string;
+      lugar: string;
+      fechaFactura: string;
+      antiguedad: string;
+      modelo: string;
+      estado: { id_estado: number; estado: string };
+      adscripcion: { id_adscripcion: number; adscripcion: string };
+      sistemaOperativo: {
+        id_sistema_operativo: number;
+        sistema_operativo: string;
+      } | null;
+      tipoEquipo: { id_tipo_de_equipo: number; tipo_equipo: string } | null;
+      procesador_tipoequipo: {
+        id_procesador: number;
+        procesador: string;
+      } | null;
+      tipoUso: { id_uso: number; tipo_uso: string };
+      marca: { id_marca: number; marca: string };
+      periferico: { id_periferico: number; periferico: string };
+      observaciones?: string;
+    }
+
     const fetchEquipo = async () => {
       if (!inventario) return;
       const token = Cookies.get("token");
@@ -137,27 +185,46 @@ export default function Editar() {
       try {
         const response = await axios.get(
           `${api_url}/equipos/buscar/${inventario}`,
-          {
-            headers,
-          }
+          { headers }
         );
 
-        const equipo = response.data;
+        const equipo = response.data as EquipoResponse;
+
+        const idAdscripcion = equipo.adscripcion?.id_adscripcion;
+
+        const responsables: UnidadResponsable[] = Object.values(equipo).filter(
+          (v): v is UnidadResponsable =>
+            typeof v === "object" &&
+            v !== null &&
+            "idUnidadResponsable" in v &&
+            "nombre" in v &&
+            "apellidos" in v
+        );
+
+        const responsableEncontrado = responsables.find(
+          (r) => r.idUnidadResponsable === idAdscripcion
+        );
+
+        const responsable = responsableEncontrado
+          ? `${responsableEncontrado.nombre} ${responsableEncontrado.apellidos}`
+          : "";
 
         setFormData({
           inventario: equipo.inventario || "",
           serie: equipo.serie || "",
-          marca: equipo.marca?.marca || "", // <- relación
+          marca: equipo.marca?.marca || "",
           modelo: equipo.modelo || "",
-          tipoEquipo: equipo.tipoEquipo?.tipo || "",
+          tipoEquipo: equipo.tipoEquipo?.tipo_equipo || "",
           estado: equipo.estado?.estado || "",
-          sistemaOperativo: equipo.sistemaOperativo?.nombre || "",
-          procesador: equipo.procesador?.nombre || "",
-          tipoUso: equipo.tipoUso?.tipo || "",
+          sistemaOperativo: equipo.sistemaOperativo?.sistema_operativo || "",
+          procesador: equipo.procesador_tipoequipo?.procesador || "",
+          tipoUso: equipo.tipoUso?.tipo_uso || "",
           observaciones: equipo.observaciones || "",
           adscripcion: equipo.adscripcion?.adscripcion || "",
           lugar: equipo.lugar || "",
-          responsable: equipo.responsable || "", // <- devuelto por searchResponsable
+          periferico: equipo.periferico?.periferico || "",
+          fechaFactura: equipo.fechaFactura || "",
+          responsable,
         });
       } catch (error) {
         console.error("Error al obtener el equipo:", error);
@@ -168,7 +235,44 @@ export default function Editar() {
     fetchEquipo();
   }, [inventario]);
 
-  // 🔹 Guardar cambios
+  useEffect(() => {
+    const fetchProcesador = async () => {
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const response = await axios.get(
+        `${api_url}/equipos/procesador-tipo-equipos/${formData.tipoEquipo}`,
+        {
+          headers,
+        }
+      );
+
+      setProcesadores(response.data);
+    };
+    fetchProcesador();
+  }, [tiposEquipo]);
+
+  useEffect(() => {
+    const fetchPerifericos = async () => {
+      if (formData.tipoEquipo !== "PERIFÉRICO") return;
+
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      try {
+        const response = await axios.get(`${api_url}/equipos/perifericos`, {
+          headers,
+        });
+        setPerifericos(response.data);
+      } catch (err) {
+        console.error(err);
+        toast.error("No se pudieron cargar los periféricos");
+      }
+    };
+
+    fetchPerifericos();
+  }, [formData.tipoEquipo]);
+
   const handleGuardar = async () => {
     const token = Cookies.get("token");
     const headers = { Authorization: `Bearer ${token}` };
@@ -191,12 +295,10 @@ export default function Editar() {
 
     if (field === "adscripcion") {
       if (value.length < 3) {
-        // Si no hay al menos 3 letras, no mostrar sugerencias
         setSuggestions((prev) => ({ ...prev, adscripcion: [] }));
         return;
       }
 
-      // Normaliza para quitar acentos y poner en minúsculas
       const normalize = (str: string) =>
         str
           .normalize("NFD")
@@ -206,10 +308,9 @@ export default function Editar() {
 
       const searchValue = normalize(value);
 
-      // Busca coincidencias
       const matches = AREAS.map((a) => a.label)
         .filter((label) => normalize(label).includes(searchValue))
-        .slice(0, 10); // máximo 10 sugerencias
+        .slice(0, 5);
 
       setSuggestions((prev) => ({ ...prev, adscripcion: matches }));
     }
@@ -229,8 +330,11 @@ export default function Editar() {
       <div className="innerContainer">
         <h2 className="information">
           <span>{formData.tipoEquipo}</span>
-          <span>Inventario:{formData.inventario}</span>
-          <span>Fecha de censo:</span>
+          <span>Inventario: {formData.inventario}</span>
+          <span>
+            Fecha de censo:{" "}
+            {new Date(formData.fechaFactura).toLocaleDateString("es-MX")}
+          </span>
         </h2>
 
         <form className="equipoForm">
@@ -324,7 +428,7 @@ export default function Editar() {
               >
                 <option value="">Selecciona uso</option>
                 {tiposUso.map((t) => (
-                  <option key={t.id_tipo_uso} value={t.tipo_uso}>
+                  <option key={t.id_uso} value={t.tipo_uso}>
                     {t.tipo_uso}
                   </option>
                 ))}
@@ -374,9 +478,19 @@ export default function Editar() {
 
             {!mostrarCamposComputadora && (
               <div className="formGroup">
-                <label>Tipos de Perifericos</label>
-                <select>
-                  <option value="">Selecciona periferico</option>
+                <label>Tipos de Periféricos</label>
+                <select
+                  value={formData.periferico || ""}
+                  onChange={(e) =>
+                    handleInputChange("tipoPeriferico", e.target.value)
+                  }
+                >
+                  <option value="">Selecciona periférico</option>
+                  {perifericos.map((p) => (
+                    <option key={p.id_periferico} value={p.periferico}>
+                      {p.periferico}
+                    </option>
+                  ))}
                 </select>
               </div>
             )}
@@ -465,3 +579,4 @@ export default function Editar() {
     </div>
   );
 }
+//IO
