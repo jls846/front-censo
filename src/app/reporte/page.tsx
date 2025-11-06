@@ -12,7 +12,6 @@ const [report,setReport]=useState();
     setReport(res.data);
   }
 
-  
   return (
     <div className="reporte-layout">
       {/* Panel izquierdo: título, buscador y tabla */}
