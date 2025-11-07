@@ -101,7 +101,7 @@ export default function Pregunta9() {
           <tbody>
             <tr>
               <td>
-                <div className="input-contenedor input-sin-porcentaje">
+                <div className="input-contenedor input-sp">
                   <input
                     type="number"
                     value={garantia.escritorio}
@@ -112,7 +112,7 @@ export default function Pregunta9() {
                 </div>
               </td>
               <td>
-                <div className="input-contenedor input-sin-porcentaje">
+                <div className="input-contenedor input-sp">
                   <input
                     type="number"
                     value={garantia.portatil}
@@ -123,7 +123,7 @@ export default function Pregunta9() {
                 </div>
               </td>
               <td>
-                <div className="input-contenedor input-sin-porcentaje">
+                <div className="input-contenedor input-sp">
                   <input
                     type="number"
                     value={garantia.altoRendimiento}
