@@ -1,3 +1,5 @@
+// Esto es culpa de emilio atentamente IO
+
 export const SO_POR_EQUIPO: Record<
   string,
   { id_sistema_operativo: number; sistema_operativo: string }[]

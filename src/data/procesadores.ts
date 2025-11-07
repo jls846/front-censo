@@ -1,3 +1,5 @@
+// Esto es culpa de emilio
+
 export const PROCESADORES_POR_EQUIPO: Record<
   string,
   { id_procesador: number; procesador: string }[]
