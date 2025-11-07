@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import '../../styles/layout/pregunta7.scss';
+import React, { useState, useEffect } from "react";
+import "../../styles/layout/pregunta7.scss";
 
 interface Dato {
   nombre: string;
@@ -68,7 +68,9 @@ const Page: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleRecordsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRecordsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setRecordsPerPage(Number(e.target.value));
     setCurrentPage(1);
   };
@@ -97,24 +99,31 @@ const Page: React.FC = () => {
         <table>
           <thead>
             <tr>
-              <th onClick={() => handleSort('nombre')} style={{ cursor: 'pointer' }}>
+              <th
+                onClick={() => handleSort("nombre")}
+                style={{ cursor: "pointer" }}
+              >
                 Nombre del laboratorio o aula
-                {sortColumn === 'nombre' && sortAsc && <img src="/arrow_up.svg" alt="ascendente" />}
-                {sortColumn === 'nombre' && !sortAsc && <img src="/arrow_down.svg" alt="descendente" />}
-                {sortColumn !== 'nombre' && (
-                  <>
-                  </>
+                {sortColumn === "nombre" && sortAsc && (
+                  <img src="/arrow_up.svg" alt="ascendente" />
                 )}
+                {sortColumn === "nombre" && !sortAsc && (
+                  <img src="/arrow_down.svg" alt="descendente" />
+                )}
+                {sortColumn !== "nombre" && <></>}
               </th>
-              <th onClick={() => handleSort('cantidad')} style={{ cursor: 'pointer' }}>
+              <th
+                onClick={() => handleSort("cantidad")}
+                style={{ cursor: "pointer" }}
+              >
                 Cantidad
-                {sortColumn === 'cantidad' && sortAsc && <img src="/arrow_up.svg" alt="ascendente" />}
-                {sortColumn === 'cantidad' && !sortAsc && <img src="/arrow_down.svg" alt="descendente" />}
-                {sortColumn !== 'cantidad' && (
-                  <>
-                   
-                  </>
+                {sortColumn === "cantidad" && sortAsc && (
+                  <img src="/arrow_up.svg" alt="ascendente" />
                 )}
+                {sortColumn === "cantidad" && !sortAsc && (
+                  <img src="/arrow_down.svg" alt="descendente" />
+                )}
+                {sortColumn !== "cantidad" && <></>}
               </th>
             </tr>
           </thead>
@@ -134,24 +143,26 @@ const Page: React.FC = () => {
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
-          {'<'}
+          {"<"}
         </button>
 
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
             onClick={() => setCurrentPage(page)}
-            className={page === currentPage ? 'active' : ''}
+            className={page === currentPage ? "active" : ""}
           >
             {page}
           </button>
         ))}
 
         <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
         >
-          {'>'}
+          {">"}
         </button>
       </div>
     </div>
