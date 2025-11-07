@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import "./pregunta9.css";
 
 export default function Pregunta9() {
-  // Estado para Pregunta 9
+  
   const [datos, setDatos] = useState([
     { nombre: "Computadoras de Escritorio", valores: ["", "", "", ""] },
     { nombre: "Computadoras Portátiles", valores: ["", "", "", ""] },
     { nombre: "Alto Rendimiento", valores: ["", "", "", ""] },
   ]);
 
-  // Estado para Pregunta 10
+
   const [garantia, setGarantia] = useState({
     escritorio: "",
     portatil: "",
