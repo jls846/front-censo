@@ -21,18 +21,20 @@ export default function Page() {
   const [formData, setFormData] = useState({
     inventario: "",
     serie: "",
-    marca: "",
+    lugar: "",
+    fechaFactura: new Date(),
+    antiguedad: "0 años",
     modelo: "",
-    tipoEquipo: "",
     estado: "",
+    adscripcion: "",
+    tipoEquipo: "",
     sistemaOperativo: "",
     procesador: "",
     tipoUso: "",
-    observaciones: "",
-    adscripcion: "",
-    lugar: "",
-    responsable: "",
+    marca: "",
     tipoPeriferico: "",
+    isImpresora: ,
+    observaciones: "",
   });
 
   useEffect(() => {
@@ -233,6 +235,8 @@ export default function Page() {
       setFormData({
         inventario: "",
         serie: "",
+        fechaFactura: new Date(),
+        antiguedad: "",
         marca: "",
         modelo: "",
         tipoEquipo: "",
@@ -243,7 +247,7 @@ export default function Page() {
         observaciones: "",
         adscripcion: "",
         lugar: "",
-        responsable: "",
+        isImpresora:"",
         tipoPeriferico: "",
       });
     } catch (err) {
