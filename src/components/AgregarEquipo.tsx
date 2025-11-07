@@ -26,10 +26,10 @@ export default function Page() {
     antiguedad: "MENORES DE 2",
     modelo: "",
     id_estado: "",
-    id_adscripcion: "",
+    id_adscripcion: 0,
     id_tipo_equipo: "",
-    id_sistema_operativo: "",
-    id_procesador: "",
+    id_sistema_operativo: 0,
+    id_procesador: 0,
     id_uso: "",
     id_marca: "",
     id_periferico: "",
@@ -93,12 +93,16 @@ export default function Page() {
   >([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
   const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
+  const [adscripcionLabel, setAdscripcionLabel] = useState("");
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
   });
 
-  const mostrarCamposComputadora = formData.id_tipo_equipo !== "9";
+  const mostrarCamposComputadora = Number(formData.id_tipo_equipo) !== 9;
+  const tableta =
+    Number(formData.id_tipo_equipo) !== 7 &&
+    Number(formData.id_tipo_equipo) !== 8;
   const api_url = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -169,7 +173,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchPerifericos = async () => {
-      if (formData.id_tipo_equipo !== "9") return;
+      if (Number(formData.id_tipo_equipo) != 9) return;
 
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
@@ -189,9 +193,22 @@ export default function Page() {
   }, [formData.id_tipo_equipo]);
 
   const handleInputChange = (field: string, value: any) => {
+    if (field === "adscripcionLabel") {
+      setAdscripcionLabel(value);
+
+      const matches = AREAS.filter((a) =>
+        a.label.toLowerCase().includes(value.toLowerCase())
+      ).map((a) => a.label);
+
+      setSuggestions((prev) => ({
+        ...prev,
+        adscripcion: matches.slice(0, 5),
+      }));
+      return;
+    }
+
     setFormData((prev) => {
       let newValue = value;
-
       if (field.startsWith("id_")) {
         newValue = value ? Number(value) : "";
       }
@@ -206,11 +223,6 @@ export default function Page() {
 
       return { ...prev, [field]: newValue };
     });
-  };
-
-  const handleSelectSuggestion = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setSuggestions((prev) => ({ ...prev, [field]: [] }));
   };
 
   const handleGuardar = async () => {
@@ -365,26 +377,30 @@ export default function Page() {
                     )}
                   </select>
                 </div>
-
-                <div className="formGroup">
-                  <label>Sistema operativo</label>
-                  <select
-                    value={formData.id_sistema_operativo}
-                    onChange={(e) =>
-                      handleInputChange("id_sistema_operativo", e.target.value)
-                    }
-                  >
-                    <option value="">Selecciona sistema operativo</option>
-                    {SO_POR_EQUIPO[formData.id_tipo_equipo]?.map((so) => (
-                      <option
-                        key={so.id_sistema_operativo}
-                        value={so.id_sistema_operativo}
-                      >
-                        {so.sistema_operativo}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                {tableta && (
+                  <div className="formGroup">
+                    <label>Sistema operativo</label>
+                    <select
+                      value={formData.id_sistema_operativo}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "id_sistema_operativo",
+                          e.target.value
+                        )
+                      }
+                    >
+                      <option value="">Selecciona sistema operativo</option>
+                      {SO_POR_EQUIPO[formData.id_tipo_equipo]?.map((so) => (
+                        <option
+                          key={so.id_sistema_operativo}
+                          value={so.id_sistema_operativo}
+                        >
+                          {so.sistema_operativo}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </>
             )}
 
@@ -412,10 +428,10 @@ export default function Page() {
               <input
                 required
                 type="text"
-                placeholder="Ingresa adscripcion"
-                value={formData.id_adscripcion}
+                placeholder="Ingresa adscripción"
+                value={adscripcionLabel}
                 onChange={(e) =>
-                  handleInputChange("id_adscripcion", e.target.value)
+                  handleInputChange("adscripcionLabel", e.target.value)
                 }
               />
               {suggestions.adscripcion.length > 0 && (
@@ -423,7 +439,20 @@ export default function Page() {
                   {suggestions.adscripcion.map((s) => (
                     <li
                       key={s}
-                      onClick={() => handleSelectSuggestion("adscripcion", s)}
+                      onClick={() => {
+                        const selected = AREAS.find((a) => a.label === s);
+                        if (selected) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            id_adscripcion: selected.id,
+                          }));
+                          setAdscripcionLabel(selected.label);
+                          setSuggestions((prev) => ({
+                            ...prev,
+                            adscripcion: [],
+                          }));
+                        }
+                      }}
                     >
                       {s}
                     </li>

@@ -2,14 +2,14 @@ export const SO_POR_EQUIPO: Record<
   string,
   { id_sistema_operativo: number; sistema_operativo: string }[]
 > = {
-  "ESCRITORIO PC": [
+  /*"ESCRITORIO PC"*/ 1: [
     { id_sistema_operativo: 1, sistema_operativo: "Windows 11" },
     { id_sistema_operativo: 2, sistema_operativo: "Windows 10" },
     { id_sistema_operativo: 3, sistema_operativo: "Windows 7/8" },
     { id_sistema_operativo: 4, sistema_operativo: "Windows XP/Vista" },
     { id_sistema_operativo: 5, sistema_operativo: "Linux" },
   ],
-  "ESCRITORIO APPLE": [
+  /*"ESCRITORIO MAC OS"*/ 2: [
     {
       id_sistema_operativo: 6,
       sistema_operativo: "Mac OS (13 - Ventura, 14 - Sonoma)",
@@ -29,14 +29,28 @@ export const SO_POR_EQUIPO: Record<
         "Mac OS X (Snow Leopard, Lion, Mountain Lion, Mavericks)",
     },
   ],
-  "TABLETA ANDROID": [
+  /*"ESCRITORIO LINUX"*/ 3: [
+    { id_sistema_operativo: 1, sistema_operativo: "Windows 11" },
+    { id_sistema_operativo: 2, sistema_operativo: "Windows 10" },
+    { id_sistema_operativo: 3, sistema_operativo: "Windows 7/8" },
+    { id_sistema_operativo: 4, sistema_operativo: "Windows XP/Vista" },
+    { id_sistema_operativo: 5, sistema_operativo: "Linux" },
+  ],
+  /*"PORTÁTILES WINDOWS"*/ 4: [
     { id_sistema_operativo: 1, sistema_operativo: "Windows 11" },
     { id_sistema_operativo: 2, sistema_operativo: "Windows 10" },
     { id_sistema_operativo: 3, sistema_operativo: "Windows 7/8" },
     { id_sistema_operativo: 4, sistema_operativo: "Windows XP/Vista" },
     { id_sistema_operativo: 10, sistema_operativo: "Chrome OS" },
   ],
-  "TABLETA iPAD OS": [
+  /*"PORTÁTILES CHROMEBOOK"*/ 5: [
+    { id_sistema_operativo: 1, sistema_operativo: "Windows 11" },
+    { id_sistema_operativo: 2, sistema_operativo: "Windows 10" },
+    { id_sistema_operativo: 3, sistema_operativo: "Windows 7/8" },
+    { id_sistema_operativo: 4, sistema_operativo: "Windows XP/Vista" },
+    { id_sistema_operativo: 10, sistema_operativo: "Chrome OS" },
+  ],
+  /*"PORTÁTILES MAC OS"*/ 6: [
     {
       id_sistema_operativo: 6,
       sistema_operativo: "Mac OS (13 - Ventura, 14 - Sonoma)",
@@ -56,7 +70,7 @@ export const SO_POR_EQUIPO: Record<
         "Mac OS X (Snow Leopard, Lion, Mountain Lion, Mavericks)",
     },
   ],
-  SERVIDOR: [
+  /*SERVIDOR*/ 10: [
     {
       id_sistema_operativo: 12,
       sistema_operativo:

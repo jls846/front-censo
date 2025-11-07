@@ -2,7 +2,7 @@ export const PROCESADORES_POR_EQUIPO: Record<
   string,
   { id_procesador: number; procesador: string }[]
 > = {
-  "ESCRITORIO PC": [
+  /*"ESCRITORIO PC"*/ 1: [
     {
       id_procesador: 1,
       procesador: "i7 o equivalentes (13a generación en adelante)",
@@ -41,7 +41,18 @@ export const PROCESADORES_POR_EQUIPO: Record<
     { id_procesador: 18, procesador: "Pentium Series J, G" },
     { id_procesador: 19, procesador: "Celeron Serie J, G" },
   ],
-  "ESCRITORIO LINUX": [
+  /*"ESCRITORIO MAC OS"*/ 2: [
+    { id_procesador: 20, procesador: "Familia M2" },
+    { id_procesador: 21, procesador: "Familia M1" },
+    { id_procesador: 2, procesador: "i7 o equivalentes (9a - 12a generación)" },
+    { id_procesador: 4, procesador: "i7 o equivalentes (1a - 4a generación)" },
+    { id_procesador: 6, procesador: "i5 o equivalentes (9a - 12a generación)" },
+    { id_procesador: 7, procesador: "i5 o equivalentes (5a - 8a generación)" },
+    { id_procesador: 8, procesador: "i5 o equivalentes (1a - 4a generación)" },
+    { id_procesador: 12, procesador: "i3 o equivalentes (1a - 4a generación)" },
+    { id_procesador: 22, procesador: "Core2 Mac, Quad Core o anteriores" },
+  ],
+  /*"ESCRITORIO LINUX"*/ 3: [
     {
       id_procesador: 1,
       procesador: "i7 o equivalentes (13a generación en adelante)",
@@ -69,7 +80,7 @@ export const PROCESADORES_POR_EQUIPO: Record<
     { id_procesador: 13, procesador: "Pentium Silver O Gold" },
     { id_procesador: 14, procesador: "Pentium Dual Core o anteriores" },
   ],
-  "PORTÁTILES WINDOWS": [
+  /*"PORTÁTILES WINDOWS"*/ 4: [
     {
       id_procesador: 1,
       procesador: "i7 o equivalentes (13a generación en adelante)",
@@ -97,7 +108,7 @@ export const PROCESADORES_POR_EQUIPO: Record<
     { id_procesador: 13, procesador: "Pentium Silver O Gold" },
     { id_procesador: 14, procesador: "Pentium Dual Core o anteriores" },
   ],
-  "PORTÁTILES CHROMEBOOK": [
+  /*"PORTÁTILES CHROMEBOOK"*/ 5: [
     {
       id_procesador: 1,
       procesador: "i7 o equivalentes (13a generación en adelante)",
@@ -123,7 +134,7 @@ export const PROCESADORES_POR_EQUIPO: Record<
     { id_procesador: 11, procesador: "i3 o equivalentes (5a - 8a generación)" },
     { id_procesador: 12, procesador: "i3 o equivalentes (1a - 4a generación)" },
   ],
-  "ESCRITORIO MAC OS": [
+  /*"PORTÁTILES MAC OS"*/ 6: [
     { id_procesador: 20, procesador: "Familia M2" },
     { id_procesador: 21, procesador: "Familia M1" },
     { id_procesador: 2, procesador: "i7 o equivalentes (9a - 12a generación)" },
@@ -134,7 +145,35 @@ export const PROCESADORES_POR_EQUIPO: Record<
     { id_procesador: 12, procesador: "i3 o equivalentes (1a - 4a generación)" },
     { id_procesador: 22, procesador: "Core2 Mac, Quad Core o anteriores" },
   ],
-  "PORTÁTILES MAC OS": [
+  /*"TABLETA ANDROID"*/ 7: [
+    {
+      id_procesador: 1,
+      procesador: "i7 o equivalentes (13a generación en adelante)",
+    },
+    { id_procesador: 2, procesador: "i7 o equivalentes (9a - 12a generación)" },
+    { id_procesador: 3, procesador: "i7 o equivalentes (5a - 8a generación)" },
+    { id_procesador: 4, procesador: "i7 o equivalentes (1a - 4a generación)" },
+    {
+      id_procesador: 5,
+      procesador: "i5 o equivalentes (13a generación en adelante)",
+    },
+    { id_procesador: 6, procesador: "i5 o equivalentes (9a - 12a generación)" },
+    { id_procesador: 7, procesador: "i5 o equivalentes (5a - 8a generación)" },
+    { id_procesador: 8, procesador: "i5 o equivalentes (1a - 4a generación)" },
+    {
+      id_procesador: 9,
+      procesador: "i3 o equivalentes (13a generación en adelante)",
+    },
+    {
+      id_procesador: 10,
+      procesador: "i3 o equivalentes (9a - 12a generación)",
+    },
+    { id_procesador: 11, procesador: "i3 o equivalentes (5a - 8a generación)" },
+    { id_procesador: 12, procesador: "i3 o equivalentes (1a - 4a generación)" },
+    { id_procesador: 13, procesador: "Pentium Silver O Gold" },
+    { id_procesador: 14, procesador: "Pentium Dual Core o anteriores" },
+  ],
+  /*"TABLETA iPAD OS"*/ 8: [
     { id_procesador: 20, procesador: "Familia M2" },
     { id_procesador: 21, procesador: "Familia M1" },
     { id_procesador: 2, procesador: "i7 o equivalentes (9a - 12a generación)" },
@@ -145,7 +184,7 @@ export const PROCESADORES_POR_EQUIPO: Record<
     { id_procesador: 12, procesador: "i3 o equivalentes (1a - 4a generación)" },
     { id_procesador: 22, procesador: "Core2 Mac, Quad Core o anteriores" },
   ],
-  SERVIDOR: [
+  /*SERVIDOR*/ 10: [
     { id_procesador: 23, procesador: "Xeon Bronce, Plata, Oro 1a generación" },
     { id_procesador: 24, procesador: "Xeon E3, E5, E7" },
     { id_procesador: 25, procesador: "Xeon Phi" },
