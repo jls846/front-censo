@@ -3,13 +3,14 @@ import Image from "next/image";
 import header from "../app/styles/layout/header.module.scss";
 import Link from "next/link";
 import BarNavigation from "./BarNavigation";
+import BarNavigationAdmin from "./BarNavigationAdmin";
 import { usePathname } from "next/navigation";
 
 function Header() {
   const pathname = usePathname();
 
-  const publicNav = ["/Escaner", "/AgregarEquipo", "/Editar"];
-  const privateNav = ["/Reporte", "/CrearCuenta", "/CambiarPass"];
+  const publicNav = ["/escaner", "/agregarEquipo", "/editar"];
+  const privateNav = ["/reporte", "/crearCuenta", "/cambiarPass"];
 
   return (
     <header className={header.header}>
@@ -42,7 +43,7 @@ function Header() {
         }}
       >
         {publicNav.includes(pathname) && <BarNavigation />}
-        {privateNav.includes(pathname) && <BarNavigation />}
+        {privateNav.includes(pathname) && <BarNavigationAdmin />}
       </div>
     </header>
   );

@@ -29,13 +29,18 @@ function BarNavigation() {
 
       <ul className={openMenu ? "active" : ""}>
         <li className="subMenu" onClick={toggleMenu}>
-          <Link href="/escaner" className="links">
-            <span>Escanear</span>
+          <Link href="/crearCuenta" className="links">
+            <span>Crear Cuenta</span>
           </Link>
         </li>
         <li className="subMenu" onClick={toggleMenu}>
-          <Link href="/agregarEquipo" className="links">
-            <span>Agregar equipo</span>
+          <Link href="/cambiarPass" className="links">
+            <span>Cambiar Contraseña</span>
+          </Link>
+        </li>
+        <li className="subMenu" onClick={toggleMenu}>
+          <Link href="/reporte" className="links">
+            <span>Reporte</span>
           </Link>
         </li>
         <li className="subMenu">

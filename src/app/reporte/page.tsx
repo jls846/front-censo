@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import { useState } from "react";
 import "./reporte.css";
 import axios from "axios";
 
-export default function Reporte() {
-
-const [report,setReport]=useState();
+export default function Page() {
+  const [report, setReport] = useState();
 
   async function Report() {
-    const res=await axios.get("https");
+    const res = await axios.get("https");
     setReport(res.data);
   }
 
