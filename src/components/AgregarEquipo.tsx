@@ -23,18 +23,17 @@ export default function Page() {
     serie: "",
     lugar: "",
     fechaFactura: new Date(),
-    antiguedad: "0 años",
+    antiguedad: "MENORES DE 2",
     modelo: "",
-    estado: "",
-    adscripcion: "",
-    tipoEquipo: "",
-    sistemaOperativo: "",
-    procesador: "",
-    tipoUso: "",
-    marca: "",
-    tipoPeriferico: "",
-    isImpresora: ,
-    observaciones: "",
+    id_estado: "",
+    id_adscripcion: "",
+    id_tipo_equipo: "",
+    id_sistema_operativo: "",
+    id_procesador: "",
+    id_uso: "",
+    id_marca: "",
+    id_periferico: "",
+    isImpresora: false,
   });
 
   useEffect(() => {
@@ -99,7 +98,7 @@ export default function Page() {
     adscripcion: [] as string[],
   });
 
-  const mostrarCamposComputadora = formData.tipoEquipo !== "PERIFÉRICO";
+  const mostrarCamposComputadora = formData.id_tipo_equipo !== "9";
   const api_url = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -157,7 +156,7 @@ export default function Page() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const response = await axios.get(
-        `${api_url}/equipos/procesador-tipo-equipos/${formData.tipoEquipo}`,
+        `${api_url}/equipos/procesador-tipo-equipos/${formData.id_tipo_equipo}`,
         {
           headers,
         }
@@ -170,7 +169,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchPerifericos = async () => {
-      if (formData.tipoEquipo !== "PERIFÉRICO") return;
+      if (formData.id_tipo_equipo !== "9") return;
 
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
@@ -187,32 +186,26 @@ export default function Page() {
     };
 
     fetchPerifericos();
-  }, [formData.tipoEquipo]);
+  }, [formData.id_tipo_equipo]);
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: string, value: any) => {
+    setFormData((prev) => {
+      let newValue = value;
 
-    if (field === "adscripcion") {
-      if (value.length < 3) {
-        setSuggestions((prev) => ({ ...prev, adscripcion: [] }));
-        return;
+      if (field.startsWith("id_")) {
+        newValue = value ? Number(value) : "";
       }
 
-      const normalize = (str: string) =>
-        str
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .toLowerCase()
-          .trim();
+      if (field === "id_tipo_equipo") {
+        const tipoSeleccionado = tiposEquipo.find(
+          (t) => t.id_tipo_de_equipo === Number(value)
+        );
+        const esPeriferico = tipoSeleccionado?.tipo_equipo === "PERIFÉRICO";
+        return { ...prev, [field]: newValue, isImpresora: esPeriferico };
+      }
 
-      const searchValue = normalize(value);
-
-      const matches = AREAS.map((a) => a.label)
-        .filter((label) => normalize(label).includes(searchValue))
-        .slice(0, 5);
-
-      setSuggestions((prev) => ({ ...prev, adscripcion: matches }));
-    }
+      return { ...prev, [field]: newValue };
+    });
   };
 
   const handleSelectSuggestion = (field: string, value: string) => {
@@ -221,35 +214,20 @@ export default function Page() {
   };
 
   const handleGuardar = async () => {
-    const adscripcionesValidas = AREAS.map((a) => a.label);
-    if (!adscripcionesValidas.includes(formData.adscripcion)) {
-      toast.error("Debes seleccionar una adscripción válida.");
-      return;
-    }
-
     try {
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
-      await axios.post(`${api_url}/equipos/crear`, formData, { headers });
+
+      const dataToSend = {
+        ...formData,
+        fechaFactura: new Date(formData.fechaFactura)
+          .toISOString()
+          .split("T")[0], // "YYYY-MM-DD"
+        antiguedad: formData.antiguedad || "0 años",
+      };
+
+      await axios.post(`${api_url}/equipos/crear`, dataToSend, { headers });
       toast.success("Equipo guardado correctamente");
-      setFormData({
-        inventario: "",
-        serie: "",
-        fechaFactura: new Date(),
-        antiguedad: "",
-        marca: "",
-        modelo: "",
-        tipoEquipo: "",
-        estado: "",
-        sistemaOperativo: "",
-        procesador: "",
-        tipoUso: "",
-        observaciones: "",
-        adscripcion: "",
-        lugar: "",
-        isImpresora:"",
-        tipoPeriferico: "",
-      });
     } catch (err) {
       toast.error("Error al guardar el equipo");
     }
@@ -293,12 +271,12 @@ export default function Page() {
               <label>Marca</label>
               <select
                 required
-                value={formData.marca}
-                onChange={(e) => handleInputChange("marca", e.target.value)}
+                value={formData.id_marca}
+                onChange={(e) => handleInputChange("id_marca", e.target.value)}
               >
                 <option value="">Selecciona una marca</option>
                 {marcas.map((m) => (
-                  <option key={m.id_marca} value={m.marca}>
+                  <option key={m.id_marca} value={m.id_marca}>
                     {m.marca}
                   </option>
                 ))}
@@ -319,14 +297,14 @@ export default function Page() {
               <label>Tipo de equipo</label>
               <select
                 required
-                value={formData.tipoEquipo}
+                value={formData.id_tipo_equipo}
                 onChange={(e) =>
-                  handleInputChange("tipoEquipo", e.target.value)
+                  handleInputChange("id_tipo_equipo", e.target.value)
                 }
               >
                 <option value="">Selecciona tipo de equipo</option>
                 {tiposEquipo.map((t) => (
-                  <option key={t.id_tipo_de_equipo} value={t.tipo_equipo}>
+                  <option key={t.id_tipo_de_equipo} value={t.id_tipo_de_equipo}>
                     {t.tipo_equipo}
                   </option>
                 ))}
@@ -339,12 +317,12 @@ export default function Page() {
               <label>Estado</label>
               <select
                 required
-                value={formData.estado}
-                onChange={(e) => handleInputChange("estado", e.target.value)}
+                value={formData.id_estado}
+                onChange={(e) => handleInputChange("id_estado", e.target.value)}
               >
                 <option value="">Selecciona estado</option>
                 {estados.map((e) => (
-                  <option key={e.id_estado} value={e.estado}>
+                  <option key={e.id_estado} value={e.id_estado}>
                     {e.estado}
                   </option>
                 ))}
@@ -355,12 +333,12 @@ export default function Page() {
               <label>Tipo de uso</label>
               <select
                 required
-                value={formData.tipoUso}
-                onChange={(e) => handleInputChange("tipoUso", e.target.value)}
+                value={formData.id_uso}
+                onChange={(e) => handleInputChange("id_uso", e.target.value)}
               >
                 <option value="">Selecciona tipo de uso</option>
                 {tiposUso.map((t) => (
-                  <option key={t.id_uso} value={t.tipo_uso}>
+                  <option key={t.id_uso} value={t.id_uso}>
                     {t.tipo_uso}
                   </option>
                 ))}
@@ -372,32 +350,37 @@ export default function Page() {
                 <div className="formGroup">
                   <label>Procesador</label>
                   <select
-                    value={formData.procesador}
+                    value={formData.id_procesador}
                     onChange={(e) =>
-                      handleInputChange("procesador", e.target.value)
+                      handleInputChange("id_procesador", e.target.value)
                     }
                   >
                     <option value="">Selecciona procesador</option>
-                    {PROCESADORES_POR_EQUIPO[formData.tipoEquipo]?.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
-                      </option>
-                    ))}
+                    {PROCESADORES_POR_EQUIPO[formData.id_tipo_equipo]?.map(
+                      (p) => (
+                        <option key={p.id_procesador} value={p.id_procesador}>
+                          {p.procesador}
+                        </option>
+                      )
+                    )}
                   </select>
                 </div>
 
                 <div className="formGroup">
                   <label>Sistema operativo</label>
                   <select
-                    value={formData.sistemaOperativo}
+                    value={formData.id_sistema_operativo}
                     onChange={(e) =>
-                      handleInputChange("sistemaOperativo", e.target.value)
+                      handleInputChange("id_sistema_operativo", e.target.value)
                     }
                   >
                     <option value="">Selecciona sistema operativo</option>
-                    {SO_POR_EQUIPO[formData.tipoEquipo]?.map((so) => (
-                      <option key={so} value={so}>
-                        {so}
+                    {SO_POR_EQUIPO[formData.id_tipo_equipo]?.map((so) => (
+                      <option
+                        key={so.id_sistema_operativo}
+                        value={so.id_sistema_operativo}
+                      >
+                        {so.sistema_operativo}
                       </option>
                     ))}
                   </select>
@@ -409,14 +392,14 @@ export default function Page() {
               <div className="formGroup">
                 <label>Tipos de Periféricos</label>
                 <select
-                  value={formData.tipoPeriferico || ""}
+                  value={formData.id_periferico}
                   onChange={(e) =>
-                    handleInputChange("tipoPeriferico", e.target.value)
+                    handleInputChange("id_periferico", e.target.value)
                   }
                 >
                   <option value="">Selecciona periférico</option>
                   {perifericos.map((p) => (
-                    <option key={p.id_periferico} value={p.periferico}>
+                    <option key={p.id_periferico} value={p.id_periferico}>
                       {p.periferico}
                     </option>
                   ))}
@@ -430,9 +413,9 @@ export default function Page() {
                 required
                 type="text"
                 placeholder="Ingresa adscripcion"
-                value={formData.adscripcion}
+                value={formData.id_adscripcion}
                 onChange={(e) =>
-                  handleInputChange("adscripcion", e.target.value)
+                  handleInputChange("id_adscripcion", e.target.value)
                 }
               />
               {suggestions.adscripcion.length > 0 && (
@@ -462,7 +445,7 @@ export default function Page() {
               />
             </div>
 
-            <div className="formGroup">
+            {/* <div className="formGroup">
               <label>Observaciones</label>
               <textarea
                 placeholder="Ingresa observaciones"
@@ -473,7 +456,7 @@ export default function Page() {
                 rows={5}
                 className="textAreaLarge"
               />
-            </div>
+            </div> */}
 
             <div className="formActions">
               <button

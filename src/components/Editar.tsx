@@ -168,8 +168,10 @@ export default function Editar() {
       } | null;
       tipoEquipo: { id_tipo_de_equipo: number; tipo_equipo: string } | null;
       procesador_tipoequipo: {
-        id_procesador: number;
-        procesador: string;
+        id: number;
+        procesador: {
+          procesador: string;
+        };
       } | null;
       tipoUso: { id_uso: number; tipo_uso: string };
       marca: { id_marca: number; marca: string };
@@ -217,7 +219,8 @@ export default function Editar() {
           tipoEquipo: equipo.tipoEquipo?.tipo_equipo || "",
           estado: equipo.estado?.estado || "",
           sistemaOperativo: equipo.sistemaOperativo?.sistema_operativo || "",
-          procesador: equipo.procesador_tipoequipo?.procesador || "",
+          procesador:
+            equipo.procesador_tipoequipo?.procesador?.procesador || "",
           tipoUso: equipo.tipoUso?.tipo_uso || "",
           observaciones: equipo.observaciones || "",
           adscripcion: equipo.adscripcion?.adscripcion || "",
@@ -440,15 +443,15 @@ export default function Editar() {
                 <div className="formGroup">
                   <label>Procesador</label>
                   <select
-                    value={formData.procesador}
+                    value={formData.procesador || ""}
                     onChange={(e) =>
-                      setFormData({ ...formData, procesador: e.target.value })
+                      handleInputChange("id_procesador", e.target.value)
                     }
                   >
                     <option value="">Selecciona procesador</option>
                     {PROCESADORES_POR_EQUIPO[formData.tipoEquipo]?.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
+                      <option key={p.id_procesador} value={p.id_procesador}>
+                        {p.procesador}
                       </option>
                     ))}
                   </select>
@@ -467,8 +470,11 @@ export default function Editar() {
                   >
                     <option value="">Selecciona sistema operativo</option>
                     {SO_POR_EQUIPO[formData.tipoEquipo]?.map((so) => (
-                      <option key={so} value={so}>
-                        {so}
+                      <option
+                        key={so.id_sistema_operativo}
+                        value={so.id_sistema_operativo}
+                      >
+                        {so.sistema_operativo}
                       </option>
                     ))}
                   </select>

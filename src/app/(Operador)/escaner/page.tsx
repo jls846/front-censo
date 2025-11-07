@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../../styles/layout/escaner.scss";
 import BarcodeScanner from "@/components/BarcodeScanner";
 import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+import "../../styles/layout/escaner.scss";
 
 export default function Page() {
   const router = useRouter();
@@ -17,12 +18,16 @@ export default function Page() {
 
   const buscarEquipo = async () => {
     if (!search) return toast.error("Ingresa un número de inventario");
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      const { data } = await axios.get(`${api_url}/equipos/${search}`);
+      const { data } = await axios.get(`${api_url}/equipos/buscar/${search}`, {
+        headers,
+      });
 
       if (data) {
-        router.push(`/editar?equipoId=${data.id}`);
+        router.push(`/editar?equipoId=${data.inventario}`);
       } else {
         toast.error("Equipo no encontrado");
       }
@@ -35,14 +40,18 @@ export default function Page() {
     setIsScanning(false);
 
     if (!code) return;
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      const { data } = await axios.get(`${api_url}/equipos/${code}`);
+      const { data } = await axios.get(`${api_url}/equipos/buscar/${code}`, {
+        headers,
+      });
 
       if (data) {
-        router.push(`/editar?equipoId=${data.id}`);
+        router.push(`/editar?equipoId=${data.inventario}`);
       } else {
-        router.push(`/agregarEquipo?equipoId=${data.id}`);
+        router.push(`/agregarEquipo?equipoId=${data.inventario}`);
       }
     } catch (error) {
       toast.error("Error No se encontro el equipo");
