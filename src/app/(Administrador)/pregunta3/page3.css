@@ -1,0 +1,150 @@
+/* --- Estilos específicos para la Pregunta 3 (Tabla y Pestañas) --- */
+
+.pregunta-subtexto {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+/* === PESTAÑAS === */
+.tab-container {
+  display: flex;
+  flex-wrap: nowrap; /* Para que las pestañas se mantengan en una fila */
+  overflow-x: auto; /* Permite scroll horizontal si hay muchas pestañas */
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.tab {
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  white-space: nowrap; /* Previene el salto de línea en el texto de la pestaña */
+  font-weight: 500;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+  margin-right: 0.25rem;
+}
+
+.tab.active {
+  color: #1e40af;
+  border-bottom: 3px solid #1e40af;
+  background-color: #f3f4f6;
+}
+
+.tab.inactive {
+  color: #6b7280;
+  background-color: #ffffff;
+}
+
+.tab.inactive:hover {
+  color: #1e40af;
+  background-color: #f9fafb;
+}
+
+/* === TABLA DE SERVIDORES === */
+.tabla-servidores-container {
+  overflow-x: auto; /* Permite scroll horizontal en la tabla */
+  margin-bottom: 2rem;
+  position: relative; /* Para posicionar el botón */
+}
+
+.tabla-servidores {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 900px; /* Asegura un ancho mínimo para que se vea bien */
+}
+
+/* Encabezados */
+.tabla-servidores th {
+  padding: 0.7rem 0.5rem;
+  text-align: center;
+  color: white;
+  font-weight: 600;
+  border: 1px solid #d1d5db;
+}
+
+.tabla-servidores thead .header-servidores,
+.tabla-servidores thead .header-total {
+  background-color: #3b82f6; /* Azul base para servidores/total */
+}
+
+.tabla-servidores thead .header-poblacion {
+  background-color: #ef4444; /* Rojo/Rosa para población (ajustar color si es necesario) */
+}
+
+.tabla-servidores thead .sub-header {
+  background-color: #f87171; /* Tono más claro para sub-encabezados de población */
+  color: white;
+}
+
+/* Celdas del cuerpo */
+.tabla-servidores td {
+  padding: 0; /* Quitamos padding de la celda para controlarlo en el input */
+  border: 1px solid #e5e7eb;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tabla-servidores .tipo-procesador {
+  padding: 0.7rem 0.5rem;
+  text-align: left;
+  font-weight: 500;
+  color: #374151;
+  background-color: #f9fafb;
+}
+
+.tabla-servidores input[type="text"] {
+  width: 100%;
+  padding: 0.5rem 0.3rem;
+  border: none;
+  text-align: center;
+  background-color: transparent;
+  box-sizing: border-box; /* Asegura que el padding no cambie el ancho */
+}
+
+.tabla-servidores input[type="text"]:read-only {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.tabla-servidores .total-celda {
+  background-color: #e0f2fe; /* Azul muy claro para las celdas de total */
+  font-weight: 600;
+  color: #1e40af;
+  padding: 0.5rem;
+}
+
+.tabla-servidores .fila-total td {
+  background-color: #bfdbfe; /* Azul más intenso para la fila total */
+  font-weight: 700;
+}
+
+.tabla-servidores .fila-total .total-celda {
+  background-color: #93c5fd;
+}
+
+/* Botón Consultar */
+.boton-consultar {
+  position: absolute;
+  bottom: -3.5rem; /* Debajo de la tabla */
+  right: 0;
+  background-color: #10b981; /* Verde */
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+  transition: background-color 0.2s;
+}
+
+.boton-consultar:hover {
+  background-color: #059669;
+}
+
+/* Ajuste para el contenedor de botones si ya existe */
+.boton-contenedor {
+  margin-top: 5rem; /* Asegura espacio debajo del botón 'Consultar' */
+}
