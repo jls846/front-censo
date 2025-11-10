@@ -144,118 +144,113 @@ export default function Pregunta3_4() {
   };
 
   return (
-    <main className="pregunta-page pregunta3">
-      <div className="pregunta-container">
-        <h1 className="pregunta-titulo">PREGUNTA 3 (4/5)</h1>
+    <main className="pregunta3-container">
+      <h1 className="pregunta3-titulo">PREGUNTA 3 (4/5)</h1>
 
-        <section className="pregunta-seccion">
-          <p className="pregunta-texto">
-            3. Desglose la cantidad de población beneficiada por plataforma y
-            tipo de procesador: *
-          </p>
-          <p className="pregunta-subtexto">
-            Presione cada pestaña para ingresar la información.
-          </p>
+      <div className="pregunta3-descripcion">
+        <p>
+          <strong>3.</strong> Desglose la cantidad de población beneficiada por
+          plataforma y tipo de procesador:
+        </p>
+        <span className="subtexto">
+          Presione cada pestaña para ingresar la información.
+        </span>
+      </div>
 
-          {/* === PESTAÑAS === */}
-          <div className="tab-container">
-            <div className="tab inactive">
-              Computadoras de escritorio Plataforma PC
-            </div>
-            <div className="tab inactive">
-              Computadoras de escritorio Plataforma Apple
-            </div>
-            <div className="tab inactive">
-              Computadoras portátiles Plataforma PC
-            </div>
-            <div className="tab active">
-              Computadoras portátiles Plataforma Apple
-            </div>
-            <div className="tab inactive">Alto rendimiento Servidores</div>
-          </div>
+      {/* === PESTAÑAS === */}
+      <div className="tabs">
+        <button className="tab inactive">
+          Computadoras de escritorio Plataforma PC
+        </button>
+        <button className="tab inactive">
+          Computadoras de escritorio Plataforma Apple
+        </button>
+        <button className="tab inactive">
+          Computadoras portátiles Plataforma PC
+        </button>
+        <button className="tab active">
+          Computadoras portátiles Plataforma Apple
+        </button>
+        <button className="tab inactive">Alto rendimiento Servidores</button>
+      </div>
 
-          {/* === TABLA === */}
-          <div className="tabla-apple-container">
-            <table className="tabla-apple">
-              <thead>
-                <tr>
-                  <th rowSpan={2} className="header-procesador">
-                    Plataforma Apple <br /> Tipo de procesador
-                  </th>
-                  <th colSpan={5} className="header-poblacion">
-                    Población Beneficiada
-                  </th>
-                  <th rowSpan={2} className="header-total">
-                    Total
-                  </th>
-                </tr>
-                <tr>
-                  <th className="sub-header">Alumnos</th>
-                  <th className="sub-header">Profesores</th>
-                  <th className="sub-header">Técnicos Académicos</th>
-                  <th className="sub-header">Investigadores</th>
-                  <th className="sub-header">Administrativos</th>
-                </tr>
-              </thead>
+      {/* === TABLA === */}
+      <div className="tabla-wrapper">
+        <table className="tabla-pregunta3">
+          <thead>
+            <tr>
+              <th rowSpan={2} className="header-procesador">
+                Plataforma Apple <br /> Tipo de procesador
+              </th>
+              <th colSpan={5} className="header-poblacion">
+                Población Beneficiada
+              </th>
+              <th rowSpan={2} className="header-total">
+                Total
+              </th>
+            </tr>
+            <tr>
+              <th>Alumnos</th>
+              <th>Profesores</th>
+              <th>Técnicos Académicos</th>
+              <th>Investigadores</th>
+              <th>Administrativos</th>
+            </tr>
+          </thead>
 
-              <tbody>
-                {data.map((item, index) => (
-                  <tr key={index}>
-                    <td className="tipo-procesador">{item.tipo}</td>
-                    <td>
-                      <input type="text" value={item.alumnos} readOnly />
-                    </td>
-                    <td>
-                      <input type="text" value={item.profesores} readOnly />
-                    </td>
-                    <td>
-                      <input type="text" value={item.tecnicos} readOnly />
-                    </td>
-                    <td>
-                      <input type="text" value={item.investigadores} readOnly />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={item.administrativos}
-                        readOnly
-                      />
-                    </td>
-                    <td className="total-celda">{item.total}</td>
-                  </tr>
-                ))}
-                <tr className="fila-total">
-                  <td className="tipo-procesador">Total</td>
-                  <td>
-                    <input type="text" value={total.alumnos} readOnly />
-                  </td>
-                  <td>
-                    <input type="text" value={total.profesores} readOnly />
-                  </td>
-                  <td>
-                    <input type="text" value={total.tecnicos} readOnly />
-                  </td>
-                  <td>
-                    <input type="text" value={total.investigadores} readOnly />
-                  </td>
-                  <td>
-                    <input type="text" value={total.administrativos} readOnly />
-                  </td>
-                  <td className="total-celda final-total">{total.total}</td>
-                </tr>
-              </tbody>
-            </table>
-            <button className="boton-consultar">
-              Consultar las equivalencias de procesadores
-            </button>
-          </div>
-        </section>
+          <tbody>
+            {data.map((item, index) => (
+              <tr key={index}>
+                <td className="tipo-procesador">{item.tipo}</td>
+                <td>
+                  <input type="text" value={item.alumnos} readOnly />
+                </td>
+                <td>
+                  <input type="text" value={item.profesores} readOnly />
+                </td>
+                <td>
+                  <input type="text" value={item.tecnicos} readOnly />
+                </td>
+                <td>
+                  <input type="text" value={item.investigadores} readOnly />
+                </td>
+                <td>
+                  <input type="text" value={item.administrativos} readOnly />
+                </td>
+                <td className="celda-total">{item.total}</td>
+              </tr>
+            ))}
+            <tr className="fila-total">
+              <td>Total</td>
+              <td>
+                <input type="text" value={total.alumnos} readOnly />
+              </td>
+              <td>
+                <input type="text" value={total.profesores} readOnly />
+              </td>
+              <td>
+                <input type="text" value={total.tecnicos} readOnly />
+              </td>
+              <td>
+                <input type="text" value={total.investigadores} readOnly />
+              </td>
+              <td>
+                <input type="text" value={total.administrativos} readOnly />
+              </td>
+              <td className="celda-total final">{total.total}</td>
+            </tr>
+          </tbody>
+        </table>
 
-        <div className="boton-contenedor">
-          <Link href="/pregunta3-5" className="boton siguiente">
-            Pregunta 3 (5/5) →
-          </Link>
-        </div>
+        <button className="boton-consultar">
+          Consultar las equivalencias de procesadores
+        </button>
+      </div>
+
+      <div className="boton-siguiente">
+        <Link href="/pregunta3.5" className="next">
+          Pregunta 3 (5/5) →
+        </Link>
       </div>
     </main>
   );

@@ -260,7 +260,7 @@ export default function Pregunta3_2() {
         </section>
 
         <div className="boton-contenedor">
-          <Link href="/pregunta3-3" className="boton siguiente">
+          <Link href="/pregunta3.3" className="boton siguiente">
             Pregunta 3 (3/5) →
           </Link>
         </div>
