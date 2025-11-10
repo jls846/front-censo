@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./pregunta7.css";
 
-export default function Pregunta9() {
+export default function Pregunta7() {
   
   const [datos, setDatos] = useState([
     { nombre: "Impresión", valores: ["", "", "", ""] },
