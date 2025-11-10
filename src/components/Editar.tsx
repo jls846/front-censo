@@ -2,16 +2,16 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
 import { AREAS } from "@/data/areas";
+import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
 
 import "../app/styles/layout/agregarEquipo.scss";
 import "./editar.css";
-import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
-import { useRouter } from "next/navigation";
 
 export default function Editar() {
   const searchParams = useSearchParams();
@@ -22,16 +22,16 @@ export default function Editar() {
   const [formData, setFormData] = useState({
     inventario: "",
     serie: "",
-    marca: "",
     modelo: "",
-    tipoEquipo: "",
-    estado: "",
-    sistemaOperativo: "",
-    procesador: "",
-    tipoUso: "",
-    observaciones: "",
-    adscripcion: "",
+    id_tipo_equipo: 0,
+    id_marca: 0,
+    id_estado: 0,
+    id_uso: 0,
+    id_adscripcion: 0,
+    id_sistema_operativo: 0,
+    id_procesador: 0,
     lugar: "",
+    observaciones: "",
     responsable: "",
     periferico: "",
     fechaFactura: "",
@@ -93,7 +93,7 @@ export default function Editar() {
   });
 
   const api_url = process.env.NEXT_PUBLIC_API_URL;
-  const mostrarCamposComputadora = formData.tipoEquipo !== "PERIFÉRICO";
+  const mostrarCamposComputadora = Number(formData.id_tipo_equipo) !== 9;
 
   // 🔹 Cargar catálogos
   useEffect(() => {
@@ -170,6 +170,7 @@ export default function Editar() {
       procesador_tipoequipo: {
         id: number;
         procesador: {
+          id_procesador: number;
           procesador: string;
         };
       } | null;
@@ -214,16 +215,17 @@ export default function Editar() {
         setFormData({
           inventario: equipo.inventario || "",
           serie: equipo.serie || "",
-          marca: equipo.marca?.marca || "",
+          id_marca: equipo.marca?.id_marca || 0,
           modelo: equipo.modelo || "",
-          tipoEquipo: equipo.tipoEquipo?.tipo_equipo || "",
-          estado: equipo.estado?.estado || "",
-          sistemaOperativo: equipo.sistemaOperativo?.sistema_operativo || "",
-          procesador:
-            equipo.procesador_tipoequipo?.procesador?.procesador || "",
-          tipoUso: equipo.tipoUso?.tipo_uso || "",
+          id_tipo_equipo: equipo.tipoEquipo?.id_tipo_de_equipo || 0,
+          id_estado: equipo.estado?.id_estado || 0,
+          id_sistema_operativo:
+            equipo.sistemaOperativo?.id_sistema_operativo || 0,
+          id_procesador:
+            equipo.procesador_tipoequipo?.procesador?.id_procesador || 0,
+          id_uso: equipo.tipoUso?.id_uso || 0,
           observaciones: equipo.observaciones || "",
-          adscripcion: equipo.adscripcion?.adscripcion || "",
+          id_adscripcion: equipo.adscripcion?.id_adscripcion || 0,
           lugar: equipo.lugar || "",
           periferico: equipo.periferico?.periferico || "",
           fechaFactura: equipo.fechaFactura || "",
@@ -244,7 +246,7 @@ export default function Editar() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const response = await axios.get(
-        `${api_url}/equipos/procesador-tipo-equipos/${formData.tipoEquipo}`,
+        `${api_url}/equipos/procesador-tipo-equipos/${formData.id_tipo_equipo}`,
         {
           headers,
         }
@@ -257,7 +259,7 @@ export default function Editar() {
 
   useEffect(() => {
     const fetchPerifericos = async () => {
-      if (formData.tipoEquipo !== "PERIFÉRICO") return;
+      if (Number(formData.id_tipo_equipo) != 9) return;
 
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
@@ -274,17 +276,31 @@ export default function Editar() {
     };
 
     fetchPerifericos();
-  }, [formData.tipoEquipo]);
+  }, [formData.id_tipo_equipo]);
 
   const handleGuardar = async () => {
     const token = Cookies.get("token");
     const headers = { Authorization: `Bearer ${token}` };
 
+    const data = {
+      id_estado: formData.id_estado,
+      id_adscripcion: formData.id_adscripcion,
+      lugar: formData.lugar,
+      id_sistema_operativo: formData.id_sistema_operativo,
+      id_uso: formData.id_uso,
+      serie: formData.serie,
+      modelo: formData.modelo,
+      id_marca: formData.id_marca,
+      observaciones: formData.observaciones,
+    };
+
     try {
       await axios.patch(
         `${api_url}/equipos/update/${formData.inventario}`,
-        formData,
-        { headers }
+        data,
+        {
+          headers,
+        }
       );
       toast.success("Equipo actualizado correctamente");
     } catch (error) {
@@ -332,7 +348,11 @@ export default function Editar() {
     <div className="agregarEquipoContainer">
       <div className="innerContainer">
         <h2 className="information">
-          <span>{formData.tipoEquipo}</span>
+          <span>
+            {tiposEquipo.find(
+              (t) => t.id_tipo_de_equipo === Number(formData.id_tipo_equipo)
+            )?.tipo_equipo || "Sin tipo"}
+          </span>
           <span>Inventario: {formData.inventario}</span>
           <span>
             Fecha de censo:{" "}
@@ -358,14 +378,14 @@ export default function Editar() {
             <div className="formGroup">
               <label>Marca</label>
               <select
-                value={formData.marca}
+                value={formData.id_marca}
                 onChange={(e) =>
-                  setFormData({ ...formData, marca: e.target.value })
+                  setFormData({ ...formData, id_marca: Number(e.target.value) })
                 }
               >
                 <option value="">Selecciona marca</option>
                 {marcas.map((m) => (
-                  <option key={m.id_marca} value={m.marca}>
+                  <option key={m.id_marca} value={m.id_marca}>
                     {m.marca}
                   </option>
                 ))}
@@ -387,14 +407,15 @@ export default function Editar() {
             <div className="formGroup">
               <label>Tipo de equipo</label>
               <select
-                value={formData.tipoEquipo}
+                required
+                value={formData.id_tipo_equipo}
                 onChange={(e) =>
-                  setFormData({ ...formData, tipoEquipo: e.target.value })
+                  handleInputChange("id_tipo_equipo", e.target.value)
                 }
               >
-                <option value="">Selecciona tipo</option>
+                <option value="">Selecciona tipo de equipo</option>
                 {tiposEquipo.map((t) => (
-                  <option key={t.id_tipo_de_equipo} value={t.tipo_equipo}>
+                  <option key={t.id_tipo_de_equipo} value={t.id_tipo_de_equipo}>
                     {t.tipo_equipo}
                   </option>
                 ))}
@@ -404,14 +425,17 @@ export default function Editar() {
             <div className="formGroup">
               <label>Estado</label>
               <select
-                value={formData.estado}
+                value={formData.id_estado}
                 onChange={(e) =>
-                  setFormData({ ...formData, estado: e.target.value })
+                  setFormData({
+                    ...formData,
+                    id_estado: Number(e.target.value),
+                  })
                 }
               >
                 <option value="">Selecciona estado</option>
                 {estados.map((e) => (
-                  <option key={e.id_estado} value={e.estado}>
+                  <option key={e.id_estado} value={e.id_estado}>
                     {e.estado}
                   </option>
                 ))}
@@ -424,9 +448,9 @@ export default function Editar() {
             <div className="formGroup">
               <label>Tipo de uso</label>
               <select
-                value={formData.tipoUso}
+                value={formData.id_uso}
                 onChange={(e) =>
-                  setFormData({ ...formData, tipoUso: e.target.value })
+                  setFormData({ ...formData, id_uso: Number(e.target.value) })
                 }
               >
                 <option value="">Selecciona uso</option>
@@ -443,33 +467,32 @@ export default function Editar() {
                 <div className="formGroup">
                   <label>Procesador</label>
                   <select
-                    value={formData.procesador || ""}
+                    value={formData.id_procesador}
                     onChange={(e) =>
                       handleInputChange("id_procesador", e.target.value)
                     }
                   >
                     <option value="">Selecciona procesador</option>
-                    {PROCESADORES_POR_EQUIPO[formData.tipoEquipo]?.map((p) => (
-                      <option key={p.id_procesador} value={p.id_procesador}>
-                        {p.procesador}
-                      </option>
-                    ))}
+                    {PROCESADORES_POR_EQUIPO[formData.id_tipo_equipo]?.map(
+                      (p) => (
+                        <option key={p.id_procesador} value={p.id_procesador}>
+                          {p.procesador}
+                        </option>
+                      )
+                    )}
                   </select>
                 </div>
 
                 <div className="formGroup">
                   <label>Sistema operativo</label>
                   <select
-                    value={formData.sistemaOperativo}
+                    value={formData.id_sistema_operativo}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        sistemaOperativo: e.target.value,
-                      })
+                      handleInputChange("id_sistema_operativo", e.target.value)
                     }
                   >
                     <option value="">Selecciona sistema operativo</option>
-                    {SO_POR_EQUIPO[formData.tipoEquipo]?.map((so) => (
+                    {SO_POR_EQUIPO[formData.id_tipo_equipo]?.map((so) => (
                       <option
                         key={so.id_sistema_operativo}
                         value={so.id_sistema_operativo}
@@ -507,7 +530,7 @@ export default function Editar() {
                 required
                 type="text"
                 placeholder="Ingresa adscripción"
-                value={formData.adscripcion}
+                value={formData.id_adscripcion}
                 onChange={(e) =>
                   handleInputChange("adscripcion", e.target.value)
                 }
