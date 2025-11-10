@@ -232,6 +232,8 @@ export default function Editar() {
           fechaFactura: equipo.fechaFactura || "",
           responsable,
         });
+
+        setAdscripcionLabel(equipo.adscripcion?.adscripcion);
       } catch (error) {
         console.error("Error al obtener el equipo:", error);
         toast.error("No se pudo cargar la información del equipo.");
@@ -351,6 +353,45 @@ export default function Editar() {
       return { ...prev, [field]: newValue };
     });
   };
+
+  useEffect(() => {
+    const fetchResponsable = async () => {
+      if (!formData.id_adscripcion) return;
+
+      try {
+        const response = await axios.post(
+          "https://venus.acatlan.unam.mx/funcionarios_test/test",
+          {
+            tipoBusqueda: "area",
+            IdUnidadResponsable: formData.id_adscripcion,
+          }
+        );
+
+        const data = response.data;
+
+        if (Array.isArray(data) && data.length > 0) {
+          const first = data[0];
+          setFormData((prev) => ({
+            ...prev,
+            responsable: `${first.nombre ?? ""} ${
+              first.apellidos ?? ""
+            }`.trim(),
+          }));
+        } else {
+          toast.error(
+            "No se encontró información de la adscripción seleccionada"
+          );
+          setFormData((prev) => ({ ...prev, responsable: "" }));
+        }
+      } catch (err) {
+        console.error("Error al obtener responsable:", err);
+        toast.error("No se pudo conseguir el responsable");
+        setFormData((prev) => ({ ...prev, responsable: "" }));
+      }
+    };
+
+    fetchResponsable();
+  }, [formData.id_adscripcion]);
 
   const handleCancelar = () => {
     router.push("/escaner");
@@ -546,6 +587,7 @@ export default function Editar() {
                 onChange={(e) =>
                   handleInputChange("adscripcionLabel", e.target.value)
                 }
+                style={{ fontSize: "13px" }}
               />
               {suggestions.adscripcion.length > 0 && (
                 <ul className="suggestions">
