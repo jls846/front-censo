@@ -6,7 +6,7 @@ export default function Pregunta9() {
   
   const [datos, setDatos] = useState([
     { nombre: "Impresión", valores: ["", "", "", ""] },
-    { nombre: "Digitilización", valores: ["", "", "", ""] },
+    { nombre: "Digitalización", valores: ["", "", "", ""] },
     
   ]);
 
@@ -17,21 +17,21 @@ export default function Pregunta9() {
     altoRendimiento: "",
   });
 
-  // Función para actualizar datos de Pregunta 9
+  // Función para actualizar datos de Pregunta 7
   const handleChange = (filaIndex: number, colIndex: number, value: string) => {
     const nuevosDatos = [...datos];
     nuevosDatos[filaIndex].valores[colIndex] = value;
     setDatos(nuevosDatos);
   };
 
-  // Función para calcular total de cada fila en Pregunta 9
+  // Función para calcular total de cada fila en Pregunta 7
   const calcularTotal = (valores: string[]) =>
     valores.reduce((acc, val) => acc + (Number(val) || 0), 0);
 
   return (
     <div className="contenedor-pregunta">
       {/* Pregunta 7 */}
-      <div className="contenedor-censo">Censo de equipos periféricos - Estado del equipo periférico (impresion y digitalización.)</div>
+      <div className="contenedor-censo">Censo de equipos periféricos - Estado del equipo periférico (impresión y digitalización.)</div>
      
 
       <div className="pregunta-cuadro">
