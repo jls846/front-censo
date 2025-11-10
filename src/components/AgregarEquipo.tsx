@@ -32,7 +32,7 @@ export default function Page() {
     id_procesador: 0,
     id_uso: "",
     id_marca: "",
-    id_periferico: "",
+    id_periferico: 0,
     isImpresora: false,
   });
 
