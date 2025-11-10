@@ -146,7 +146,7 @@ export default function Pregunta3_5() {
 
               <tbody>
                 {data.map((item, index) => (
-                  <tr key={index}>
+                  <tr key={index} className="tabla-fila">
                     <td className="tipo-procesador">{item.tipo}</td>
                     <td>
                       <input type="text" value={item.alumnos} readOnly />

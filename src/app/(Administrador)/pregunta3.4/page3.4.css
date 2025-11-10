@@ -1,170 +1,166 @@
-/* === ESTILOS PREGUNTA 3 (4/5) - Portátiles Plataforma Apple === */
+/* === CONTENEDOR GENERAL === */
+.pregunta3-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  font-family: "Inter", sans-serif;
+}
 
-.pregunta-titulo {
-  text-align: center;
-  color: #a855f7;
-  margin-bottom: 1.2rem;
-  font-size: 1.5rem;
+.pregunta3-titulo {
+  text-align: left;
+  font-size: 1.3rem;
   font-weight: 700;
-}
-
-.pregunta-texto {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.pregunta-subtexto {
-  font-size: 0.9rem;
-  color: #6b7280;
+  color: #6d28d9;
   margin-bottom: 1rem;
 }
 
-/* === PESTAÑAS === */
-.tab-container {
+.pregunta3-descripcion p {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.subtexto {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* === TABS === */
+.tabs {
   display: flex;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  margin: 1rem 0 1.5rem;
   border-bottom: 2px solid #e5e7eb;
-  margin-bottom: 1.5rem;
 }
 
 .tab {
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1.1rem;
+  font-size: 0.9rem;
+  border: none;
   cursor: pointer;
-  white-space: nowrap;
-  font-weight: 500;
-  border-radius: 8px 8px 0 0;
+  background: #fff;
+  color: #6b7280;
   transition: all 0.2s ease;
+  border-radius: 8px 8px 0 0;
   margin-right: 0.25rem;
 }
 
 .tab.active {
-  color: #9333ea;
+  background: #f3f4f6;
+  color: #7e22ce;
   border-bottom: 3px solid #9333ea;
-  background-color: #f3f4f6;
-}
-
-.tab.inactive {
-  color: #6b7280;
-  background-color: #ffffff;
 }
 
 .tab.inactive:hover {
+  background: #f9fafb;
   color: #9333ea;
-  background-color: #f9fafb;
 }
 
 /* === TABLA === */
-.tabla-apple-container {
+.tabla-wrapper {
   overflow-x: auto;
-  margin-bottom: 2rem;
   position: relative;
+  margin-bottom: 2.5rem;
 }
 
-.tabla-apple {
+.tabla-pregunta3 {
   width: 100%;
   border-collapse: collapse;
   min-width: 950px;
   font-size: 0.85rem;
 }
 
-.tabla-apple th {
-  padding: 0.7rem 0.5rem;
-  text-align: center;
-  color: white;
-  font-weight: 600;
-  border: 1px solid #d1d5db;
-}
-
-.tabla-apple .header-procesador,
-.tabla-apple .header-total {
-  background-color: #9333ea;
-}
-
-.tabla-apple .header-poblacion {
-  background-color: #7e22ce;
-}
-
-.tabla-apple .sub-header {
-  background-color: #a855f7;
-  color: white;
-}
-
-.tabla-apple td {
+.tabla-pregunta3 th,
+.tabla-pregunta3 td {
   border: 1px solid #e5e7eb;
   text-align: center;
-  vertical-align: middle;
+  padding: 0.5rem;
 }
 
-.tabla-apple .tipo-procesador {
-  text-align: left;
-  font-weight: 500;
-  padding: 0.6rem 0.5rem;
-  background-color: #faf5ff;
-  color: #4b5563;
+.header-procesador,
+.header-total {
+  background-color: #9333ea;
+  color: #fff;
+  font-weight: 600;
 }
 
-.tabla-apple input[type="text"] {
+.header-poblacion {
+  background-color: #7e22ce;
+  color: #fff;
+  font-weight: 600;
+}
+
+.tabla-pregunta3 th {
+  padding: 0.7rem;
+}
+
+.tabla-pregunta3 input {
   width: 100%;
-  padding: 0.45rem 0.3rem;
+  padding: 0.4rem;
   border: none;
   background-color: #f3f4f6;
   text-align: center;
-  box-sizing: border-box;
-  color: #374151;
+  font-size: 0.85rem;
 }
 
-.tabla-apple .total-celda {
+.tipo-procesador {
+  text-align: left;
+  background-color: #faf5ff;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.celda-total {
   background-color: #f3e8ff;
   font-weight: 600;
-  color: #7e22ce;
+  color: #6b21a8;
 }
 
-.tabla-apple .fila-total td {
+.fila-total td {
   background-color: #e9d5ff;
   font-weight: 700;
 }
 
-.tabla-apple .fila-total .total-celda {
+.fila-total .celda-total.final {
   background-color: #d8b4fe;
 }
 
 /* === BOTONES === */
 .boton-consultar {
   position: absolute;
-  bottom: -3.5rem;
+  bottom: -3rem;
   right: 0;
   background-color: #10b981;
   color: white;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1.1rem;
   border: none;
   border-radius: 8px;
   font-size: 0.9rem;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .boton-consultar:hover {
   background-color: #059669;
 }
 
-.boton-contenedor {
-  margin-top: 5rem;
+.boton-siguiente {
   text-align: right;
+  margin-top: 4rem;
 }
 
-.boton.siguiente {
+.next {
   background-color: #9333ea;
   color: white;
   padding: 0.7rem 1.4rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 500;
-  box-shadow: 0 2px 5px rgba(147, 51, 234, 0.3);
-  transition: background-color 0.2s;
+  transition: 0.2s;
 }
 
-.boton.siguiente:hover {
+.next:hover {
   background-color: #7e22ce;
 }

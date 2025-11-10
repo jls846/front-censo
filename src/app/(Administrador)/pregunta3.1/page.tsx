@@ -148,7 +148,7 @@ export default function Pregunta3() {
             Presione cada pestaña para ingresar la información.
           </p>
 
-          {/* Pestañas simuladas */}
+          {/* Pestañas */}
           <div className="tab-container">
             <div className="tab active">
               Computadoras de escritorio Plataforma PC
@@ -165,8 +165,8 @@ export default function Pregunta3() {
             <div className="tab inactive">Alto rendimiento Servidores</div>
           </div>
 
-          {/* Tabla principal */}
-          <div className="tabla-pc-container">
+          {/* Tabla */}
+          <div className="tabla-wrapper">
             <table className="tabla-pc">
               <thead>
                 <tr>
@@ -181,35 +181,31 @@ export default function Pregunta3() {
                   </th>
                 </tr>
                 <tr>
-                  <th className="sub-header">Alumnos</th>
-                  <th className="sub-header">Profesores</th>
-                  <th className="sub-header">Técnicos Académicos</th>
-                  <th className="sub-header">Investigadores</th>
-                  <th className="sub-header">Administrativos</th>
+                  <th>Alumnos</th>
+                  <th>Profesores</th>
+                  <th>Técnicos Académicos</th>
+                  <th>Investigadores</th>
+                  <th>Administrativos</th>
                 </tr>
               </thead>
               <tbody>
-                {data.map((item, index) => (
-                  <tr key={index}>
+                {data.map((item, i) => (
+                  <tr key={i}>
                     <td className="tipo-procesador">{item.tipo}</td>
                     <td>
-                      <input type="text" value={item.alumnos} readOnly />
+                      <input value={item.alumnos} readOnly />
                     </td>
                     <td>
-                      <input type="text" value={item.profesores} readOnly />
+                      <input value={item.profesores} readOnly />
                     </td>
                     <td>
-                      <input type="text" value={item.tecnicos} readOnly />
+                      <input value={item.tecnicos} readOnly />
                     </td>
                     <td>
-                      <input type="text" value={item.investigadores} readOnly />
+                      <input value={item.investigadores} readOnly />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        value={item.administrativos}
-                        readOnly
-                      />
+                      <input value={item.administrativos} readOnly />
                     </td>
                     <td className="total-celda">{item.total}</td>
                   </tr>
@@ -217,19 +213,19 @@ export default function Pregunta3() {
                 <tr className="fila-total">
                   <td className="tipo-procesador">Total</td>
                   <td>
-                    <input type="text" value={total.alumnos} readOnly />
+                    <input value={total.alumnos} readOnly />
                   </td>
                   <td>
-                    <input type="text" value={total.profesores} readOnly />
+                    <input value={total.profesores} readOnly />
                   </td>
                   <td>
-                    <input type="text" value={total.tecnicos} readOnly />
+                    <input value={total.tecnicos} readOnly />
                   </td>
                   <td>
-                    <input type="text" value={total.investigadores} readOnly />
+                    <input value={total.investigadores} readOnly />
                   </td>
                   <td>
-                    <input type="text" value={total.administrativos} readOnly />
+                    <input value={total.administrativos} readOnly />
                   </td>
                   <td className="total-celda final-total">{total.total}</td>
                 </tr>
@@ -242,7 +238,7 @@ export default function Pregunta3() {
         </section>
 
         <div className="boton-contenedor">
-          <Link href="/pregunta3-2" className="boton siguiente">
+          <Link href="/pregunta3.2" className="boton siguiente">
             Pregunta 3 (2/5) →
           </Link>
         </div>

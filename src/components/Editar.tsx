@@ -87,6 +87,7 @@ export default function Editar() {
   >([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
   const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
+  const [adscripcionLabel, setAdscripcionLabel] = useState("");
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
@@ -309,35 +310,46 @@ export default function Editar() {
     }
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleInputChange = (
+    field: string,
+    value: string | number | boolean
+  ) => {
+    if (field === "adscripcionLabel") {
+      const textValue = value as string;
+      setAdscripcionLabel(textValue);
 
-    if (field === "adscripcion") {
-      if (value.length < 3) {
-        setSuggestions((prev) => ({ ...prev, adscripcion: [] }));
-        return;
+      const matches = AREAS.filter((a) =>
+        a.label.toLowerCase().includes(textValue.toLowerCase())
+      ).map((a) => a.label);
+
+      setSuggestions((prev) => ({
+        ...prev,
+        adscripcion: matches.slice(0, 5),
+      }));
+      return;
+    }
+
+    setFormData((prev) => {
+      const newValue =
+        field.startsWith("id_") && value !== "" ? Number(value) : value;
+
+      if (field === "id_tipo_equipo") {
+        const idTipoEquipo = Number(value);
+        const tipoSeleccionado = tiposEquipo.find(
+          (t) => t.id_tipo_de_equipo === idTipoEquipo
+        );
+        const esPeriferico = tipoSeleccionado?.tipo_equipo === "PERIFÉRICO";
+
+        return {
+          ...prev,
+          id_tipo_equipo: idTipoEquipo,
+          isImpresora: esPeriferico,
+        };
       }
 
-      const normalize = (str: string) =>
-        str
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .toLowerCase()
-          .trim();
-
-      const searchValue = normalize(value);
-
-      const matches = AREAS.map((a) => a.label)
-        .filter((label) => normalize(label).includes(searchValue))
-        .slice(0, 5);
-
-      setSuggestions((prev) => ({ ...prev, adscripcion: matches }));
-    }
-  };
-
-  const handleSelectSuggestion = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setSuggestions((prev) => ({ ...prev, [field]: [] }));
+      // Caso general
+      return { ...prev, [field]: newValue };
+    });
   };
 
   const handleCancelar = () => {
@@ -455,7 +467,7 @@ export default function Editar() {
               >
                 <option value="">Selecciona uso</option>
                 {tiposUso.map((t) => (
-                  <option key={t.id_uso} value={t.tipo_uso}>
+                  <option key={t.id_uso} value={t.id_uso}>
                     {t.tipo_uso}
                   </option>
                 ))}
@@ -530,9 +542,9 @@ export default function Editar() {
                 required
                 type="text"
                 placeholder="Ingresa adscripción"
-                value={formData.id_adscripcion}
+                value={adscripcionLabel}
                 onChange={(e) =>
-                  handleInputChange("adscripcion", e.target.value)
+                  handleInputChange("adscripcionLabel", e.target.value)
                 }
               />
               {suggestions.adscripcion.length > 0 && (
@@ -540,7 +552,20 @@ export default function Editar() {
                   {suggestions.adscripcion.map((s) => (
                     <li
                       key={s}
-                      onClick={() => handleSelectSuggestion("adscripcion", s)}
+                      onClick={() => {
+                        const selected = AREAS.find((a) => a.label === s);
+                        if (selected) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            id_adscripcion: selected.id,
+                          }));
+                          setAdscripcionLabel(selected.label);
+                          setSuggestions((prev) => ({
+                            ...prev,
+                            adscripcion: [],
+                          }));
+                        }
+                      }}
                     >
                       {s}
                     </li>
