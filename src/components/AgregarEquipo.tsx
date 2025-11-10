@@ -25,13 +25,13 @@ export default function Page() {
     fechaFactura: new Date(),
     antiguedad: "MENORES DE 2",
     modelo: "",
-    id_estado: "",
+    id_estado: 0,
     id_adscripcion: 0,
-    id_tipo_equipo: "",
+    id_tipo_equipo: 0,
     id_sistema_operativo: 0,
     id_procesador: 0,
-    id_uso: "",
-    id_marca: "",
+    id_uso: 0,
+    id_marca: 0,
     id_periferico: 0,
     isImpresora: false,
   });
@@ -192,12 +192,16 @@ export default function Page() {
     fetchPerifericos();
   }, [formData.id_tipo_equipo]);
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (
+    field: string,
+    value: string | number | boolean
+  ) => {
     if (field === "adscripcionLabel") {
-      setAdscripcionLabel(value);
+      const textValue = value as string;
+      setAdscripcionLabel(textValue);
 
       const matches = AREAS.filter((a) =>
-        a.label.toLowerCase().includes(value.toLowerCase())
+        a.label.toLowerCase().includes(textValue.toLowerCase())
       ).map((a) => a.label);
 
       setSuggestions((prev) => ({
@@ -208,17 +212,21 @@ export default function Page() {
     }
 
     setFormData((prev) => {
-      let newValue = value;
-      if (field.startsWith("id_")) {
-        newValue = value ? Number(value) : "";
-      }
+      const newValue =
+        field.startsWith("id_") && value !== "" ? Number(value) : value;
 
       if (field === "id_tipo_equipo") {
+        const idTipoEquipo = Number(value);
         const tipoSeleccionado = tiposEquipo.find(
-          (t) => t.id_tipo_de_equipo === Number(value)
+          (t) => t.id_tipo_de_equipo === idTipoEquipo
         );
         const esPeriferico = tipoSeleccionado?.tipo_equipo === "PERIFÉRICO";
-        return { ...prev, [field]: newValue, isImpresora: esPeriferico };
+
+        return {
+          ...prev,
+          id_tipo_equipo: idTipoEquipo,
+          isImpresora: esPeriferico,
+        };
       }
 
       return { ...prev, [field]: newValue };
