@@ -88,6 +88,7 @@ export default function Editar() {
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
   const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
   const [adscripcionLabel, setAdscripcionLabel] = useState("");
+  const [id, setId] = useState(0);
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
@@ -234,6 +235,7 @@ export default function Editar() {
         });
 
         setAdscripcionLabel(equipo.adscripcion?.adscripcion);
+        setId(equipo.id_equipo);
       } catch (error) {
         console.error("Error al obtener el equipo:", error);
         toast.error("No se pudo cargar la información del equipo.");
@@ -283,7 +285,7 @@ export default function Editar() {
 
   const handleGuardar = async () => {
 
-    
+
     if (!formData.inventario) {
       toast.error("Inventario no encontrado");
       return;
@@ -321,7 +323,7 @@ export default function Editar() {
       }
     }
 
-    if(formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9){
+    if (formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9) {
       if (!formData.id_sistema_operativo) {
         toast.error("Sistema operativo no encontrado ");
         return;
@@ -339,6 +341,7 @@ export default function Editar() {
     const headers = { Authorization: `Bearer ${token}` };
 
     const data = {
+      id_procesador:formData.id_procesador,
       id_estado: formData.id_estado,
       id_adscripcion: formData.id_adscripcion,
       lugar: formData.lugar,
@@ -352,7 +355,7 @@ export default function Editar() {
 
     try {
       await axios.patch(
-        `${api_url}/equipos/update/${formData.inventario}`,
+        `${api_url}/equipos/update/${id}`,
         data,
         {
           headers,
@@ -426,9 +429,8 @@ export default function Editar() {
           const first = data[0];
           setFormData((prev) => ({
             ...prev,
-            responsable: `${first.nombre ?? ""} ${
-              first.apellidos ?? ""
-            }`.trim(),
+            responsable: `${first.nombre ?? ""} ${first.apellidos ?? ""
+              }`.trim(),
           }));
         } else {
           toast.error(
@@ -513,6 +515,8 @@ export default function Editar() {
             <div className="formGroup">
               <label>Tipo de equipo</label>
               <select
+                style={{ background: "#f6f7f9" }}
+                disabled
                 required
                 value={formData.id_tipo_equipo}
                 onChange={(e) =>
@@ -672,6 +676,7 @@ export default function Editar() {
             <div className="formGroup">
               <label>Responsable</label>
               <input
+                style={{ background: "#f6f7f9" }}
                 type="text"
                 value={formData.responsable}
                 disabled

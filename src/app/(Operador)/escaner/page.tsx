@@ -29,10 +29,11 @@ export default function Page() {
       if (data) {
         router.push(`/editar?equipoId=${data.inventario}`);
       } else {
-        toast.error("Equipo no encontrado");
+        router.push(`/agregarEquipo?equipoId=${data.inventario}`);
       }
     } catch (error) {
-      toast.error(`Equipo no encontrado,${error}`);
+      toast.error("Error No se encontro el equipo");
+      router.push(`/agregarEquipo?equipoId=${search}`);
     }
   };
 
