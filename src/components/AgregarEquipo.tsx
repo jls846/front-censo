@@ -234,6 +234,58 @@ export default function Page() {
   };
 
   const handleGuardar = async () => {
+
+    if (!formData.inventario) {
+      toast.error("Inventario no encontrado");
+      return;
+    }
+
+    if (!formData.id_marca) {
+      toast.error("marca no encontrada");
+      return;
+    }
+
+    if (!formData.id_tipo_equipo) {
+      toast.error("Tipo de equipo no encontrado");
+      return;
+    }
+
+    if (!formData.id_estado) {
+      toast.error("estado no encontrado");
+      return;
+    }
+
+    if (!formData.id_uso) {
+      toast.error("tipo de uso no encontrado");
+      return;
+    }
+
+    if (!formData.id_adscripcion) {
+      toast.error("adscripcion no encontrado");
+      return;
+    }
+
+    if (formData.id_tipo_equipo == 9) {
+      if (!formData.id_periferico) {
+        toast.error("Periferico no encontrado");
+        return;
+      }
+    }
+
+    if(formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9){
+      if (!formData.id_sistema_operativo) {
+        toast.error("Sistema operativo no encontrado ");
+        return;
+      }
+    }
+
+    if (formData.id_tipo_equipo != 9) {
+      if (!formData.id_procesador) {
+        toast.error("Procesador no encontrado");
+        return;
+      }
+    }
+
     try {
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };

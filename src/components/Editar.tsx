@@ -33,7 +33,7 @@ export default function Editar() {
     lugar: "",
     observaciones: "",
     responsable: "",
-    periferico: "",
+    id_periferico: 0,
     fechaFactura: "",
   });
 
@@ -228,7 +228,7 @@ export default function Editar() {
           observaciones: equipo.observaciones || "",
           id_adscripcion: equipo.adscripcion?.id_adscripcion || 0,
           lugar: equipo.lugar || "",
-          periferico: equipo.periferico?.periferico || "",
+          id_periferico: equipo.periferico?.id_periferico || 0,
           fechaFactura: equipo.fechaFactura || "",
           responsable,
         });
@@ -282,6 +282,59 @@ export default function Editar() {
   }, [formData.id_tipo_equipo]);
 
   const handleGuardar = async () => {
+
+    
+    if (!formData.inventario) {
+      toast.error("Inventario no encontrado");
+      return;
+    }
+
+    if (!formData.id_marca) {
+      toast.error("marca no encontrada");
+      return;
+    }
+
+    if (!formData.id_tipo_equipo) {
+      toast.error("Tipo de equipo no encontrado");
+      return;
+    }
+
+    if (!formData.id_estado) {
+      toast.error("estado no encontrado");
+      return;
+    }
+
+    if (!formData.id_uso) {
+      toast.error("tipo de uso no encontrado");
+      return;
+    }
+
+    if (!formData.id_adscripcion) {
+      toast.error("adscripcion no encontrado");
+      return;
+    }
+
+    if (formData.id_tipo_equipo == 9) {
+      if (!formData.id_periferico) {
+        toast.error("Periferico no encontrado");
+        return;
+      }
+    }
+
+    if(formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9){
+      if (!formData.id_sistema_operativo) {
+        toast.error("Sistema operativo no encontrado ");
+        return;
+      }
+    }
+
+    if (formData.id_tipo_equipo != 9) {
+      if (!formData.id_procesador) {
+        toast.error("Procesador no encontrado");
+        return;
+      }
+    }
+
     const token = Cookies.get("token");
     const headers = { Authorization: `Bearer ${token}` };
 
@@ -562,14 +615,14 @@ export default function Editar() {
               <div className="formGroup">
                 <label>Tipos de Periféricos</label>
                 <select
-                  value={formData.periferico || ""}
+                  value={formData.id_periferico || 0}
                   onChange={(e) =>
                     handleInputChange("tipoPeriferico", e.target.value)
                   }
                 >
                   <option value="">Selecciona periférico</option>
                   {perifericos.map((p) => (
-                    <option key={p.id_periferico} value={p.periferico}>
+                    <option key={p.id_periferico} value={p.id_periferico}>
                       {p.periferico}
                     </option>
                   ))}
