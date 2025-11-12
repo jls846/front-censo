@@ -1,98 +1,119 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import Quagga from "@ericblade/quagga2";
+import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
-// Tipos para la configuración (opcional, pero mejora legibilidad)
-interface QuaggaConfig {
-  inputStream: {
-    name: string;
-    type: string;
-    target: HTMLElement;
-    constraints: MediaTrackConstraints;
-  };
-  decoder: {
-    readers: string[];
-  };
-  locate: boolean;
+// 👇 Declaraciones globales para BarcodeDetector
+declare global {
+  interface BarcodeDetectorOptions {
+    formats?: string[];
+  }
+
+  interface DetectedBarcode {
+    rawValue: string;
+    format: string;
+    cornerPoints?: DOMPoint[];
+    boundingBox?: DOMRectReadOnly;
+  }
+
+  class BarcodeDetector {
+    constructor(options?: BarcodeDetectorOptions);
+    detect(source: ImageBitmapSource): Promise<DetectedBarcode[]>;
+    static getSupportedFormats(): Promise<string[]>;
+  }
 }
+export {};
 
 interface BarcodeScannerProps {
   onScan: (code: string) => void;
 }
 
 export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
-  const scannerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const lastScan = useRef<string | null>(null);
+
+  // 🔹 Verifica soporte antes de montar el componente
+  if (typeof window !== "undefined" && !("BarcodeDetector" in window)) {
+    toast.error("BarcodeDetector API no soportada en este navegador");
+    return null;
+  }
 
   useEffect(() => {
-    if (!scannerRef.current) return;
+    let stream: MediaStream | null = null;
+    let detector: BarcodeDetector | null = null;
+    let animationFrame: number;
 
-    const config: QuaggaConfig = {
-      inputStream: {
-        name: "Live",
-        type: "LiveStream",
-        target: scannerRef.current,
-        constraints: {
-          width: 300,
-          height: 500,
-          facingMode: "environment",
-        },
-      },
-      decoder: {
-        readers: ["code_128_reader"],
-      },
-      locate: true,
-    };
+    const startCamera = async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+        });
 
-    // El callback de error: tipamos `err` como `unknown`
-    const initCallback = (err: unknown) => {
-      if (err) {
-        console.error("Error al iniciar el escáner:", err);
-        return;
-      }
-      Quagga.start();
-    };
+        if (!videoRef.current) return;
 
-    Quagga.init(config as unknown as Record<string, unknown>, initCallback);
+        videoRef.current.srcObject = stream;
 
-    // Handler de detección: `data` es `unknown`, lo validamos
-    const handleDetected = (data: unknown) => {
-      // Validación segura
-      if (
-        data != null &&
-        typeof data === "object" &&
-        "codeResult" in data &&
-        data.codeResult != null &&
-        typeof data.codeResult === "object" &&
-        "code" in data.codeResult &&
-        typeof data.codeResult.code === "string"
-      ) {
-        const code = data.codeResult.code.trim();
-        if (code !== "") {
-          onScan(code);
-          Quagga.stop(); // Opcional
+        // Esperar a que el video esté listo antes de reproducirlo
+        await new Promise((resolve) => {
+          videoRef.current!.onloadedmetadata = () => resolve(true);
+        });
+
+        await videoRef.current.play().catch((err) => {
+          console.warn("No se pudo reproducir automáticamente:", err);
+        });
+
+        if (!("BarcodeDetector" in window)) {
+          console.error("BarcodeDetector API no soportada en este navegador");
+          return;
         }
+
+        detector = new BarcodeDetector({ formats: ["code_128", "ean_13"] });
+
+        const detect = async () => {
+          if (!videoRef.current || !detector) return;
+          try {
+            const barcodes = await detector.detect(videoRef.current);
+            if (barcodes.length > 0) {
+              const rawValue = barcodes[0].rawValue.trim();
+              if (rawValue && rawValue !== lastScan.current) {
+                lastScan.current = rawValue;
+                const processed = rawValue.startsWith("0")
+                  ? rawValue.slice(1)
+                  : rawValue;
+                onScan(processed);
+              }
+            }
+          } catch (err) {
+            console.error(err);
+          }
+          animationFrame = requestAnimationFrame(detect);
+        };
+
+        detect();
+      } catch (err) {
+        console.error("Error al iniciar cámara:", err);
+        toast.error("No se pudo acceder a la cámara");
       }
     };
 
-    Quagga.onDetected(handleDetected);
+    startCamera();
 
     return () => {
-      Quagga.offDetected(handleDetected);
-      Quagga.stop();
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      if (stream) stream.getTracks().forEach((t) => t.stop());
     };
   }, [onScan]);
 
   return (
-    <div
-      ref={scannerRef}
+    <video
+      ref={videoRef}
       style={{
         width: "100%",
-        maxWidth: "500px",
+        maxWidth: "480px",
         height: "300px",
-        borderRadius: "12px",
-        overflow: "hidden",
         border: "2px solid #0056b3",
+        borderRadius: "12px",
+        objectFit: "cover",
       }}
     />
   );

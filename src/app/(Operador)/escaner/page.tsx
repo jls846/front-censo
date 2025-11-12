@@ -67,7 +67,10 @@ export default function Page() {
         <h3>Escanear Inventario</h3>
 
         {isScanning ? (
-          <BarcodeScanner onScan={handleScan} />
+          <BarcodeScanner
+            key="scanner"
+            onScan={handleScan}
+          />
         ) : (
           <div className="scannerFrame">
             <Image
