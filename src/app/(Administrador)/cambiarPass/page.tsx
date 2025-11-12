@@ -47,39 +47,39 @@ export default function Page() {
   };
 
   return (
-    <main className="forgot-password-page">
-      <h1>Cambiar contraseña</h1>
-      <p>Ingresa el nombre del usuario y su nueva contraseña.</p>
+    <section className="forgot-password-page">
+      <div>
 
-      <form onSubmit={handleSubmit} className="forgot-form">
-        <label htmlFor="nombre">Nombre de usuario</label>
-        <input
-          id="nombre"
-          type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          placeholder="Nombre de usuario"
-          required
-        />
+        <h1>Cambiar contraseña  de operador</h1>
+        <p>Ingresa el nombre del usuario y su nueva contraseña.</p>
 
-        <label htmlFor="contraseña">Nueva contraseña</label>
-        <input
-          id="contraseña"
-          type="password"
-          value={contraseña}
-          onChange={(e) => setContraseña(e.target.value)}
-          placeholder="Nueva contraseña"
-          required
-        />
+        <form onSubmit={handleSubmit} className="forgot-form">
+          <label htmlFor="nombre">Nombre de usuario</label>
+          <input
+            id="nombre"
+            type="text"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Nombre de usuario"
+            required
+          />
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Actualizando..." : "Cambiar contraseña"}
-        </button>
+          <label htmlFor="contraseña">Nueva contraseña</label>
+          <input
+            id="contraseña"
+            type="password"
+            value={contraseña}
+            onChange={(e) => setContraseña(e.target.value)}
+            placeholder="Nueva contraseña"
+            required
+          />
 
-        <div style={{ marginTop: 8 }}>
-          <Link href="/">Regresar al inicio</Link>
-        </div>
-      </form>
-    </main>
+          <button type="submit" disabled={loading}>
+            {loading ? "Actualizando..." : "Cambiar contraseña"}
+          </button>
+
+        </form>
+      </div>
+    </section>
   );
 }

@@ -73,7 +73,7 @@ export default function Page() {
   return (
     <section className="containerGrid">
       <div className="login-container">
-        <h2>Crear cuenta</h2>
+        <h2>Crear cuenta de Operador</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Nombre de usuario</label>
@@ -82,17 +82,6 @@ export default function Page() {
               placeholder="Escribe tu nombre"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label>Correo electrónico</label>
-            <input
-              type="email"
-              placeholder="Tu correo"
-              value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
               required
             />
           </div>
@@ -123,7 +112,6 @@ export default function Page() {
             {loading ? "Creando cuenta..." : "Registrarse"}
           </button>
 
-          <Link href="/">¿Ya tienes cuenta? Inicia sesión</Link>
         </form>
       </div>
     </section>

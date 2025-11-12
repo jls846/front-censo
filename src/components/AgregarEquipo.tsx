@@ -160,7 +160,7 @@ export default function Page() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const response = await axios.get(
-        `${api_url}/equipos/procesador-tipo-equipos/${formData.id_tipo_equipo}`,
+        `${api_url}/equipos/procesador-tipo-equipos`,
         {
           headers,
         }
@@ -422,12 +422,13 @@ export default function Page() {
                 <div className="formGroup">
                   <label>Procesador</label>
                   <select
+                                      disabled={formData.id_tipo_equipo ==0}
                     value={formData.id_procesador}
                     onChange={(e) =>
                       handleInputChange("id_procesador", e.target.value)
                     }
                   >
-                    <option value="">Selecciona procesador</option>
+                    <option value="">{formData.id_tipo_equipo ? "Selecciona procesador":"Selecciona primero el tipo de equipo"}</option>
                     {PROCESADORES_POR_EQUIPO[formData.id_tipo_equipo]?.map(
                       (p) => (
                         <option key={p.id_procesador} value={p.id_procesador}>
@@ -441,6 +442,7 @@ export default function Page() {
                   <div className="formGroup">
                     <label>Sistema operativo</label>
                     <select
+                    disabled={formData.id_tipo_equipo ==0}
                       value={formData.id_sistema_operativo}
                       onChange={(e) =>
                         handleInputChange(
@@ -449,7 +451,7 @@ export default function Page() {
                         )
                       }
                     >
-                      <option value="">Selecciona sistema operativo</option>
+                      <option value="">{formData.id_tipo_equipo ? "Selecciona sistema operativo":"Selecciona primero el tipo de equipo"}</option>
                       {SO_POR_EQUIPO[formData.id_tipo_equipo]?.map((so) => (
                         <option
                           key={so.id_sistema_operativo}

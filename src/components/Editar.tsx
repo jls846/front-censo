@@ -88,6 +88,7 @@ export default function Editar() {
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
   const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
   const [adscripcionLabel, setAdscripcionLabel] = useState("");
+  const [id, setId] = useState(0);
 
   const [suggestions, setSuggestions] = useState({
     adscripcion: [] as string[],
@@ -168,13 +169,10 @@ export default function Editar() {
         sistema_operativo: string;
       } | null;
       tipoEquipo: { id_tipo_de_equipo: number; tipo_equipo: string } | null;
-      procesador_tipoequipo: {
-        id: number;
-        procesador: {
-          id_procesador: number;
-          procesador: string;
-        };
-      } | null;
+      procesador: {
+        id_procesador: number;
+        procesador: string;
+      };
       tipoUso: { id_uso: number; tipo_uso: string };
       marca: { id_marca: number; marca: string };
       periferico: { id_periferico: number; periferico: string };
@@ -222,8 +220,7 @@ export default function Editar() {
           id_estado: equipo.estado?.id_estado || 0,
           id_sistema_operativo:
             equipo.sistemaOperativo?.id_sistema_operativo || 0,
-          id_procesador:
-            equipo.procesador_tipoequipo?.procesador?.id_procesador || 0,
+          id_procesador:equipo.procesador?.id_procesador || 0,
           id_uso: equipo.tipoUso?.id_uso || 0,
           observaciones: equipo.observaciones || "",
           id_adscripcion: equipo.adscripcion?.id_adscripcion || 0,
@@ -234,6 +231,7 @@ export default function Editar() {
         });
 
         setAdscripcionLabel(equipo.adscripcion?.adscripcion);
+        setId(equipo.id_equipo);
       } catch (error) {
         console.error("Error al obtener el equipo:", error);
         toast.error("No se pudo cargar la información del equipo.");
@@ -249,7 +247,7 @@ export default function Editar() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const response = await axios.get(
-        `${api_url}/equipos/procesador-tipo-equipos/${formData.id_tipo_equipo}`,
+        `${api_url}/equipos/procesador-tipo-equipos`,
         {
           headers,
         }
@@ -283,7 +281,7 @@ export default function Editar() {
 
   const handleGuardar = async () => {
 
-    
+
     if (!formData.inventario) {
       toast.error("Inventario no encontrado");
       return;
@@ -321,7 +319,7 @@ export default function Editar() {
       }
     }
 
-    if(formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9){
+    if (formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9) {
       if (!formData.id_sistema_operativo) {
         toast.error("Sistema operativo no encontrado ");
         return;
@@ -339,11 +337,12 @@ export default function Editar() {
     const headers = { Authorization: `Bearer ${token}` };
 
     const data = {
+      id_procesador: formData.id_procesador,
       id_estado: formData.id_estado,
       id_adscripcion: formData.id_adscripcion,
       lugar: formData.lugar,
       id_sistema_operativo: formData.id_sistema_operativo,
-      id_uso: formData.id_uso,
+      id_tipo_uso: formData.id_uso,
       serie: formData.serie,
       modelo: formData.modelo,
       id_marca: formData.id_marca,
@@ -352,7 +351,7 @@ export default function Editar() {
 
     try {
       await axios.patch(
-        `${api_url}/equipos/update/${formData.inventario}`,
+        `${api_url}/equipos/update/${id}`,
         data,
         {
           headers,
@@ -426,9 +425,8 @@ export default function Editar() {
           const first = data[0];
           setFormData((prev) => ({
             ...prev,
-            responsable: `${first.nombre ?? ""} ${
-              first.apellidos ?? ""
-            }`.trim(),
+            responsable: `${first.nombre ?? ""} ${first.apellidos ?? ""
+              }`.trim(),
           }));
         } else {
           toast.error(
@@ -513,6 +511,8 @@ export default function Editar() {
             <div className="formGroup">
               <label>Tipo de equipo</label>
               <select
+                style={{ background: "#f6f7f9" }}
+                disabled
                 required
                 value={formData.id_tipo_equipo}
                 onChange={(e) =>
@@ -578,7 +578,7 @@ export default function Editar() {
                       handleInputChange("id_procesador", e.target.value)
                     }
                   >
-                    <option value="">Selecciona procesador</option>
+                    <option value="">{formData.id_tipo_equipo ? "Selecciona procesador" : "Selecciona primero el tipo de equipo"}</option>
                     {PROCESADORES_POR_EQUIPO[formData.id_tipo_equipo]?.map(
                       (p) => (
                         <option key={p.id_procesador} value={p.id_procesador}>
@@ -672,6 +672,7 @@ export default function Editar() {
             <div className="formGroup">
               <label>Responsable</label>
               <input
+                style={{ background: "#f6f7f9" }}
                 type="text"
                 value={formData.responsable}
                 disabled
