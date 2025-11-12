@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { BrowserMultiFormatReader } from "@zxing/browser";
+import { NotFoundException } from "@zxing/library";
 
 interface BarcodeScannerProps {
   onScan: (code: string) => void;
@@ -28,20 +29,18 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
 
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" },
+          video: { facingMode: { ideal: "environment" } }, // 👈 fuerza cámara trasera
         });
 
         if (!videoRef.current) return;
         videoRef.current.srcObject = stream;
 
-        // ✅ Esperar a que realmente empiece a reproducirse
         await new Promise<void>((resolve) => {
           videoRef.current!.onloadedmetadata = async () => {
             try {
               await videoRef.current!.play();
               resolve();
-            } catch (err) {
-              console.error("Error al reproducir cámara:", err);
+            } catch {
               resolve();
             }
           };
@@ -54,7 +53,6 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
         const detect = async () => {
           if (!videoRef.current) return;
 
-          // ❗ Safari puede lanzar Invalid element si no hay frame válido
           if (videoRef.current.readyState < 2) {
             animationFrame = requestAnimationFrame(detect);
             return;
@@ -71,12 +69,11 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
               }
             }
           } catch (err: any) {
-            // Safari puede lanzar este error hasta que haya frame visible
             if (
               err.message?.includes("Invalid element") ||
               err.name === "InvalidStateError"
             ) {
-              // Ignorar y seguir intentando
+              // ignorar mientras no haya frame válido
             } else {
               console.error("Error detectando código:", err);
             }
@@ -104,7 +101,17 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
           return;
         }
 
-        const selectedDeviceId = devices[0].deviceId;
+        // 🔍 Intentar encontrar la cámara trasera
+        const backCamera =
+          devices.find((d) =>
+            d.label.toLowerCase().includes("back")
+          ) || devices.find((d) =>
+            d.label.toLowerCase().includes("rear")
+          ) || devices[devices.length - 1]; // fallback
+
+        const selectedDeviceId = backCamera.deviceId;
+
+        console.log("Usando cámara:", backCamera.label || selectedDeviceId);
 
         await zxingReader.decodeFromVideoDevice(
           selectedDeviceId,
@@ -117,6 +124,8 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
                 const processed = code.startsWith("0") ? code.slice(1) : code;
                 onScan(processed);
               }
+            } else if (err && !(err instanceof NotFoundException)) {
+              console.error("Error ZXing:", err);
             }
           }
         );
