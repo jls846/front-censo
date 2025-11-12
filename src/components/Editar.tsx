@@ -251,7 +251,7 @@ export default function Editar() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const response = await axios.get(
-        `${api_url}/equipos/procesador-tipo-equipos/${formData.id_tipo_equipo}`,
+        `${api_url}/equipos/procesador-tipo-equipos`,
         {
           headers,
         }
@@ -582,7 +582,7 @@ export default function Editar() {
                       handleInputChange("id_procesador", e.target.value)
                     }
                   >
-                    <option value="">Selecciona procesador</option>
+                    <option value="">{formData.id_tipo_equipo ? "Selecciona procesador":"Selecciona primero el tipo de equipo"}</option>
                     {PROCESADORES_POR_EQUIPO[formData.id_tipo_equipo]?.map(
                       (p) => (
                         <option key={p.id_procesador} value={p.id_procesador}>
