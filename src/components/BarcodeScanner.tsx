@@ -2,27 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-
-// 👇 Declaraciones globales para BarcodeDetector
-declare global {
-  interface BarcodeDetectorOptions {
-    formats?: string[];
-  }
-
-  interface DetectedBarcode {
-    rawValue: string;
-    format: string;
-    cornerPoints?: DOMPoint[];
-    boundingBox?: DOMRectReadOnly;
-  }
-
-  class BarcodeDetector {
-    constructor(options?: BarcodeDetectorOptions);
-    detect(source: ImageBitmapSource): Promise<DetectedBarcode[]>;
-    static getSupportedFormats(): Promise<string[]>;
-  }
-}
-export {};
+import { BrowserMultiFormatReader } from "@zxing/browser";
 
 interface BarcodeScannerProps {
   onScan: (code: string) => void;
@@ -32,75 +12,134 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const lastScan = useRef<string | null>(null);
 
-  // 🔹 Verifica soporte antes de montar el componente
-  if (typeof window !== "undefined" && !("BarcodeDetector" in window)) {
-    toast.error("BarcodeDetector API no soportada en este navegador");
-    return null;
-  }
-
   useEffect(() => {
     let stream: MediaStream | null = null;
-    let detector: BarcodeDetector | null = null;
     let animationFrame: number;
+    let zxingReader: BrowserMultiFormatReader | null = null;
+    let detector: any = null;
 
-    const startCamera = async () => {
+    /** 🚀 Intentar usar BarcodeDetector API (moderno) */
+    const startBarcodeDetector = async () => {
+      const supported = "BarcodeDetector" in window;
+      if (!supported) {
+        console.warn("BarcodeDetector no soportado, usando ZXing...");
+        return startZXing();
+      }
+
       try {
         stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: "environment" },
         });
 
         if (!videoRef.current) return;
-
         videoRef.current.srcObject = stream;
 
-        // Esperar a que el video esté listo antes de reproducirlo
-        await new Promise((resolve) => {
-          videoRef.current!.onloadedmetadata = () => resolve(true);
+        // ✅ Esperar a que realmente empiece a reproducirse
+        await new Promise<void>((resolve) => {
+          videoRef.current!.onloadedmetadata = async () => {
+            try {
+              await videoRef.current!.play();
+              resolve();
+            } catch (err) {
+              console.error("Error al reproducir cámara:", err);
+              resolve();
+            }
+          };
         });
 
-        await videoRef.current.play().catch((err) => {
-          console.warn("No se pudo reproducir automáticamente:", err);
+        detector = new (window as any).BarcodeDetector({
+          formats: ["code_128", "ean_13", "qr_code"],
         });
-
-        if (!("BarcodeDetector" in window)) {
-          console.error("BarcodeDetector API no soportada en este navegador");
-          return;
-        }
-
-        detector = new BarcodeDetector({ formats: ["code_128", "ean_13"] });
 
         const detect = async () => {
-          if (!videoRef.current || !detector) return;
+          if (!videoRef.current) return;
+
+          // ❗ Safari puede lanzar Invalid element si no hay frame válido
+          if (videoRef.current.readyState < 2) {
+            animationFrame = requestAnimationFrame(detect);
+            return;
+          }
+
           try {
             const barcodes = await detector.detect(videoRef.current);
             if (barcodes.length > 0) {
-              const rawValue = barcodes[0].rawValue.trim();
-              if (rawValue && rawValue !== lastScan.current) {
-                lastScan.current = rawValue;
-                const processed = rawValue.startsWith("0")
-                  ? rawValue.slice(1)
-                  : rawValue;
+              const raw = barcodes[0].rawValue.trim();
+              if (raw && raw !== lastScan.current) {
+                lastScan.current = raw;
+                const processed = raw.startsWith("0") ? raw.slice(1) : raw;
                 onScan(processed);
               }
             }
-          } catch (err) {
-            console.error(err);
+          } catch (err: any) {
+            // Safari puede lanzar este error hasta que haya frame visible
+            if (
+              err.message?.includes("Invalid element") ||
+              err.name === "InvalidStateError"
+            ) {
+              // Ignorar y seguir intentando
+            } else {
+              console.error("Error detectando código:", err);
+            }
           }
+
           animationFrame = requestAnimationFrame(detect);
         };
 
         detect();
       } catch (err) {
-        console.error("Error al iniciar cámara:", err);
+        console.error("Error con BarcodeDetector:", err);
         toast.error("No se pudo acceder a la cámara");
+        startZXing();
       }
     };
 
-    startCamera();
+    /** 🧩 Fallback con ZXing-JS (para iPad/Safari sin soporte nativo) */
+    const startZXing = async () => {
+      try {
+        zxingReader = new BrowserMultiFormatReader();
+        const devices = await BrowserMultiFormatReader.listVideoInputDevices();
 
+        if (devices.length === 0) {
+          toast.error("No se detectó cámara disponible");
+          return;
+        }
+
+        const selectedDeviceId = devices[0].deviceId;
+
+        await zxingReader.decodeFromVideoDevice(
+          selectedDeviceId,
+          videoRef.current!,
+          (result, err) => {
+            if (result) {
+              const code = result.getText().trim();
+              if (code && code !== lastScan.current) {
+                lastScan.current = code;
+                const processed = code.startsWith("0") ? code.slice(1) : code;
+                onScan(processed);
+              }
+            }
+          }
+        );
+      } catch (error) {
+        console.error("Error al iniciar ZXing:", error);
+        toast.error("Error al iniciar escáner");
+      }
+    };
+
+    startBarcodeDetector();
+
+    /** 🧹 Limpieza */
     return () => {
       if (animationFrame) cancelAnimationFrame(animationFrame);
       if (stream) stream.getTracks().forEach((t) => t.stop());
+
+      if (zxingReader) {
+        if (typeof (zxingReader as any).stopContinuousDecode === "function") {
+          (zxingReader as any).stopContinuousDecode();
+        } else if (typeof (zxingReader as any).reset === "function") {
+          (zxingReader as any).reset();
+        }
+      }
     };
   }, [onScan]);
 
@@ -115,6 +154,8 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
         borderRadius: "12px",
         objectFit: "cover",
       }}
+      muted
+      playsInline
     />
   );
 }
