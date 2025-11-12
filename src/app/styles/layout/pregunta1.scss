@@ -46,11 +46,11 @@
     background-color: #fafafa;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-evenly;
   }
 
   .tab {
-    padding: 18px 16px;
+    padding: auto 16px;
     cursor: pointer;
     border-right: 1px solid #e0e0e0;
     color: #555;
@@ -138,7 +138,6 @@
 
   .scanView .tab {
     flex: 1;
-    padding: 14px 0;
     text-align: center;
     font-size: 13px;
   }

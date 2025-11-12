@@ -13,8 +13,6 @@ export default function Reporte() {
 
   return (
     <div className="reporte-container">
-      <h1 className="titulo-reporte">Reporte General de Preguntas</h1>
-
       <div className="reporte-contenido">
         {/* Pregunta 1 */}
         <div className="bloque-pregunta">
