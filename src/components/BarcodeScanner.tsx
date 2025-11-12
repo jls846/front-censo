@@ -90,7 +90,6 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
       }
     };
 
-    /** 🧩 Fallback con ZXing-JS (para iPad/Safari sin soporte nativo) */
     const startZXing = async () => {
       try {
         zxingReader = new BrowserMultiFormatReader();
@@ -137,7 +136,7 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
 
     startBarcodeDetector();
 
-    /** 🧹 Limpieza */
+
     return () => {
       if (animationFrame) cancelAnimationFrame(animationFrame);
       if (stream) stream.getTracks().forEach((t) => t.stop());
@@ -168,3 +167,5 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
     />
   );
 }
+//Chatgpt
+//Gemini
