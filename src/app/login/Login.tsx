@@ -54,7 +54,7 @@ export default function Login() {
   return (
     <section className="containerGrid">
       <div className="login-container">
-        <h2>Inicio de sesión</h2>
+        <h2>Sistema de censo</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Usuario</label>

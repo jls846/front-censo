@@ -6,7 +6,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
-import { AREAS } from "@/data/areas";
 import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
 import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
 import { useRouter } from "next/navigation";
@@ -133,7 +132,6 @@ export default function Page() {
         setAdscripciones(adscripcionesRes.data);
         setTiposEquipo(tiposEquipoRes.data);
         setSistemasOperativos(sistemasOperativosRes.data);
-        console.log(adscripciones);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response) {
@@ -200,9 +198,15 @@ export default function Page() {
       const textValue = value as string;
       setAdscripcionLabel(textValue);
 
-      const matches = AREAS.filter((a) =>
-        a.label.toLowerCase().includes(textValue.toLowerCase())
-      ).map((a) => a.label);
+      const normalize = (str: string) =>
+        str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase();
+
+      const matches = adscripciones
+        .filter((a) => normalize(a.adscripcion).includes(normalize(textValue)))
+        .map((a) => a.adscripcion);
 
       setSuggestions((prev) => ({
         ...prev,
@@ -234,7 +238,6 @@ export default function Page() {
   };
 
   const handleGuardar = async () => {
-
     if (!formData.inventario) {
       toast.error("Inventario no encontrado");
       return;
@@ -272,7 +275,11 @@ export default function Page() {
       }
     }
 
-    if(formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9){
+    if (
+      formData.id_tipo_equipo != 8 &&
+      formData.id_tipo_equipo != 7 &&
+      formData.id_tipo_equipo != 9
+    ) {
       if (!formData.id_sistema_operativo) {
         toast.error("Sistema operativo no encontrado ");
         return;
@@ -422,13 +429,17 @@ export default function Page() {
                 <div className="formGroup">
                   <label>Procesador</label>
                   <select
-                                      disabled={formData.id_tipo_equipo ==0}
+                    disabled={formData.id_tipo_equipo == 0}
                     value={formData.id_procesador}
                     onChange={(e) =>
                       handleInputChange("id_procesador", e.target.value)
                     }
                   >
-                    <option value="">{formData.id_tipo_equipo ? "Selecciona procesador":"Selecciona primero el tipo de equipo"}</option>
+                    <option value="">
+                      {formData.id_tipo_equipo
+                        ? "Selecciona procesador"
+                        : "Selecciona primero el tipo de equipo"}
+                    </option>
                     {PROCESADORES_POR_EQUIPO[formData.id_tipo_equipo]?.map(
                       (p) => (
                         <option key={p.id_procesador} value={p.id_procesador}>
@@ -442,7 +453,7 @@ export default function Page() {
                   <div className="formGroup">
                     <label>Sistema operativo</label>
                     <select
-                    disabled={formData.id_tipo_equipo ==0}
+                      disabled={formData.id_tipo_equipo == 0}
                       value={formData.id_sistema_operativo}
                       onChange={(e) =>
                         handleInputChange(
@@ -451,7 +462,11 @@ export default function Page() {
                         )
                       }
                     >
-                      <option value="">{formData.id_tipo_equipo ? "Selecciona sistema operativo":"Selecciona primero el tipo de equipo"}</option>
+                      <option value="">
+                        {formData.id_tipo_equipo
+                          ? "Selecciona sistema operativo"
+                          : "Selecciona primero el tipo de equipo"}
+                      </option>
                       {SO_POR_EQUIPO[formData.id_tipo_equipo]?.map((so) => (
                         <option
                           key={so.id_sistema_operativo}
@@ -502,13 +517,15 @@ export default function Page() {
                     <li
                       key={s}
                       onClick={() => {
-                        const selected = AREAS.find((a) => a.label === s);
+                        const selected = adscripciones.find(
+                          (a) => a.adscripcion === s
+                        );
                         if (selected) {
                           setFormData((prev) => ({
                             ...prev,
-                            id_adscripcion: selected.id,
+                            id_adscripcion: selected.id_adscripcion,
                           }));
-                          setAdscripcionLabel(selected.label);
+                          setAdscripcionLabel(selected.adscripcion);
                           setSuggestions((prev) => ({
                             ...prev,
                             adscripcion: [],
