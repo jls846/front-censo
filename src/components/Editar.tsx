@@ -463,10 +463,13 @@ export default function Editar() {
             )?.tipo_equipo || "Sin tipo"}
           </span>
           <span>Inventario: {formData.inventario}</span>
-          <span>
-            Fecha de censo:{" "}
-            {new Date(formData.fechaMovimiento).toLocaleDateString("es-MX")}
-          </span>
+<span>
+  Fecha de censo:{" "}
+  {formData.fechaMovimiento
+    ? new Date(formData.fechaMovimiento).toLocaleDateString("es-MX")
+    : "Sin fecha"}
+</span>
+
         </h2>
 
         <form className="equipoForm">
