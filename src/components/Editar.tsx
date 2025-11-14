@@ -212,7 +212,7 @@ export default function Editar() {
 
         setFormData({
           inventario: equipo.inventario || "",
-          serie: equipo.serie || "",
+          serie: equipo.serie.toUpperCase() || "",
           id_marca: equipo.marca?.id_marca || 0,
           modelo: equipo.modelo || "",
           id_tipo_equipo: equipo.tipoEquipo?.id_tipo_de_equipo || 0,
@@ -372,7 +372,7 @@ export default function Editar() {
 
       const normalize = (str: string) =>
         str
-          .normalize("NFD") 
+          .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
           .toLowerCase();
 
@@ -479,7 +479,10 @@ export default function Editar() {
                 value={formData.serie}
                 placeholder="Ingresa serie"
                 onChange={(e) =>
-                  setFormData({ ...formData, serie: e.target.value })
+                  setFormData({
+                    ...formData,
+                    serie: e.target.value.toUpperCase(),
+                  })
                 }
               />
             </div>
