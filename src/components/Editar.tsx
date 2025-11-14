@@ -212,7 +212,7 @@ export default function Editar() {
 
         setFormData({
           inventario: equipo.inventario || "",
-          serie: equipo.serie.toUpperCase() || "",
+          serie: (equipo.serie || "").toUpperCase(),
           id_marca: equipo.marca?.id_marca || 0,
           modelo: equipo.modelo || "",
           id_tipo_equipo: equipo.tipoEquipo?.id_tipo_de_equipo || 0,
