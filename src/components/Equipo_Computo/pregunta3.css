@@ -1,0 +1,167 @@
+/* === CONTENEDOR GENERAL === */
+.pregunta-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.pregunta-container {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.pregunta-titulo {
+  text-align: center;
+  color: #1e3a8a;
+  margin-bottom: 1.2rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.pregunta-texto {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.pregunta-subtexto {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+/* === PESTAÑAS === */
+.tab-container {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 500;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+  margin-right: 0.25rem;
+}
+
+.tab.active {
+  font-weight: 600;
+  background-color: #f3f4f6;
+}
+
+.tab.inactive {
+  color: #6b7280;
+  background-color: #ffffff;
+}
+
+.tab.inactive:hover {
+  background-color: #f9fafb;
+}
+
+/* === TABLA === */
+.tabla-container {
+  overflow-x: auto;
+  position: relative;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 950px;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tabla th {
+  padding: 0.7rem 0.5rem;
+  text-align: center;
+  color: white;
+  font-weight: 600;
+  border: 1px solid #d1d5db;
+}
+
+.tabla .sub-header {
+  background-color: #9ca3af;
+}
+
+.tabla td {
+  border: 1px solid #e5e7eb;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tabla tr:hover td {
+  background-color: #f9fafb;
+}
+
+.tipo-procesador {
+  text-align: left;
+  font-weight: 500;
+  padding: 0.6rem 0.5rem;
+  background-color: #f9fafb;
+  color: #374151;
+}
+
+.tabla input[type="text"] {
+  width: 100%;
+  padding: 0.45rem 0.3rem;
+  border: none;
+  background-color: #f3f4f6;
+  text-align: center;
+  box-sizing: border-box;
+  color: #374151;
+}
+
+.total-celda {
+  font-weight: 600;
+  color: #111827;
+  background-color: #eef2ff;
+}
+
+.fila-total td {
+  background-color: #e0e7ff;
+  font-weight: 700;
+}
+
+/* === BOTONES === */
+.boton-consultar {
+  margin-top: 1rem;
+  background-color: #10b981;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+  transition: background-color 0.2s;
+  float: right;
+}
+
+.boton-consultar:hover {
+  background-color: #059669;
+}
+
+.boton-contenedor {
+  margin-top: 4rem;
+  text-align: right;
+}
+
+.boton.volver {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.3);
+  transition: background-color 0.2s;
+}
+
+.boton.volver:hover {
+  background-color: #1d4ed8;
+}
