@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import "../../styles/layout/pregunta1.scss";
+import styles from "./pregunta1.module.scss";
 
 type OsEntry = {
   os: string;
@@ -83,19 +83,21 @@ export default function Pregunta1() {
   const currentData = MOCK_DATA[activeTab];
 
   return (
-    <div className="scanView">
-      <div className="container">
-        <div className="header">
+    <div className={styles.scanView_P1}>
+      <div className={styles.container_P1}>
+        <div className={styles.header_P1}>
           Presione cada pestaña para ver la información de las plataformas.
         </div>
 
-        <div className="main-content">
+        <div className={styles["main-content_P1"]}>
           {/* Tabs */}
-          <div className="tabs">
+          <div className={styles.tabs_P1}>
             {Object.entries(PLATFORM_LABELS).map(([key, label]) => (
               <button
                 key={key}
-                className={`tab ${activeTab === key ? "active" : ""}`}
+                className={`${styles.tab_P1} ${
+                  activeTab === key ? styles.active_P1 : ""
+                }`}
                 onClick={() => setActiveTab(key as PlatformKey)}
                 aria-selected={activeTab === key}
               >
@@ -105,15 +107,17 @@ export default function Pregunta1() {
           </div>
 
           {/* Data Table */}
-          <div className="data-table-wrapper">
-            <div className="data-table">
+          <div className={styles["data-table-wrapper_P1"]}>
+            <div className={styles["data-table_P1"]}>
               {currentData.map((item, index) => (
                 <div
                   key={index}
-                  className={`data-row ${item.isTotal ? "total-row" : ""}`}
+                  className={`${styles["data-row_P1"]} ${
+                    item.isTotal ? styles["total-row_P1"] : ""
+                  }`}
                 >
-                  <div className="os-name">{item.os}</div>
-                  <div className="count-box">{item.count}</div>
+                  <div className={styles["os-name_P1"]}>{item.os}</div>
+                  <div className={styles["count-box_P1"]}>{item.count}</div>
                 </div>
               ))}
             </div>
