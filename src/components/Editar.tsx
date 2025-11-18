@@ -7,7 +7,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
-import { AREAS } from "@/data/areas";
 import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
 
 import "../app/styles/layout/agregarEquipo.scss";
@@ -34,7 +33,7 @@ export default function Editar() {
     observaciones: "",
     responsable: "",
     id_periferico: 0,
-    fechaFactura: "",
+    fechaMovimiento: "",
   });
 
   interface TipoUso {
@@ -159,7 +158,7 @@ export default function Editar() {
       inventario: string;
       serie: string;
       lugar: string;
-      fechaFactura: string;
+      fechaMovimiento: string;
       antiguedad: string;
       modelo: string;
       estado: { id_estado: number; estado: string };
@@ -213,20 +212,20 @@ export default function Editar() {
 
         setFormData({
           inventario: equipo.inventario || "",
-          serie: equipo.serie || "",
+          serie: (equipo.serie || "").toUpperCase(),
           id_marca: equipo.marca?.id_marca || 0,
           modelo: equipo.modelo || "",
           id_tipo_equipo: equipo.tipoEquipo?.id_tipo_de_equipo || 0,
           id_estado: equipo.estado?.id_estado || 0,
           id_sistema_operativo:
             equipo.sistemaOperativo?.id_sistema_operativo || 0,
-          id_procesador:equipo.procesador?.id_procesador || 0,
+          id_procesador: equipo.procesador?.id_procesador || 0,
           id_uso: equipo.tipoUso?.id_uso || 0,
           observaciones: equipo.observaciones || "",
           id_adscripcion: equipo.adscripcion?.id_adscripcion || 0,
           lugar: equipo.lugar || "",
           id_periferico: equipo.periferico?.id_periferico || 0,
-          fechaFactura: equipo.fechaFactura || "",
+          fechaMovimiento: equipo.fechaMovimiento || "",
           responsable,
         });
 
@@ -280,8 +279,6 @@ export default function Editar() {
   }, [formData.id_tipo_equipo]);
 
   const handleGuardar = async () => {
-
-
     if (!formData.inventario) {
       toast.error("Inventario no encontrado");
       return;
@@ -319,7 +316,11 @@ export default function Editar() {
       }
     }
 
-    if (formData.id_tipo_equipo != 8 && formData.id_tipo_equipo != 7 && formData.id_tipo_equipo != 9) {
+    if (
+      formData.id_tipo_equipo != 8 &&
+      formData.id_tipo_equipo != 7 &&
+      formData.id_tipo_equipo != 9
+    ) {
       if (!formData.id_sistema_operativo) {
         toast.error("Sistema operativo no encontrado ");
         return;
@@ -350,14 +351,11 @@ export default function Editar() {
     };
 
     try {
-      await axios.patch(
-        `${api_url}/equipos/update/${id}`,
-        data,
-        {
-          headers,
-        }
-      );
+      await axios.patch(`${api_url}/equipos/update/${id}`, data, {
+        headers,
+      });
       toast.success("Equipo actualizado correctamente");
+      router.push("/escaner");
     } catch (error) {
       console.error("Error al guardar:", error);
       toast.error("Hubo un error al guardar el equipo.");
@@ -372,9 +370,15 @@ export default function Editar() {
       const textValue = value as string;
       setAdscripcionLabel(textValue);
 
-      const matches = AREAS.filter((a) =>
-        a.label.toLowerCase().includes(textValue.toLowerCase())
-      ).map((a) => a.label);
+      const normalize = (str: string) =>
+        str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase();
+
+      const matches = adscripciones
+        .filter((a) => normalize(a.adscripcion).includes(normalize(textValue)))
+        .map((a) => a.adscripcion);
 
       setSuggestions((prev) => ({
         ...prev,
@@ -425,8 +429,9 @@ export default function Editar() {
           const first = data[0];
           setFormData((prev) => ({
             ...prev,
-            responsable: `${first.nombre ?? ""} ${first.apellidos ?? ""
-              }`.trim(),
+            responsable: `${first.nombre ?? ""} ${
+              first.apellidos ?? ""
+            }`.trim(),
           }));
         } else {
           toast.error(
@@ -460,7 +465,9 @@ export default function Editar() {
           <span>Inventario: {formData.inventario}</span>
           <span>
             Fecha de censo:{" "}
-            {new Date(formData.fechaFactura).toLocaleDateString("es-MX")}
+            {formData.fechaMovimiento
+              ? new Date(formData.fechaMovimiento).toLocaleDateString("es-MX")
+              : "Sin fecha"}
           </span>
         </h2>
 
@@ -474,7 +481,10 @@ export default function Editar() {
                 value={formData.serie}
                 placeholder="Ingresa serie"
                 onChange={(e) =>
-                  setFormData({ ...formData, serie: e.target.value })
+                  setFormData({
+                    ...formData,
+                    serie: e.target.value.toUpperCase(),
+                  })
                 }
               />
             </div>
@@ -578,7 +588,11 @@ export default function Editar() {
                       handleInputChange("id_procesador", e.target.value)
                     }
                   >
-                    <option value="">{formData.id_tipo_equipo ? "Selecciona procesador" : "Selecciona primero el tipo de equipo"}</option>
+                    <option value="">
+                      {formData.id_tipo_equipo
+                        ? "Selecciona procesador"
+                        : "Selecciona primero el tipo de equipo"}
+                    </option>
                     {PROCESADORES_POR_EQUIPO[formData.id_tipo_equipo]?.map(
                       (p) => (
                         <option key={p.id_procesador} value={p.id_procesador}>
@@ -648,13 +662,15 @@ export default function Editar() {
                     <li
                       key={s}
                       onClick={() => {
-                        const selected = AREAS.find((a) => a.label === s);
+                        const selected = adscripciones.find(
+                          (a) => a.adscripcion === s
+                        );
                         if (selected) {
                           setFormData((prev) => ({
                             ...prev,
-                            id_adscripcion: selected.id,
+                            id_adscripcion: selected.id_adscripcion,
                           }));
-                          setAdscripcionLabel(selected.label);
+                          setAdscripcionLabel(selected.adscripcion);
                           setSuggestions((prev) => ({
                             ...prev,
                             adscripcion: [],

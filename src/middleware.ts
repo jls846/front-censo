@@ -13,6 +13,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [],
+  matcher: ["/escaner","/agregarEquipo","/editar"],
 };
 //IO

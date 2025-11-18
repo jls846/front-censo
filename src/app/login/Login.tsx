@@ -11,11 +11,14 @@ import toast from "react-hot-toast";
 export default function Login() {
   const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -43,13 +46,15 @@ export default function Login() {
       } else {
         toast.error("Ocurrió un error inesperado");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section className="containerGrid">
       <div className="login-container">
-        <h2>Inicio de sesión</h2>
+        <h2>Sistema de censo</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Usuario</label>
@@ -71,7 +76,9 @@ export default function Login() {
               required
             />
           </div>
-          <button type="submit">Iniciar sesión</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Buscando..." : "Iniciar sesión"}
+          </button>
 
           {/* <Link href={"/forgotPassword"}>Olvidaste Contraseña?</Link> */}
           {/* <Link href={"/crearCuenta"}>Crear Cuenta</Link> */}
