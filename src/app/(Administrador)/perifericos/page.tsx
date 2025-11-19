@@ -23,15 +23,6 @@ const LABELS: Record<PreguntaKey, string> = {
   pregunta7: "Pregunta 7",
 };
 
-// Mapeo de fondo por pregunta (puedes personalizarlo)
-const TAB_BACKGROUNDS: Record<PreguntaKey, string> = {
-  pregunta1: "bg-gray",
-  pregunta2: "bg-gray",
-  pregunta4: "bg-gray",
-  pregunta5: "bg-gray",
-  pregunta7: "bg-gray",
-};
-
 export default function Page() {
   const [activeTab, setActiveTab] = useState<PreguntaKey>("pregunta1");
 
@@ -56,8 +47,6 @@ export default function Page() {
     }
   };
 
-  const currentBgClass = TAB_BACKGROUNDS[activeTab] || "bg-gray";
-
   return (
     <div className="scanView_reporte">
       <div className="container_reporte">
@@ -75,7 +64,7 @@ export default function Page() {
               </button>
             ))}
           </div>
-          <div className={`data-table_reporte ${currentBgClass}`}>
+          <div className={`data-table_reporte`}>
             {renderPregunta()}
           </div>
         </div>
