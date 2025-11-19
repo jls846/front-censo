@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import "../../styles/layout/pregunta1.scss";
 
 type OsEntry = {
   os: string;

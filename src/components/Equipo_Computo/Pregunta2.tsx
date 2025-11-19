@@ -1,158 +1,128 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import "./pregunta2.scss";
+import { useState } from "react";
+import styles from "./pregunta2.module.scss";
 
-// Tipos
 type OsEntry = {
   os: string;
-  count: string; // o number si la API devuelve números
+  count: number;
   isTotal?: boolean;
 };
 
-type PlatformData = {
-  [key: string]: OsEntry[];
-};
+type PlatformKey =
+  | "pc-desktop"
+  | "apple-desktop"
+  | "pc-laptop"
+  | "apple-laptop"
+  | "servers";
 
-// === DATOS TEMPORALES (mock) ===
+type PlatformData = Record<PlatformKey, OsEntry[]>;
+
 const MOCK_DATA: PlatformData = {
   "pc-desktop": [
-    { os: "Windows 11", count: "408" },
-    { os: "Windows 10", count: "1171" },
-    { os: "Windows 7/8", count: "177" },
-    { os: "Windows XP/Vista", count: "43" },
-    { os: "Linux", count: "45" },
-    { os: "Total", count: "1844", isTotal: true },
+    { os: "Windows 11", count: 408 },
+    { os: "Windows 10", count: 1171 },
+    { os: "Windows 7/8", count: 177 },
+    { os: "Windows XP/Vista", count: 43 },
+    { os: "Linux", count: 45 },
+    { os: "Total", count: 1844, isTotal: true },
   ],
   "apple-desktop": [
-    { os: "Mac OS X(13 - Ventura, 14 - Sonoma)", count: "205" },
+    { os: "Mac OS X (13 - Ventura, 14 - Sonoma)", count: 205 },
     {
-      os: "Mac OS X(Mojave,Catalina,11 - Big Sur, 12 - Monterrey)",
-      count: "180",
+      os: "Mac OS X (Mojave, Catalina, 11 - Big Sur, 12 - Monterrey)",
+      count: 180,
     },
-    { os: "Mac OS X(Yosemite,El Capitan,Sierra,High Sierra)", count: "95" },
-    { os: "Mac OS X(Snow Leopard,Mountain Lion,Mavericks)", count: "6" },
-    { os: "Total", count: "480", isTotal: true },
+    { os: "Mac OS X (Yosemite, El Capitan, Sierra, High Sierra)", count: 95 },
+    { os: "Mac OS X (Snow Leopard, Mountain Lion, Mavericks)", count: 6 },
+    { os: "Total", count: 480, isTotal: true },
   ],
   "pc-laptop": [
-    { os: "Windows 11", count: "40" },
-    { os: "Windows 10", count: "171" },
-    { os: "Windows 7/8", count: "17" },
-    { os: "Windows XP/Vista", count: "3" },
-    { os: "Linux", count: "5" },
-    { os: "Total", count: "144", isTotal: true },
+    { os: "Windows 11", count: 40 },
+    { os: "Windows 10", count: 171 },
+    { os: "Windows 7/8", count: 17 },
+    { os: "Windows XP/Vista", count: 3 },
+    { os: "Linux", count: 5 },
+    { os: "Total", count: 236, isTotal: true },
   ],
   "apple-laptop": [
-    { os: "Mac OS X(13 - Ventura, 14 - Sonoma)", count: "39" },
+    { os: "Mac OS X (13 - Ventura, 14 - Sonoma)", count: 205 },
     {
-      os: "Mac OS X(Mojave,Catalina,11 - Big Sur, 12 - Monterrey)",
-      count: "23",
+      os: "Mac OS X (Mojave, Catalina, 11 - Big Sur, 12 - Monterrey)",
+      count: 180,
     },
-    { os: "Mac OS X(Yosemite,El Capitan,Sierra,High Sierra)", count: "0" },
-    { os: "Mac OS X(Snow Leopard,Mountain Lion,Mavericks)", count: "9" },
-    { os: "Total", count: "71", isTotal: true },
+    { os: "Mac OS X (Yosemite, El Capitan, Sierra, High Sierra)", count: 95 },
+    { os: "Mac OS X (Snow Leopard, Mountain Lion, Mavericks)", count: 6 },
+    { os: "Total", count: 480, isTotal: true },
   ],
   servers: [
     {
-      os: "Linux (CentOs,Fedora,Ubuntu,Red Hat Enterprise,entre otros)",
-      count: "21",
+      os: "Linux (CentOS, Fedora, Ubuntu, Red Hat Enterprise, entre otros)",
+      count: 120,
     },
-    { os: "Unix (AIX,MAC OS Server,Solaris,entre otros)", count: "2" },
-    { os: "Windows Server 2022/2023", count: "6" },
-    { os: "Windows Server 2016/2019", count: "3" },
-    { os: "Windows Server 2008/2012", count: "3" },
-    { os: "Windows Server 2000/2003", count: "2" },
-    { os: "Total", count: "37", isTotal: true },
+    { os: "Unix (AIX, Mac OS Server, Solaris, etc.)", count: 80 },
+    { os: "Windows Server 2022/2023", count: 50 },
+    { os: "Windows Server 2016/2019", count: 80 },
+    { os: "Windows Server 2008/2012", count: 50 },
+    { os: "Windows Server 2000/2003", count: 12 },
+    { os: "Total", count: 392, isTotal: true },
   ],
 };
 
-const API_ENDPOINT = "/api/platform-stats"; // ← ¡Reemplaza esto cuando sepas la URL real!
+const PLATFORM_LABELS: Record<PlatformKey, string> = {
+  "pc-desktop": "Computadoras de escritorio Plataforma PC",
+  "apple-desktop": "Computadoras de escritorio Plataforma Apple",
+  "pc-laptop": "Computadoras portátiles Plataforma PC",
+  "apple-laptop": "Computadoras portátiles Plataforma Apple",
+  servers: "Servidores de alto rendimiento",
+};
 
-const Pregunta2= () => {
-  const [activeTab, setActiveTab] = useState<string>("pc-desktop");
-  const [data, setData] = useState<PlatformData>(MOCK_DATA);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+export default function Pregunta1() {
+  const [activeTab, setActiveTab] = useState<PlatformKey>("pc-desktop");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // === DESCOMENTA ESTO CUANDO TENGAS LA API ===
-        // const response = await fetch(API_ENDPOINT);
-        // if (!response.ok) throw new Error('Error al cargar estadísticas');
-        // const apiData: PlatformData = await response.json();
-        // setData(apiData);
-        // setLoading(false);
-
-        // === POR AHORA: usa datos simulados (y simula un retraso si quieres) ===
-        // await new Promise(resolve => setTimeout(resolve, 300));
-        setData(MOCK_DATA);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al cargar datos:", err);
-        setError(
-          "No se pudieron cargar las estadísticas. Usando datos temporales."
-        );
-        setData(MOCK_DATA); // fallback en caso de error
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const currentData = data[activeTab] || [];
-
-  // Si quisieras mostrar un estado de carga (opcional)
-  // if (loading) return <div className="dashboardContainer"><p>Cargando...</p></div>;
-  // if (error) console.warn(error); // o muestra un toast, etc.
+  const currentData = MOCK_DATA[activeTab];
 
   return (
-    <div className="dashboardContainer">
+    <div className={styles.scanView_P1}>
+      <div className={styles.container_P1}>
+        <div className={styles.header_P1}>
+          Presione cada pestaña para ver la información de las plataformas.
+        </div>
 
-      <div className="scanView">
-        <div className="container">
-          <div className="header">
-            Presione cada pestaña para ver la información de las plataformas.
+        <div className={styles["main-content_P1"]}>
+          {/* Tabs */}
+          <div className={styles.tabs_P1}>
+            {Object.entries(PLATFORM_LABELS).map(([key, label]) => (
+              <button
+                key={key}
+                className={`${styles.tab_P1} ${
+                  activeTab === key ? styles.active_P1 : ""
+                }`}
+                onClick={() => setActiveTab(key as PlatformKey)}
+                aria-selected={activeTab === key}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
-          <div className="main-content">
-            <div className="tabs">
-              {Object.entries({
-                "pc-desktop": "Computadoras de escritorio Plataforma PC",
-                "apple-desktop": "Computadoras de escritorio Plataforma Apple",
-                "pc-laptop": "Computadoras portátiles Plataforma PC",
-                "apple-laptop": "Computadoras portátiles Plataforma Apple",
-                servers: "Servidores de alto rendimiento",
-              }).map(([key, label]) => (
+          {/* Data Table */}
+            <div className={styles["data-table_P1"]}>
+              {currentData.map((item, index) => (
                 <div
-                  key={key}
-                  className={`tab ${activeTab === key ? "active" : ""}`}
-                  onClick={() => setActiveTab(key)}
+                  key={index}
+                  className={`${styles["data-row_P1"]} ${
+                    item.isTotal ? styles["total-row_P1"] : ""
+                  }`}
                 >
-                  {label}
+                  <div className={styles["os-name_P1"]}>{item.os}</div>
+                  <div className={styles["count-box_P1"]}>{item.count}</div>
                 </div>
               ))}
             </div>
-
-            <div className="data-table-wrapper">
-              <div className="data-table">
-                {currentData.map((item, index) => (
-                  <div
-                    key={index}
-                    className={`data-row ${item.isTotal ? "total-row" : ""}`}
-                  >
-                    <div className="os-name">{item.os}</div>
-                    <div className="count-box">{item.count}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      
         </div>
       </div>
     </div>
   );
-};
-
-export default Pregunta2;
+}
