@@ -38,8 +38,13 @@ export default function Pregunta4EP() {
 
   return (
     <div className="container">
-      <div className="header-bar">
+      <div className="contenedor-censo">
         Censo de equipos periféricos - Equipo de digitalización
+      </div>
+
+      <div className="pregunta-cuadro">
+        4. Desglose el número de equipos de digitalización con que cuenta el
+        área universitaria.
       </div>
 
       <div className="grid">

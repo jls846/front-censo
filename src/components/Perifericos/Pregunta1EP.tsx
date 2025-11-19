@@ -47,7 +47,11 @@ export default function Pregunta1EP() {
 
   return (
     <div className="container">
-      <div className="header">
+      <div className="contenedor-censo">
+        Censo de equipos periféricos - Equipo de digitalización
+      </div>
+
+      <div className="pregunta-cuadro">
         1. Desglose el número de equipos de impresión con que cuenta el área
         universitaria.
       </div>

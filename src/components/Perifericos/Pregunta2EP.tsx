@@ -41,9 +41,12 @@ export default function Pregunta2EP() {
 
   return (
     <div className={styles.container_P2}>
-      <div className={styles.header_P2}>
-        <span className={styles.required_P2}>*</span>
-        <small>(Requerido en el caso de contar con Equipo de impresión)</small>
+      <div className="contenedor-censo">
+        Censo de equipos periféricos - Equipo de digitalización
+      </div>
+
+      <div className="pregunta-cuadro">
+        2. Indique el número de equipos de impresión de acuerdo con la población universitaria al que se destina su uso primordialmente.
       </div>
 
       <div className={styles.row_P2}>
@@ -60,7 +63,7 @@ export default function Pregunta2EP() {
 
         <div className={styles.item_P2}>
           <label htmlFor="profesores">
-            Profesores <span className={styles.helpIcon_P2}>?</span>
+            Profesores
           </label>
           <input
             type="text"
@@ -84,7 +87,7 @@ export default function Pregunta2EP() {
 
         <div className={styles.item_P2}>
           <label htmlFor="investigadores">
-            Investigadores <span className={styles.helpIcon_P2}>?</span>
+            Investigadores
           </label>
           <input
             type="text"
@@ -97,7 +100,7 @@ export default function Pregunta2EP() {
 
         <div className={styles.item_P2}>
           <label htmlFor="administrativos">
-            Administrativos <span className={styles.helpIcon_P2}>?</span>
+            Administrativos 
           </label>
           <input
             type="text"

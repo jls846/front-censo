@@ -1,7 +1,6 @@
 .contenedor-pregunta {
   padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9fafc;
 }
 
 .contenedor-censo{
@@ -14,7 +13,6 @@
  
 
 .pregunta-cuadro {
-  background-color: #f5f5f5;
   border-left: 6px solid #001f3f;
   padding: 15px;
   border-radius: 8px;
@@ -79,7 +77,7 @@
 /* Input  */
 .input-contenedor input {
   width: 40%;
-  padding: 6px 25px 6px 6px;
+  padding: 6px 6px 6px 6px;
   border: 2px solid #002855; 
   border-radius: 6px;
   font-size: 14px;

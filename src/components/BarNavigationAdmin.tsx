@@ -33,14 +33,19 @@ function BarNavigation() {
             <span>Crear Cuenta</span>
           </Link>
         </li>
-        <li className="subMenu" onClick={toggleMenu}>
+        {/* <li className="subMenu" onClick={toggleMenu}>
           <Link href="/cambiarPass" className="links">
             <span>Cambiar Contraseña</span>
           </Link>
-        </li>
+        </li> */}
         <li className="subMenu" onClick={toggleMenu}>
           <Link href="/reporte" className="links">
             <span>Reporte</span>
+          </Link>
+        </li>
+                <li className="subMenu" onClick={toggleMenu}>
+          <Link href="/perifericos" className="links">
+            <span>Perifericos</span>
           </Link>
         </li>
         <li className="subMenu">

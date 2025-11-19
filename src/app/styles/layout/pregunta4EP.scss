@@ -1,12 +1,6 @@
-
 .container {
-  max-width: 1000px;
-  margin: 2% auto 20% auto;
-  background: white;
   padding: 20px;
-  border: 1px solid #ddd;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .header-bar {
@@ -18,12 +12,16 @@
   border-radius: 4px 4px 0 0;
 }
 
-
 .grid {
+  background-color: #fff;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   align-items: end;
+  border-radius: 10px;
+  padding: 20px;
+  overflow-x: auto;
+  box-shadow: 0 4px 10px #0000001a;
 }
 
 .item {
@@ -51,5 +49,6 @@ input[type="text"] {
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 }

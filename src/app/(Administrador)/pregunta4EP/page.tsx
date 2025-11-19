@@ -38,8 +38,15 @@ export default function Pregunta4EPPage() {
 
   return (
     <div className="container">
-      <div className="header-bar">
+
+      <div className="contenedor-censo">
         Censo de equipos periféricos - Equipo de digitalización
+      </div>
+
+      <div className="pregunta-cuadro">
+        7. Calcule porcentualmente (%) la antiguedad que tienen los equipos
+        periféricos del área universitaria. * (Requerido en el caso de contar
+        con Equipo de impresión o digitalización.)
       </div>
 
       <div className="grid">
