@@ -8,11 +8,7 @@ export default function Pregunta7() {
     { nombre: "Digitalización", valores: ["", "", "", ""] },
   ]);
 
-  const [garantia, setGarantia] = useState({
-    escritorio: "",
-    portatil: "",
-    altoRendimiento: "",
-  });
+
 
   // Función para actualizar datos de Pregunta 7
   const handleChange = (filaIndex: number, colIndex: number, value: string) => {
@@ -35,8 +31,7 @@ export default function Pregunta7() {
 
       <div className="pregunta-cuadro">
         7. Calcule porcentualmente (%) la antiguedad que tienen los equipos
-        periféricos del área universitaria. * (Requerido en el caso de contar
-        con Equipo de impresión o digitalización.)
+        periféricos del área universitaria.
       </div>
 
       <div className="tabla-contenedor">
@@ -63,9 +58,7 @@ export default function Pregunta7() {
                         <input
                           type="number"
                           value={valor}
-                          onChange={(e) =>
-                            handleChange(filaIndex, colIndex, e.target.value)
-                          }
+                          disabled             
                         />
                         <span className="porcentaje">%</span>
                       </div>

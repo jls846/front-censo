@@ -3,13 +3,11 @@ import React, { useState } from "react";
 import "./pregunta9.css";
 
 export default function Pregunta9() {
-  
   const [datos, setDatos] = useState([
     { nombre: "Computadoras de Escritorio", valores: ["", "", "", ""] },
     { nombre: "Computadoras Portátiles", valores: ["", "", "", ""] },
     { nombre: "Alto Rendimiento", valores: ["", "", "", ""] },
   ]);
-
 
   const [garantia, setGarantia] = useState({
     escritorio: "",
@@ -30,7 +28,16 @@ export default function Pregunta9() {
 
   return (
     <div className="contenedor-pregunta">
+      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}> 
+        Indique cuantos servidores son utilizados en ambientes productivos y si en ellos se almacenan datos personales.
+      </div>
+
       {/* Pregunta 9 */}
+      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
+        Calcule porcentualmente (%) la antiguedad que tienen los equipos de
+        cómputo del área universitaria.
+      </div>
+
       <div className="tabla-contenedor">
         <table className="tabla">
           <thead>
@@ -79,7 +86,7 @@ export default function Pregunta9() {
 
       {/* Pregunta 10 */}
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
-        10. ¿Cuántos equipos de cómputo tienen garantía de proveedor?. *
+        ¿Cuántos equipos de cómputo tienen garantía de proveedor?.
       </div>
 
       <div className="tabla-contenedor">
@@ -121,7 +128,10 @@ export default function Pregunta9() {
                     type="number"
                     value={garantia.altoRendimiento}
                     onChange={(e) =>
-                      setGarantia({ ...garantia, altoRendimiento: e.target.value })
+                      setGarantia({
+                        ...garantia,
+                        altoRendimiento: e.target.value,
+                      })
                     }
                   />
                 </div>

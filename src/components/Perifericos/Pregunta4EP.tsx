@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "../../app/styles/layout/pregunta4EP.scss";
+import "@/app/styles/layout/pregunta4EP.scss";
 
 interface EquiposDigitalizacion {
   digitalizadorCamaPlana: string;
