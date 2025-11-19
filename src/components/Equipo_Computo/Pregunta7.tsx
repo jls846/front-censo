@@ -8,15 +8,6 @@ export default function Pregunta7() {
     { nombre: "Digitalización", valores: ["", "", "", ""] },
   ]);
 
-
-
-  // Función para actualizar datos de Pregunta 7
-  const handleChange = (filaIndex: number, colIndex: number, value: string) => {
-    const nuevosDatos = [...datos];
-    nuevosDatos[filaIndex].valores[colIndex] = value;
-    setDatos(nuevosDatos);
-  };
-
   // Función para calcular total de cada fila en Pregunta 7
   const calcularTotal = (valores: string[]) =>
     valores.reduce((acc, val) => acc + (Number(val) || 0), 0);
