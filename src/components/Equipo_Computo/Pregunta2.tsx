@@ -85,6 +85,14 @@ export default function Pregunta1() {
   return (
     <div className={styles.scanView_P1}>
       <div className={styles.container_P1}>
+            <div className="contenedor-censo">
+        Censo de equipos periféricos - Equipo de digitalización
+      </div>
+
+      <div className="pregunta-cuadro">
+        5. Indique el número de equipos de digitalización de acuerdo con la
+        población universitaria al que se destina su uso primordialmente.
+      </div>
         <div className={styles.header_P1}>
           Presione cada pestaña para ver la información de las plataformas.
         </div>

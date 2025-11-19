@@ -10,7 +10,7 @@ function Header() {
   const pathname = usePathname();
 
   const publicNav = ["/escaner", "/agregarEquipo", "/editar"];
-  const privateNav = ["/reporte", "/crearCuenta", "/cambiarPass","/perifericos"];
+  const privateNav = ["/equipoComputo", "/crearCuenta", "/cambiarPass","/perifericos"];
 
   return (
     <header className={header.header}>

@@ -1,54 +1,126 @@
 "use client";
-import React from "react";
 import "./pregunta5EP.scss";
+import styles from "./pregunta2EP.module.scss";
+import { useEffect, useState } from "react";
+
+interface EquiposPoblacion {
+  alumnos: string;
+  profesores: string;
+  tecnicosAcademicos: string;
+  investigadores: string;
+  administrativos: string;
+  total: string;
+}
 
 export default function Pregunta5EP() {
+    const [equipos, setEquipos] = useState<EquiposPoblacion>({
+      alumnos: "35",
+      profesores: "43",
+      tecnicosAcademicos: "",
+      investigadores: "",
+      administrativos: "302",
+      total: "380",
+    });
+  
+    // Listo para conectar al backend
+    useEffect(() => {
+      /*
+      fetch("https://tu-api-backend.com/api/equipos-poblacion")
+        .then((res) => res.json())
+        .then((data) => setEquipos(data))
+        .catch((err) => console.error("Error al obtener datos:", err));
+      */
+    }, []);
+  
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setEquipos((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    };
   return (
     <div className="container">
-      <div className="header">
-        Indique el número de equipos de digitalización de acuerdo con la
-        población universitaria al que se destina su uso primordialmente.
-        <span>*</span>
-        <small> (Requerido en el caso de contar con Equipo de digitalización)</small>
+      <div className="contenedor-censo">
+        Censo de equipos periféricos - Equipo de digitalización
       </div>
 
-      <div className="row">
-        <div className="item">
-          <label htmlFor="alumnos-digital">Alumnos</label>
-          <input type="text" id="alumnos-digital" defaultValue="11" />
+      <div className="pregunta-cuadro">
+        5. Indique el número de equipos de digitalización de acuerdo con la
+        población universitaria al que se destina su uso primordialmente.
+      </div>
+
+            <div className={styles.row_P2}>
+        <div className={styles.item_P2}>
+          <label htmlFor="alumnos">Alumnos</label>
+          <input
+            type="text"
+            id="alumnos"
+            name="alumnos"
+            value={equipos.alumnos}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="item">
-          <label htmlFor="profesores-digital">
-            Profesores <span className="help-icon">?</span>
+        <div className={styles.item_P2}>
+          <label htmlFor="profesores">
+            Profesores
           </label>
-          <input type="text" id="profesores-digital" defaultValue="24" />
+          <input
+            type="text"
+            id="profesores"
+            name="profesores"
+            value={equipos.profesores}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="item">
-          <label htmlFor="tecnicos-academicos-digital">
-            Técnicos Académicos
+        <div className={styles.item_P2}>
+          <label htmlFor="tecnicosAcademicos">Técnicos Académicos</label>
+          <input
+            type="text"
+            id="tecnicosAcademicos"
+            name="tecnicosAcademicos"
+            value={equipos.tecnicosAcademicos}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className={styles.item_P2}>
+          <label htmlFor="investigadores">
+            Investigadores
           </label>
-          <input type="text" id="tecnicos-academicos-digital" defaultValue="" />
+          <input
+            type="text"
+            id="investigadores"
+            name="investigadores"
+            value={equipos.investigadores}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="item">
-          <label htmlFor="investigadores-digital">
-            Investigadores <span className="help-icon">?</span>
+        <div className={styles.item_P2}>
+          <label htmlFor="administrativos">
+            Administrativos 
           </label>
-          <input type="text" id="investigadores-digital" defaultValue="" />
+          <input
+            type="text"
+            id="administrativos"
+            name="administrativos"
+            value={equipos.administrativos}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="item">
-          <label htmlFor="administrativos-digital">
-            Administrativos <span className="help-icon">?</span>
-          </label>
-          <input type="text" id="administrativos-digital" defaultValue="101" />
-        </div>
-
-        <div className="item">
-          <label htmlFor="total-digital">Total</label>
-          <input type="text" id="total-digital" defaultValue="136" />
+        <div className={styles.item_P2}>
+          <label htmlFor="total">Total</label>
+          <input
+            type="text"
+            id="total"
+            name="total"
+            value={equipos.total}
+            onChange={handleChange}
+          />
         </div>
       </div>
     </div>

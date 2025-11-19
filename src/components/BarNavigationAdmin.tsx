@@ -39,8 +39,8 @@ function BarNavigation() {
           </Link>
         </li> */}
         <li className="subMenu" onClick={toggleMenu}>
-          <Link href="/reporte" className="links">
-            <span>Reporte</span>
+          <Link href="/equipoComputo" className="links">
+            <span>Equipo de Computo</span>
           </Link>
         </li>
                 <li className="subMenu" onClick={toggleMenu}>

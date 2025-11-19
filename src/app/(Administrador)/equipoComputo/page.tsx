@@ -12,25 +12,22 @@ import "../../styles/layout/reporte.scss";
 type PreguntaKey =
   | "pregunta1"
   | "pregunta2"
-  | "pregunta2_1"
   | "pregunta3"
   | "pregunta7EP"
   | "pregunta9";
 
 const LABELS: Record<PreguntaKey, string> = {
-  pregunta1: "Pregunta 1 ",
-  pregunta2: "Pregunta 2",
-  pregunta2_1: "Pregunta 2.1",
-  pregunta3: "Pregunta 3",
-  pregunta7EP: "Pregunta 7 EP",
-  pregunta9: "Pregunta 9",
+  pregunta1: "Perfil de Usuario",
+  pregunta2: "Sistema Operativo",
+  pregunta3: "Plataforma y tipo procesador",
+  pregunta7EP: "Laboratorios",
+  pregunta9: "Generales",
 };
 
 // Mapeo de fondo por pregunta (puedes personalizarlo)
 const TAB_BACKGROUNDS: Record<PreguntaKey, string> = {
   pregunta1: "bg-gray",
   pregunta2: "bg-gray",
-  pregunta2_1: "bg-gray",
   pregunta3: "bg-gray",
   pregunta7EP: "bg-gray",
   pregunta9: "bg-blue",
@@ -45,8 +42,6 @@ export default function Page() {
         return <Pregunta1 />;
       case "pregunta2":
         return <Pregutna2 />;
-      case "pregunta2_1":
-        return <Pregunta2_1 />;
       case "pregunta3":
         return <Pregunta3 />;
       case "pregunta7EP":

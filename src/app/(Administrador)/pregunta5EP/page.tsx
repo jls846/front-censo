@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import "../../styles/layout/pregunta5EP.scss";
 
 export default function Pregunta5EP() {
@@ -20,7 +19,7 @@ export default function Pregunta5EP() {
 
         <div className="item">
           <label htmlFor="profesores-digital">
-            Profesores <span className="help-icon">?</span>
+            Profesores 
           </label>
           <input type="text" id="profesores-digital" defaultValue="24" />
         </div>
@@ -34,14 +33,14 @@ export default function Pregunta5EP() {
 
         <div className="item">
           <label htmlFor="investigadores-digital">
-            Investigadores <span className="help-icon">?</span>
+            Investigadores 
           </label>
           <input type="text" id="investigadores-digital" defaultValue="" />
         </div>
 
         <div className="item">
           <label htmlFor="administrativos-digital">
-            Administrativos <span className="help-icon">?</span>
+            Administrativos 
           </label>
           <input type="text" id="administrativos-digital" defaultValue="101" />
         </div>

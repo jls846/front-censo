@@ -5,18 +5,21 @@ import Pregunta7 from "@/components/Equipo_Computo/Pregunta7";
 import Pregunta1EP from "@/components/Perifericos/Pregunta1EP";
 import Pregunta2EP from "@/components/Perifericos/Pregunta2EP";
 import Pregunta4EP from "@/components/Perifericos/Pregunta4EP";
+import Pregunta5EP from "@/components/Perifericos/Pregunta5EP";
 import "../../styles/layout/reporte.scss";
 
 type PreguntaKey =
   | "pregunta1"
   | "pregunta2"
   | "pregunta4"
-  | "pregunta7"
+  | "pregunta5"
+  | "pregunta7";
 
 const LABELS: Record<PreguntaKey, string> = {
   pregunta1: "Pregunta 1",
   pregunta2: "Pregunta 2",
   pregunta4: "Pregunta 4",
+  pregunta5: "Pregunta 5",
   pregunta7: "Pregunta 7",
 };
 
@@ -25,6 +28,7 @@ const TAB_BACKGROUNDS: Record<PreguntaKey, string> = {
   pregunta1: "bg-gray",
   pregunta2: "bg-gray",
   pregunta4: "bg-gray",
+  pregunta5: "bg-gray",
   pregunta7: "bg-gray",
 };
 
@@ -36,9 +40,11 @@ export default function Page() {
       case "pregunta1":
         return <Pregunta1EP />;
       case "pregunta2":
-        return <Pregunta2EP />;  
+        return <Pregunta2EP />;
       case "pregunta4":
         return <Pregunta4EP />;
+      case "pregunta5":
+        return <Pregunta5EP />;
       case "pregunta7":
         return <Pregunta7 />;
       default:
@@ -54,10 +60,7 @@ export default function Page() {
 
   return (
     <div className="scanView_reporte">
-      
       <div className="container_reporte">
-          
-        
         <div className="main-content_reporte">
           <div className="tabs_reporte">
             {Object.entries(LABELS).map(([key, label]) => (
