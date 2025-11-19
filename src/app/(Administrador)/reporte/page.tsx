@@ -17,6 +17,7 @@ import Pregunta4EP from "@/components/Perifericos/Pregunta4EP";
 import Pregunta7EP from "@/components/Perifericos/Pregunta7EP";
 import Pregunta9 from "@/components/Equipo_Computo/Pregunta9";
 import "../../styles/layout/reporte.scss";
+import Pregunta_4 from "@/components/Equipo_Computo/Pregunta_4";
 
 type PreguntaKey =
   | "pregunta1"
@@ -63,7 +64,7 @@ const TAB_BACKGROUNDS: Record<PreguntaKey, string> = {
   pregunta3: "bg-gray",
   pregunta3_1: "bg-gray",
   pregunta3_2: "bg-gray",
-  pregunta3_3: "bg-gray", 
+  pregunta3_3: "bg-gray",
   pregunta3_4: "bg-gray",
   pregunta3_5: "bg-gray",
   pregunta4EP: "bg-gray",
@@ -86,7 +87,7 @@ export default function Page() {
       case "pregunta2_1":
         return <Pregunta2_1 />;
       case "pregunta2EP":
-        return <Pregunta2EP />;  
+        return <Pregunta2EP />;
       case "pregunta3":
         return <Pregunta3 />;
       case "pregunta3_1":
@@ -95,6 +96,7 @@ export default function Page() {
         return <Pregunta3_2 />;
       case "pregunta3_3":
         return <Pregunta3_3 />;
+
       case "pregunta3_4":
         return <Pregunta3_4 />;
       case "pregunta3_5":
@@ -120,10 +122,7 @@ export default function Page() {
 
   return (
     <div className="scanView_reporte">
-      
       <div className="container_reporte">
-          
-        
         <div className="main-content_reporte">
           <div className="tabs_reporte">
             {Object.entries(LABELS).map(([key, label]) => (
@@ -142,6 +141,7 @@ export default function Page() {
             {renderPregunta()}
           </div>
         </div>
+        <Pregunta_4 />
       </div>
     </div>
   );
