@@ -8,6 +8,7 @@ import Pregunta3 from "@/components/Equipo_Computo/Pregunta3";
 import Pregunta7EP from "@/components/Perifericos/Pregunta7EP";
 import Pregunta9 from "@/components/Equipo_Computo/Pregunta9";
 import "../../styles/layout/reporte.scss";
+import Pregunta_4 from "@/components/Equipo_Computo/Pregunta_4";
 
 type PreguntaKey =
   | "pregunta1"
@@ -61,10 +62,7 @@ export default function Page() {
 
   return (
     <div className="scanView_reporte">
-      
       <div className="container_reporte">
-          
-        
         <div className="main-content_reporte">
           <div className="tabs_reporte">
             {Object.entries(LABELS).map(([key, label]) => (
@@ -83,6 +81,7 @@ export default function Page() {
             {renderPregunta()}
           </div>
         </div>
+        <Pregunta_4 />
       </div>
     </div>
   );
