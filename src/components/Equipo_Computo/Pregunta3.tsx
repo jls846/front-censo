@@ -1,366 +1,326 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import "./pregunta3.css";
+import { useState } from "react";
+import styles from "./pregunta3.module.scss";
 
-export default function Pregunta3() {
-  const [activeTab, setActiveTab] = useState(0);
+type ProcessorEntry = {
+  tipo: string;
+  alumnos: string;
+  profesores: string;
+  tecnicos: string;
+  investigadores: string;
+  administrativos: string;
+  total: string;
+  isTotal?: boolean;
+};
 
-  const tabs = [
-    "Computadoras de escritorio Plataforma PC",
-    "Computadoras de escritorio Plataforma Apple",
-    "Computadoras portátiles Plataforma PC",
-    "Computadoras portátiles Plataforma Apple",
-    "Alto rendimiento Servidores",
-  ];
+type PlatformKey =
+  | "pc-desktop"
+  | "apple-desktop"
+  | "pc-laptop"
+  | "apple-laptop"
+  | "servers";
 
-  // === DATOS DE CADA TABLA ===
-  const data = [
-    // === 1. PC Escritorio ===
+type PlatformData = Record<PlatformKey, ProcessorEntry[]>;
+
+// Datos: solo "apple-desktop" tiene información en este caso
+const MOCK_DATA: PlatformData = {
+  "pc-desktop": [],
+  "apple-desktop": [
     {
-      color: "#16a34a",
-      headerColor: "#15803d",
-      rows: [
-        {
-          tipo: "Core i9 / Ryzen 9",
-          alumnos: "",
-          profesores: "",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "",
-          total: "0",
-        },
-        {
-          tipo: "Core i7 / Ryzen 7",
-          alumnos: "15",
-          profesores: "8",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "",
-          total: "23",
-        },
-        {
-          tipo: "Core i5 / Ryzen 5",
-          alumnos: "10",
-          profesores: "5",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "2",
-          total: "17",
-        },
-      ],
-      total: {
-        alumnos: "25",
-        profesores: "13",
-        tecnicos: "0",
-        investigadores: "0",
-        administrativos: "2",
-        total: "40",
-      },
+      tipo: "Core Ultra (i3, i5, i7) Serie 2",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "0",
     },
-    // === 2. Apple Escritorio ===
     {
-      color: "#a855f7",
-      headerColor: "#7e22ce",
-      rows: [
-        {
-          tipo: "Familia M3",
-          alumnos: "10",
-          profesores: "2",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "",
-          total: "12",
-        },
-        {
-          tipo: "Familia M2",
-          alumnos: "5",
-          profesores: "3",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "",
-          total: "8",
-        },
-      ],
-      total: {
-        alumnos: "15",
-        profesores: "5",
-        tecnicos: "0",
-        investigadores: "0",
-        administrativos: "0",
-        total: "20",
-      },
+      tipo: "Core Ultra (i3, i5, i7) Serie 1",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "0",
     },
-    // === 3. PC Portátiles ===
     {
-      color: "#22c55e",
-      headerColor: "#15803d",
-      rows: [
-        {
-          tipo: "Core i5 (12a generación)",
-          alumnos: "12",
-          profesores: "5",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "",
-          total: "17",
-        },
-        {
-          tipo: "Core i7 (13a generación)",
-          alumnos: "6",
-          profesores: "4",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "1",
-          total: "11",
-        },
-      ],
-      total: {
-        alumnos: "18",
-        profesores: "9",
-        tecnicos: "0",
-        investigadores: "0",
-        administrativos: "1",
-        total: "28",
-      },
+      tipo: "Familia M4",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "2",
+      total: "2",
     },
-    // === 4. Apple Portátiles ===
     {
-      color: "#9333ea",
-      headerColor: "#7e22ce",
-      rows: [
-        {
-          tipo: "Familia M2",
-          alumnos: "35",
-          profesores: "3",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "",
-          total: "38",
-        },
-        {
-          tipo: "Familia M1",
-          alumnos: "",
-          profesores: "5",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "1",
-          total: "6",
-        },
-        {
-          tipo: "i5 o equivalentes (12a generación en adelante)",
-          alumnos: "",
-          profesores: "14",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "",
-          total: "14",
-        },
-      ],
-      total: {
-        alumnos: "35",
-        profesores: "31",
-        tecnicos: "0",
-        investigadores: "0",
-        administrativos: "5",
-        total: "71",
-      },
+      tipo: "Familia M3",
+      alumnos: "",
+      profesores: "1",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "1",
+      total: "2",
     },
-    // === 5. Servidores ===
     {
-      color: "#2563eb",
-      headerColor: "#1e40af",
-      rows: [
-        {
-          tipo: "Xeon E3, E5, E7",
-          alumnos: "19",
-          profesores: "",
-          tecnicos: "",
-          investigadores: "16",
-          administrativos: "",
-          total: "35",
-        },
-        {
-          tipo: "Xeon Bronce, Plata, Oro 6a generación",
-          alumnos: "",
-          profesores: "",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "1",
-          total: "1",
-        },
-        {
-          tipo: "Xeon Phi",
-          alumnos: "",
-          profesores: "",
-          tecnicos: "",
-          investigadores: "",
-          administrativos: "1",
-          total: "1",
-        },
-      ],
-      total: {
-        alumnos: "19",
-        profesores: "0",
-        tecnicos: "0",
-        investigadores: "16",
-        administrativos: "2",
-        total: "37",
-      },
+      tipo: "Familia M2",
+      alumnos: "",
+      profesores: "2",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "2",
     },
-  ];
+    {
+      tipo: "Familia M1",
+      alumnos: "51",
+      profesores: "1",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "52",
+    },
+    {
+      tipo: "i9 o equivalentes (13a generación en adelante)",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "0",
+    },
+    {
+      tipo: "i7 o equivalentes (13a generación en adelante)",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "0",
+    },
+    {
+      tipo: "i7 o equivalentes (12a generación en adelante)",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "1",
+      total: "1",
+    },
+    {
+      tipo: "i5 o equivalentes (13a generación en adelante)",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "1",
+      total: "1",
+    },
+    {
+      tipo: "i5 o equivalentes (12a generación en adelante)",
+      alumnos: "11",
+      profesores: "1",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "12",
+    },
+    {
+      tipo: "i3 o equivalentes (13a generación en adelante)",
+      alumnos: "175",
+      profesores: "5",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "26",
+      total: "206",
+    },
+    {
+      tipo: "i3 o equivalentes (12a generación en adelante)",
+      alumnos: "",
+      profesores: "",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "1",
+      total: "1",
+    },
+    {
+      tipo: "i3 o equivalentes (11a generación en adelante)",
+      alumnos: "",
+      profesores: "2",
+      tecnicos: "",
+      investigadores: "",
+      administrativos: "",
+      total: "2",
+    },
+    {
+      tipo: "Core2 Mac, Quad Core o anteriores",
+      alumnos: "12",
+      profesores: "3",
+      tecnicos: "3",
+      investigadores: "",
+      administrativos: "3",
+      total: "21",
+    },
+    {
+      tipo: "Total",
+      alumnos: "249",
+      profesores: "14",
+      tecnicos: "3",
+      investigadores: "0",
+      administrativos: "37",
+      total: "303",
+      isTotal: true,
+    },
+  ],
+  "pc-laptop": [],
+  "apple-laptop": [],
+  servers: [],
+};
+
+const PLATFORM_LABELS: Record<PlatformKey, string> = {
+  "pc-desktop": "Computadoras de escritorio Plataforma PC",
+  "apple-desktop": "Computadoras de escritorio Plataforma Apple",
+  "pc-laptop": "Computadoras portátiles Plataforma PC",
+  "apple-laptop": "Computadoras portátiles Plataforma Apple",
+  servers: "Alto rendimiento Servidores",
+};
+
+export default function Pregunta3_2() {
+  const [activeTab, setActiveTab] = useState<PlatformKey>("apple-desktop");
+
+  const currentData = MOCK_DATA[activeTab];
 
   return (
-    <main className="pregunta-page">
-      <div className="pregunta-container">
-        <h1 className="pregunta-titulo">PREGUNTA 3 (1/5 - 5/5)</h1>
-
-        <section className="pregunta-seccion">
-          <p className="pregunta-texto">
-            3. Desglose la cantidad de población beneficiada por plataforma y
-            tipo de procesador: *
+    <div className={styles.scanView_P3}>
+      <div className={styles.container_P3}>
+        <div className={styles.header_P3}>
+          <h1 className={styles.titulo}>PREGUNTA 3 (2/5)</h1>
+          <p className={styles.texto}>
+            3. Desglose la cantidad de población beneficiada por plataforma y tipo de procesador: *
           </p>
-          <p className="pregunta-subtexto">
+          <p className={styles.subtexto}>
             Presione cada pestaña para ingresar la información.
           </p>
+        </div>
 
-          {/* === PESTAÑAS === */}
-          <div className="tab-container">
-            {tabs.map((tab, index) => (
-              <div
-                key={index}
-                className={`tab ${activeTab === index ? "active" : "inactive"}`}
-                style={
-                  activeTab === index
-                    ? {
-                        borderBottomColor: data[index].color,
-                        color: data[index].color,
-                      }
-                    : {}
-                }
-                onClick={() => setActiveTab(index)}
+        {/* Contenido principal con pestañas a la izquierda */}
+        <div className={styles.mainContent_P3}>
+          {/* Pestañas verticales (izquierda) */}
+          <div className={styles.tabs_P3}>
+            {Object.entries(PLATFORM_LABELS).map(([key, label]) => (
+              <button
+                key={key}
+                className={`${styles.tab_P3} ${
+                  activeTab === key ? styles.active_P3 : ""
+                }`}
+                onClick={() => setActiveTab(key as PlatformKey)}
+                aria-selected={activeTab === key}
               >
-                {tab}
-              </div>
+                {label}
+              </button>
             ))}
           </div>
 
-          {/* === TABLA === */}
-          <div className="tabla-container">
-            <table className="tabla">
-              <thead>
-                <tr>
-                  <th
-                    rowSpan={2}
-                    className="header-procesador"
-                    style={{ backgroundColor: data[activeTab].color }}
-                  >
-                    Tipo de procesador
-                  </th>
-                  <th
-                    colSpan={5}
-                    className="header-poblacion"
-                    style={{ backgroundColor: data[activeTab].headerColor }}
-                  >
-                    Población Beneficiada
-                  </th>
-                  <th
-                    rowSpan={2}
-                    className="header-total"
-                    style={{ backgroundColor: data[activeTab].color }}
-                  >
-                    Total
-                  </th>
-                </tr>
-                <tr>
-                  <th className="sub-header">Alumnos</th>
-                  <th className="sub-header">Profesores</th>
-                  <th className="sub-header">Técnicos</th>
-                  <th className="sub-header">Investigadores</th>
-                  <th className="sub-header">Administrativos</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data[activeTab].rows.map((item, i) => (
-                  <tr key={i}>
-                    <td className="tipo-procesador">{item.tipo}</td>
-                    <td>
-                      <input type="text" value={item.alumnos} readOnly />
-                    </td>
-                    <td>
-                      <input type="text" value={item.profesores} readOnly />
-                    </td>
-                    <td>
-                      <input type="text" value={item.tecnicos} readOnly />
-                    </td>
-                    <td>
-                      <input type="text" value={item.investigadores} readOnly />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={item.administrativos}
-                        readOnly
-                      />
-                    </td>
-                    <td className="total-celda">{item.total}</td>
-                  </tr>
-                ))}
-                <tr className="fila-total">
-                  <td className="tipo-procesador">Total</td>
-                  <td>
-                    <input
-                      type="text"
-                      value={data[activeTab].total.alumnos}
-                      readOnly
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={data[activeTab].total.profesores}
-                      readOnly
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={data[activeTab].total.tecnicos}
-                      readOnly
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={data[activeTab].total.investigadores}
-                      readOnly
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={data[activeTab].total.administrativos}
-                      readOnly
-                    />
-                  </td>
-                  <td className="total-celda">{data[activeTab].total.total}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <button className="boton-consultar">
-              Consultar las equivalencias de procesadores
-            </button>
+          {/* Contenido de la tabla (derecha) */}
+          <div className={styles.content_P3}>
+            {currentData.length > 0 ? (
+              <>
+                <div className={styles.tableWrapper_P3}>
+                  <table className={styles.table_P3}>
+                    <thead>
+                      <tr>
+                        <th rowSpan={2} className={styles.headerProcesador}>
+                          {activeTab.includes("apple")
+                            ? "Plataforma Apple"
+                            : "Plataforma PC"}{" "}
+                          <br />
+                          Tipo de procesador
+                        </th>
+                        <th colSpan={5} className={styles.headerPoblacion}>
+                          Población Beneficiada
+                        </th>
+                        <th rowSpan={2} className={styles.headerTotal}>
+                          Total
+                        </th>
+                      </tr>
+                      <tr>
+                        <th className={styles.subHeader}>Alumnos</th>
+                        <th className={styles.subHeader}>Profesores</th>
+                        <th className={styles.subHeader}>Técnicos Académicos</th>
+                        <th className={styles.subHeader}>Investigadores</th>
+                        <th className={styles.subHeader}>Administrativos</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentData.map((item, index) => (
+                        <tr
+                          key={index}
+                          className={
+                            item.isTotal ? styles.totalRow_P3 : styles.dataRow_P3
+                          }
+                        >
+                          <td className={styles.processor_P3}>{item.tipo}</td>
+                          <td>
+                            <input
+                              type="text"
+                              value={item.alumnos}
+                              readOnly
+                              className={styles.inputBox_P3}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              value={item.profesores}
+                              readOnly
+                              className={styles.inputBox_P3}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              value={item.tecnicos}
+                              readOnly
+                              className={styles.inputBox_P3}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              value={item.investigadores}
+                              readOnly
+                              className={styles.inputBox_P3}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              value={item.administrativos}
+                              readOnly
+                              className={styles.inputBox_P3}
+                            />
+                          </td>
+                          <td className={styles.totalCell_P3}>{item.total}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <button className={styles.consultarBtn_P3}>
+                  Consultar las equivalencias de procesadores
+                </button>
+              </>
+            ) : (
+              <div className={styles.emptyState_P3}>
+                No hay datos disponibles para esta plataforma.
+              </div>
+            )}
           </div>
-        </section>
-
-        <div className="boton-contenedor">
-          <Link href="/" className="boton volver">
-            ← Volver al inicio
-          </Link>
         </div>
+
+        
       </div>
-    </main>
+    </div>
   );
 }

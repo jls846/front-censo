@@ -1,4 +1,4 @@
-.dashboardContainer_P1 {
+.dashboardContainer {
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -7,13 +7,14 @@
   background-color: #f4f4f4;
 }
 
-.scanView_P1 {
+
+
+
+.scanView {
   padding: 20px;
   width: 100%;
-  display: flex;
-  justify-content: center;
 
-  .container_P1 {
+  .container {
     width: 100%;
     max-width: 900px;
     background: #fff;
@@ -25,7 +26,7 @@
     border: 1px solid #ddd;
   }
 
-  .header_P1 {
+  .header {
     padding: 16px 20px;
     background: #f7f7f7;
     border-bottom: 1px solid #e0e0e0;
@@ -35,12 +36,12 @@
     font-weight: 500;
   }
 
-  .main-content_P1 {
+  .main-content {
     display: flex;
     min-height: 420px;
   }
 
-  .tabs_P1 {
+  .tabs {
     width: 230px;
     background-color: #fafafa;
     display: flex;
@@ -48,26 +49,26 @@
     justify-content: space-evenly;
   }
 
-  .tab_P1 {
-    padding: 12px 16px;
-    cursor: pointer;
-    border-right: 1px solid #e0e0e0;
-    color: #555;
-    transition: all 0.3s ease;
-    border-left: 4px solid transparent;
-    font-size: 15px;
-    font-weight: 500;
-    background: none;
-    border: none;
-    text-align: left;
-  }
+  .tab {
+  padding: 12px 16px; /* ← CORREGIDO: "auto" no es válido */
+  cursor: pointer;
+  border-right: 1px solid #e0e0e0;
+  color: #555;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  font-size: 15px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  text-align: left;
+}
 
-  .tab_P1:hover {
+  .tab:hover {
     background-color: #f0f0f0;
     color: #000;
   }
 
-  .active_P1 {
+  .tab.active {
     background-color: #fff;
     border-left: 4px solid #0056b3;
     border-right: none;
@@ -76,16 +77,16 @@
     font-weight: 600;
   }
 
-  .data-table-wrapper_P1 {
+  .data-table-wrapper {
     flex: 1;
     padding: 20px;
   }
 
-  .data-table_P1 {
+  .data-table {
     width: 100%;
   }
 
-  .data-row_P1 {
+  .data-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -94,17 +95,17 @@
     transition: background 0.2s ease;
   }
 
-  .data-row_P1:hover {
+  .data-row:hover {
     background: #f1f1f1;
   }
 
-  .os-name_P1 {
+  .os-name {
     flex: 1;
     font-size: 15px;
     color: #333;
   }
 
-  .count-box_P1 {
+  .count-box {
     background: #ffffff;
     border: 1px solid #0056b3;
     padding: 6px 14px;
@@ -114,22 +115,23 @@
     min-width: 70px;
   }
 
-  .total-row_P1 {
+  .total-row {
     background: #eaf4ff;
     font-weight: bold;
 
-    .count-box_P1 {
+    .count-box {
       color: #0056b3;
     }
   }
 }
 
+/* ======== RESPONSIVE ======== */
 @media (max-width: 700px) {
-  .scanView_P1 .tabs_P1 {
+  .scanView .tabs {
     width: 160px;
   }
 
-  .scanView_P1 .tab_P1 {
+  .scanView .tab {
     font-size: 12px;
     padding: 10px 12px;
     text-align: left;
