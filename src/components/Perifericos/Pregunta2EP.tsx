@@ -43,7 +43,7 @@ export default function Pregunta2EP() {
     <div className={styles.container_P2}>
 
       <div className="pregunta-cuadro">
-        Indique el número de equipos de impresión de acuerdo con la población universitaria al que se destina su uso primordialmente.
+        Equipos de impresión de acuerdo con la población universitaria.
       </div>
 
       <div className={styles.row_P2}>

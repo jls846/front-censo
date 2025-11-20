@@ -52,8 +52,7 @@ export default function Pregunta1EP() {
       </div>
 
       <div className="pregunta-cuadro">
-        Desglose el número de equipos de impresión con que cuenta el área
-        universitaria.
+        Equipos de impresión.
       </div>
 
       <div className={style.grid}>

@@ -43,8 +43,7 @@ export default function Pregunta4EP() {
       </div>
 
       <div className="pregunta-cuadro">
-        Desglose el número de equipos de digitalización con que cuenta el
-        área universitaria.
+        Número de equipos de digitalización.
       </div>
 
       <div className="grid">

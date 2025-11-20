@@ -43,8 +43,8 @@ export default function Pregunta5EP() {
     <div className="container">
 
       <div className="pregunta-cuadro">
-        Indique el número de equipos de digitalización de acuerdo con la
-        población universitaria al que se destina su uso primordialmente.
+        Número de equipos de digitalización de acuerdo con la
+        población universitaria.
       </div>
 
             <div className={styles.row_P2}>
