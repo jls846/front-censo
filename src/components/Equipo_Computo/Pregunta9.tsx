@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "./pregunta9.css";
+import Pregunta4 from "./Pregunta_4";
 
 export default function Pregunta9() {
   const [datos, setDatos] = useState([
@@ -28,9 +29,12 @@ export default function Pregunta9() {
 
   return (
     <div className="contenedor-pregunta">
+
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}> 
         Indique cuantos servidores son utilizados en ambientes productivos y si en ellos se almacenan datos personales.
       </div>
+      
+      <Pregunta4/>
 
       {/* Pregunta 9 */}
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>

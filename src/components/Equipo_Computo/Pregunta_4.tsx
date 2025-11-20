@@ -10,7 +10,6 @@ export default function Pregunta4() {
       <header className="brand"></header>
 
       <section className="card">
-        <h2>Generales</h2>
 
         <label className="question-label">
           ¿Cuántos servidores son ocupados en producción?
@@ -18,7 +17,6 @@ export default function Pregunta4() {
 
         <input type="number" defaultValue={34} className="single-input" />
 
-        <p className="hint">Servidor y Uso</p>
       </section>
     </main>
   );

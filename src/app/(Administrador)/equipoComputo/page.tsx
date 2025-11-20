@@ -81,7 +81,6 @@ export default function Page() {
             {renderPregunta()}
           </div>
         </div>
-        <Pregunta_4 />
       </div>
     </div>
   );
