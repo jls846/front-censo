@@ -124,11 +124,11 @@ export default function Pregunta9() {
   return (
     <div className="contenedor-pregunta">
       {/* Pregunta intro (servidores) */}
-      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
+      {/* <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
         Indique cuantos servidores son utilizados en ambientes productivos y si en ellos se almacenan datos personales.
       </div>
       
-      <Pregunta4/>
+      <Pregunta4/> */}
 
       {/* Pregunta 9: Antigüedad */}
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
