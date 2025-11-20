@@ -3,13 +3,10 @@
 import { useState } from "react";
 import Pregunta1 from "@/components/Equipo_Computo/Pregunta1";
 import Pregutna2 from "@/components/Equipo_Computo/Pregunta2";
-import Pregunta2_1 from "@/components/Equipo_Computo/Pregunta2_1";
 import Pregunta3 from "@/components/Equipo_Computo/Pregunta3";
 import Pregunta7EP from "@/components/Perifericos/Pregunta7EP";
 import Pregunta9 from "@/components/Equipo_Computo/Pregunta9";
-import Pregunta10 from "@/components/Equipo_Computo/pregunta10"; 
 import "../../styles/layout/reporte.scss";
-import Pregunta_4 from "@/components/Equipo_Computo/Pregunta_4";
 
 type PreguntaKey =
   | "pregunta1"
