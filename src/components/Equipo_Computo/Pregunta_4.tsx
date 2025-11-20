@@ -15,7 +15,7 @@ export default function Pregunta4() {
           ¿Cuántos servidores son ocupados en producción?
         </label>
 
-        <input type="number" defaultValue={34} className="single-input" />
+        <input type="number" className="single-input" />
 
       </section>
     </main>
