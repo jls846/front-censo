@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 import styles from "./pregunta3.module.scss";
 
 type ProcessorEntry = {
@@ -23,161 +25,6 @@ type PlatformKey =
 
 type PlatformData = Record<PlatformKey, ProcessorEntry[]>;
 
-// Datos: solo "apple-desktop" tiene información en este caso
-const MOCK_DATA: PlatformData = {
-  "pc-desktop": [],
-  "apple-desktop": [
-    {
-      tipo: "Core Ultra (i3, i5, i7) Serie 2",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "0",
-    },
-    {
-      tipo: "Core Ultra (i3, i5, i7) Serie 1",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "0",
-    },
-    {
-      tipo: "Familia M4",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "2",
-      total: "2",
-    },
-    {
-      tipo: "Familia M3",
-      alumnos: "",
-      profesores: "1",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "1",
-      total: "2",
-    },
-    {
-      tipo: "Familia M2",
-      alumnos: "",
-      profesores: "2",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "2",
-    },
-    {
-      tipo: "Familia M1",
-      alumnos: "51",
-      profesores: "1",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "52",
-    },
-    {
-      tipo: "i9 o equivalentes (13a generación en adelante)",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "0",
-    },
-    {
-      tipo: "i7 o equivalentes (13a generación en adelante)",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "0",
-    },
-    {
-      tipo: "i7 o equivalentes (12a generación en adelante)",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "1",
-      total: "1",
-    },
-    {
-      tipo: "i5 o equivalentes (13a generación en adelante)",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "1",
-      total: "1",
-    },
-    {
-      tipo: "i5 o equivalentes (12a generación en adelante)",
-      alumnos: "11",
-      profesores: "1",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "12",
-    },
-    {
-      tipo: "i3 o equivalentes (13a generación en adelante)",
-      alumnos: "175",
-      profesores: "5",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "26",
-      total: "206",
-    },
-    {
-      tipo: "i3 o equivalentes (12a generación en adelante)",
-      alumnos: "",
-      profesores: "",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "1",
-      total: "1",
-    },
-    {
-      tipo: "i3 o equivalentes (11a generación en adelante)",
-      alumnos: "",
-      profesores: "2",
-      tecnicos: "",
-      investigadores: "",
-      administrativos: "",
-      total: "2",
-    },
-    {
-      tipo: "Core2 Mac, Quad Core o anteriores",
-      alumnos: "12",
-      profesores: "3",
-      tecnicos: "3",
-      investigadores: "",
-      administrativos: "3",
-      total: "21",
-    },
-    {
-      tipo: "Total",
-      alumnos: "249",
-      profesores: "14",
-      tecnicos: "3",
-      investigadores: "0",
-      administrativos: "37",
-      total: "303",
-      isTotal: true,
-    },
-  ],
-  "pc-laptop": [],
-  "apple-laptop": [],
-  servers: [],
-};
-
 const PLATFORM_LABELS: Record<PlatformKey, string> = {
   "pc-desktop": "Computadoras de escritorio Plataforma PC",
   "apple-desktop": "Computadoras de escritorio Plataforma Apple",
@@ -186,10 +33,111 @@ const PLATFORM_LABELS: Record<PlatformKey, string> = {
   servers: "Alto rendimiento Servidores",
 };
 
-export default function Pregunta3_2() {
-  const [activeTab, setActiveTab] = useState<PlatformKey>("apple-desktop");
+// Mapeo de "uso" del JSON a campos en ProcessorEntry
+const USO_TO_FIELD: Record<string, keyof Omit<ProcessorEntry, "tipo" | "total" | "isTotal">> = {
+  ALUMNO: "alumnos",
+  PROFESOR: "profesores",
+  "TÉCNICO ACADEMICO": "tecnicos",
+  INVESTIGADOR: "investigadores",
+  ADMINISTRATIVO: "administrativos",
+};
 
-  const currentData = MOCK_DATA[activeTab];
+// Transforma un array plano del tipo [{procesador, uso, total}] en ProcessorEntry[]
+function transformProcessorData(rawArray: { procesador: string; uso: string; total: string }[]): ProcessorEntry[] {
+  const map = new Map<string, ProcessorEntry>();
+
+  for (const item of rawArray) {
+    const { procesador, uso, total } = item;
+    if (!map.has(procesador)) {
+      map.set(procesador, {
+        tipo: procesador,
+        alumnos: "0",
+        profesores: "0",
+        tecnicos: "0",
+        investigadores: "0",
+        administrativos: "0",
+        total: "0",
+      });
+    }
+
+    const entry = map.get(procesador)!;
+    const field = USO_TO_FIELD[uso];
+    if (field) {
+      entry[field] = total;
+    }
+  }
+
+  // Convertimos a array y calculamos el total por fila
+  const rows = Array.from(map.values()).map((entry) => {
+    const totalNum =
+      parseInt(entry.alumnos || "0") +
+      parseInt(entry.profesores || "0") +
+      parseInt(entry.tecnicos || "0") +
+      parseInt(entry.investigadores || "0") +
+      parseInt(entry.administrativos || "0");
+    return {
+      ...entry,
+      total: totalNum.toString(),
+    };
+  });
+
+  // Calculamos los totales generales
+  const grandTotal: ProcessorEntry = {
+    tipo: "Total",
+    alumnos: rows.reduce((sum, r) => sum + parseInt(r.alumnos || "0"), 0).toString(),
+    profesores: rows.reduce((sum, r) => sum + parseInt(r.profesores || "0"), 0).toString(),
+    tecnicos: rows.reduce((sum, r) => sum + parseInt(r.tecnicos || "0"), 0).toString(),
+    investigadores: rows.reduce((sum, r) => sum + parseInt(r.investigadores || "0"), 0).toString(),
+    administrativos: rows.reduce((sum, r) => sum + parseInt(r.administrativos || "0"), 0).toString(),
+    total: rows.reduce((sum, r) => sum + parseInt(r.total || "0"), 0).toString(),
+    isTotal: true,
+  };
+
+  return [...rows, grandTotal];
+}
+
+export default function Pregunta3_2() {
+  const [activeTab, setActiveTab] = useState<PlatformKey>("pc-desktop");
+  const [data, setData] = useState<PlatformData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      console.error("Token no encontrado");
+      setLoading(false);
+      return;
+    }
+
+    const headers = { Authorization: `Bearer ${token}` };
+    axios
+      .get("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_procesador", { headers })
+      .then((res) => {
+        const json = res.data; // array de 5 arreglos
+
+        const formatted: PlatformData = {
+          "pc-desktop": transformProcessorData(json[0] || []),
+          "apple-desktop": transformProcessorData(json[1] || []),
+          "pc-laptop": transformProcessorData(json[2] || []),
+          "apple-laptop": transformProcessorData(json[3] || []),
+          servers: transformProcessorData(json[4] || []),
+        };
+
+        setData(formatted);
+      })
+      .catch((err) => {
+        console.error("Error cargando datos de procesadores", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div className={styles.scanView_P3}>Cargando datos...</div>;
+
+  if (!data) return <div className={styles.scanView_P3}>Error al cargar los datos.</div>;
+
+  const currentData = data[activeTab];
 
   return (
     <div className={styles.scanView_P3}>
@@ -199,21 +147,16 @@ export default function Pregunta3_2() {
           <p className={styles.texto}>
             3. Desglose la cantidad de población beneficiada por plataforma y tipo de procesador: *
           </p>
-          <p className={styles.subtexto}>
-            Presione cada pestaña para ingresar la información.
-          </p>
+          <p className={styles.subtexto}>Presione cada pestaña para ingresar la información.</p>
         </div>
 
-        {/* Contenido principal con pestañas a la izquierda */}
         <div className={styles.mainContent_P3}>
-          {/* Pestañas verticales (izquierda) */}
+          {/* Pestañas verticales */}
           <div className={styles.tabs_P3}>
             {Object.entries(PLATFORM_LABELS).map(([key, label]) => (
               <button
                 key={key}
-                className={`${styles.tab_P3} ${
-                  activeTab === key ? styles.active_P3 : ""
-                }`}
+                className={`${styles.tab_P3} ${activeTab === key ? styles.active_P3 : ""}`}
                 onClick={() => setActiveTab(key as PlatformKey)}
                 aria-selected={activeTab === key}
               >
@@ -222,7 +165,7 @@ export default function Pregunta3_2() {
             ))}
           </div>
 
-          {/* Contenido de la tabla (derecha) */}
+          {/* Contenido */}
           <div className={styles.content_P3}>
             {currentData.length > 0 ? (
               <>
@@ -231,10 +174,7 @@ export default function Pregunta3_2() {
                     <thead>
                       <tr>
                         <th rowSpan={2} className={styles.headerProcesador}>
-                          {activeTab.includes("apple")
-                            ? "Plataforma Apple"
-                            : "Plataforma PC"}{" "}
-                          <br />
+                          {activeTab.includes("apple") ? "Plataforma Apple" : "Plataforma PC"} <br />
                           Tipo de procesador
                         </th>
                         <th colSpan={5} className={styles.headerPoblacion}>
@@ -256,9 +196,7 @@ export default function Pregunta3_2() {
                       {currentData.map((item, index) => (
                         <tr
                           key={index}
-                          className={
-                            item.isTotal ? styles.totalRow_P3 : styles.dataRow_P3
-                          }
+                          className={item.isTotal ? styles.totalRow_P3 : styles.dataRow_P3}
                         >
                           <td className={styles.processor_P3}>{item.tipo}</td>
                           <td>
@@ -318,8 +256,6 @@ export default function Pregunta3_2() {
             )}
           </div>
         </div>
-
-        
       </div>
     </div>
   );

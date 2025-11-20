@@ -1,242 +1,189 @@
 "use client";
-import "./pregunta1.module.scss"
 
-export default function Pregunta1_1() {
-  return (
-    <section>
-      <div>
-        <h1>Censo Equipos de computo</h1>
-        <p className="instructions">
-          Desglosa en cada renglon el número de equipos de cómputo dedicado por
-          cada categoría enlistada, de acuerdo con el perfil del usuario al que
-          se destina su uso primordialmente.
-        </p>
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import "./pregunta1.1.css";
 
-        <div className="container">
+type RawEntry = {
+  uso: string;
+  categoria: string;
+  total: string;
+};
 
-          {/* ===================== */}
-          {/* 1. COMPUTADORAS DE ESCRITORIO */}
-          {/* ===================== */}
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Computadoras de escritorio</th>
-                  <th>Alumnos</th>
-                  <th>Profesores</th>
-                  <th>Tecnicos Academicos</th>
-                  <th>Investigadores</th>
-                  <th>Administrativos</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
+// Índices para columnas
+const USO_INDEX: Record<string, number> = {
+  ALUMNO: 0,
+  PROFESOR: 1,
+  "TÉCNICO ACADEMICO": 2,
+  INVESTIGADOR: 3,
+  ADMINISTRATIVO: 4,
+};
 
-              <tbody>
+// Mapeo categoría → tabla + sistema operativo
+const CATEGORIA_MAP: Record<string, { tabla: number; so: string }> = {
+  "ESCRITORIO PC": { tabla: 0, so: "Windows" },
+  "ESCRITORIO MAC OS": { tabla: 0, so: "Mac OS" },
+  "ESCRITORIO LINUX": { tabla: 0, so: "Linux" },
+  "PORTÁTILES WINDOWS": { tabla: 2, so: "Windows" },
+  "PORTÁTILES MAC OS": { tabla: 2, so: "Mac OS" },
+  "TABLETA IPAD OS": { tabla: 1, so: "Mac OS" },
+  "SERVIDOR": { tabla: 3, so: "Linux" },
+};
 
-                {/* Windows */}
-                <tr>
-                  <th>Windows</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
+const TITULOS_TABLAS = [
+  "Computadoras de escritorio",
+  "Tabletas",
+  "Computadoras portátiles",
+  "Alto rendimiento",
+];
 
-                {/* Linux */}
-                <tr>
-                  <th>Linux</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
+const SISTEMAS_OPERATIVOS = ["Windows", "Linux", "Mac OS"];
 
-                {/* Mac OS */}
-                <tr>
-                  <th>Mac OS</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
+export default function Pregunta1() {
+  // Estado: 4 tablas × 3 SO × 5 columnas
+  const [tablas, setTablas] = useState<number[][][]>(
+    Array.from({ length: 4 }, () =>
+      Array.from({ length: 3 }, () => Array(5).fill(0))
+    )
+  );
 
-                {/* Totales */}
-                <tr>
-                  <th>Total</th>
-                  <th>10</th>
-                  <th>10</th>
-                  <th>10</th>
-                  <th>10</th>
-                  <th>10</th>
-                  <th>10</th>
-                </tr>
+  const [loading, setLoading] = useState(true);
 
-              </tbody>
-            </table>
-          </div>
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      console.error("Token no encontrado");
+      setLoading(false);
+      return;
+    }
 
-          {/* ===================== */}
-          {/* 2. COMPUTADORAS PORTÁTILES */}
-          {/* ===================== */}
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Computadoras portátiles</th>
-                  <th>Alumnos</th>
-                  <th>Profesores</th>
-                  <th>Tecnicos Academicos</th>
-                  <th>Investigadores</th>
-                  <th>Administrativos</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
+    axios
+      .get<RawEntry[]>(
+        "https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_tipoUso",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        const nuevaTablas = Array.from({ length: 4 }, () =>
+          Array.from({ length: 3 }, () => Array(5).fill(0))
+        );
 
-              <tbody>
+        for (const item of res.data) {
+          const categoria = item.categoria.trim(); // ⚠️ elimina espacios basura
+          const mapping = CATEGORIA_MAP[categoria];
+          if (!mapping) continue;
 
-                {/* Windows */}
-                <tr>
-                  <th>Windows</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
+          const { tabla, so } = mapping;
+          const soIndex = SISTEMAS_OPERATIVOS.indexOf(so);
+          if (soIndex === -1) continue;
 
-                {/* Chromebook */}
-                <tr>
-                  <th>Chromebook</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
+          const usoIndex = USO_INDEX[item.uso];
+          if (usoIndex === undefined) continue;
 
-                {/* Mac OS */}
-                <tr>
-                  <th>Mac OS</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
+          const total = parseInt(item.total) || 0;
+          nuevaTablas[tabla][soIndex][usoIndex] = total;
+        }
 
-                {/* Totales */}
-                <tr>
-                  <th>Total</th>
-                  <th>10</th><th>10</th><th>10</th><th>10</th><th>10</th>
-                  <th>10</th>
-                </tr>
+        setTablas(nuevaTablas);
+      })
+      .catch((err) => {
+        console.error("Error al cargar datos", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
-              </tbody>
-            </table>
-          </div>
-
-          {/* ===================== */}
-          {/* 3. TABLETAS */}
-          {/* ===================== */}
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Tabletas</th>
-                  <th>Alumnos</th>
-                  <th>Profesores</th>
-                  <th>Tecnicos Academicos</th>
-                  <th>Investigadores</th>
-                  <th>Administrativos</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-
-              <tbody>
-
-                {/* Android */}
-                <tr>
-                  <th>Android</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
-
-                {/* iPad IOS */}
-                <tr>
-                  <th>iPad iOS</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
-
-                {/* Totales */}
-                <tr>
-                  <th>Total</th>
-                  <th>10</th><th>10</th><th>10</th><th>10</th><th>10</th>
-                  <th>10</th>
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
-
-          {/* ===================== */}
-          {/* 4. ALTO RENDIMIENTO */}
-          {/* ===================== */}
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Alto Rendimiento</th>
-                  <th>Alumnos</th>
-                  <th>Profesores</th>
-                  <th>Tecnicos Academicos</th>
-                  <th>Investigadores</th>
-                  <th>Administrativos</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-
-              <tbody>
-
-                <tr>
-                  <th>Servidores</th>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <td><input type="number" className="numero" /></td>
-                  <th>10</th>
-                </tr>
-
-                <tr>
-                  <th>Total</th>
-                  <th>10</th><th>10</th><th>10</th><th>10</th><th>10</th>
-                  <th>10</th>
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
-
-        </div>
+  if (loading) {
+    return (
+      <div className="contenedor-pregunta">
+        <div className="contenedor-censo">Censo de equipos de cómputo</div>
+        <div className="pregunta-cuadro">Cargando datos...</div>
       </div>
-    </section>
+    );
+  }
+
+  // Renderizar una tabla
+  const renderTabla = (tablaIndex: number) => {
+    const datosSO = tablas[tablaIndex];
+
+    const totalesColumnas = Array(5).fill(0);
+    for (let soIndex = 0; soIndex < 3; soIndex++) {
+      for (let col = 0; col < 5; col++) {
+        totalesColumnas[col] += datosSO[soIndex][col];
+      }
+    }
+
+    const totalGeneral = totalesColumnas.reduce((a, b) => a + b, 0);
+
+    return (
+      <div className="tabla-contenedor" key={tablaIndex}>
+        <table className="tabla">
+          <thead>
+            <tr>
+              <th className="azul-marino">{TITULOS_TABLAS[tablaIndex]}</th>
+              <th className="rosa-fuerte">Alumnos</th>
+              <th className="rosa-fuerte">Profesores</th>
+              <th className="rosa-fuerte">Técnicos Académicos</th>
+              <th className="rosa-fuerte">Investigadores</th>
+              <th className="rosa-fuerte">Administrativos</th>
+              <th className="azul-marino">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SISTEMAS_OPERATIVOS.map((so, soIndex) => {
+              const valores = datosSO[soIndex];
+              const totalFila = valores.reduce((a, b) => a + b, 0);
+
+              return (
+                <tr key={so}>
+                  <td>{so}</td>
+                  {valores.map((valor, colIndex) => (
+                    <td key={colIndex}>
+                      <div className="input-contenedor">
+                        <input type="number" value={valor} readOnly />
+                      </div>
+                    </td>
+                  ))}
+                  <td>{totalFila}</td>
+                </tr>
+              );
+            })}
+
+            <tr className="fila-total">
+              <td className="negrita">Total</td>
+              {totalesColumnas.map((t, i) => (
+                <td key={i}>{t}</td>
+              ))}
+              <td className="negrita">{totalGeneral}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  return (
+    <div className="contenedor-pregunta">
+      <div className="contenedor-censo">Censo de equipos de cómputo</div>
+
+      <div className="pregunta-cuadro">
+        1. Desglose en cada renglón, el número de equipos de cómputo dedicado
+        por cada categoría enlistada, de acuerdo con el perfil de usuario al que
+        se destina su uso primordialmente. *
+      </div>
+
+      <div className="contenedor-tablas">
+        {renderTabla(0)}
+        {renderTabla(1)}
+      </div>
+
+      <div className="contenedor-tablas">
+        {renderTabla(2)}
+        {renderTabla(3)}
+      </div>
+    </div>
   );
 }
