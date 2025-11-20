@@ -1,12 +1,27 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
 import "./pregunta9.css";
+
+type AntiguedadItem = {
+  antiguedad: string | null;
+  total: string;
+  porcentaje: string; // lo ignoramos
+};
+
+type ApiResponse = {
+  escritorios: AntiguedadItem[];
+  portatiles: AntiguedadItem[];
+  altoRendimiento: AntiguedadItem[];
+};
 
 export default function Pregunta9() {
   const [datos, setDatos] = useState([
-    { nombre: "Computadoras de Escritorio", valores: ["", "", "", ""] },
-    { nombre: "Computadoras Portátiles", valores: ["", "", "", ""] },
-    { nombre: "Alto Rendimiento", valores: ["", "", "", ""] },
+    { nombre: "Computadoras de Escritorio", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
+    { nombre: "Computadoras Portátiles", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
+    { nombre: "Alto Rendimiento", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
   ]);
 
   const [garantia, setGarantia] = useState({
@@ -15,66 +30,141 @@ export default function Pregunta9() {
     altoRendimiento: "",
   });
 
-  // Función para actualizar datos de Pregunta 9
-  const handleChange = (filaIndex: number, colIndex: number, value: string) => {
-    const nuevosDatos = [...datos];
-    nuevosDatos[filaIndex].valores[colIndex] = value;
-    setDatos(nuevosDatos);
+  const [loading, setLoading] = useState(true);
+
+  // Transforma los datos del backend al formato de 4 columnas con % calculados
+  const transformarDatos = (items: AntiguedadItem[]): string[] => {
+
+    let menores2 = 0;
+    let entre2_3 = 0;
+    let entre4_6 = 0;
+
+    let mayores6 = 0;
+    let notfound = 0;
+
+    for (const item of items) {
+      const total = Number(item.total) || 0;
+
+      switch (item.antiguedad) {
+        case "MENOR A 2":
+          menores2 += total;
+          break;
+        case "ENTRE 2 Y 3":
+          entre2_3 += total;
+          break;
+        case "ENTRE 4 Y 5":
+          entre4_6 += total;
+          break;
+        case "MAYORES DE 6":
+          mayores6 += total;
+          break;
+                // Cualquier otro valor (aunque no debería haber) lo meteríamos en mayores6
+        default:notfound += total; break;
+      }
+    }
+
+    const totalEquipo = menores2 + mayores6+ entre2_3 + entre4_6 + notfound;
+
+    if (totalEquipo === 0) {
+      return ["0.00", "0.00", "0.00", "0.00","0.00"];
+    }
+
+    const pct = (valor: number) => ((valor / totalEquipo) * 100).toFixed(2);
+
+    // [Menor a 2, Entre 2-3, Entre 4-5, Mayor a 6]
+    return [pct(menores2), pct(entre2_3), pct(entre4_6), pct(mayores6),pct(notfound)];
   };
 
-  // Función para calcular total de cada fila en Pregunta 9
-  const calcularTotal = (valores: string[]) =>
-    valores.reduce((acc, val) => acc + (Number(val) || 0), 0);
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      console.error("Token no encontrado");
+      setLoading(false);
+      return;
+    }
+
+    axios
+      .get<ApiResponse>("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_antiguedad", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const { escritorios, portatiles, altoRendimiento } = res.data;
+
+        setDatos([
+          {
+            nombre: "Computadoras de Escritorio",
+            valores: transformarDatos(escritorios),
+          },
+          {
+            nombre: "Computadoras Portátiles",
+            valores: transformarDatos(portatiles),
+          },
+          {
+            nombre: "Alto Rendimiento",
+            valores: transformarDatos(altoRendimiento),
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.error("Error al cargar datos de antigüedad", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  const calcularTotalFila = (valores: string[]) =>
+    valores.reduce((sum, val) => sum + parseFloat(val), 0);
+
+  if (loading) {
+    return <div className="contenedor-pregunta">Cargando datos...</div>;
+  }
 
   return (
     <div className="contenedor-pregunta">
-      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}> 
+      {/* Pregunta intro (servidores) */}
+      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
         Indique cuantos servidores son utilizados en ambientes productivos y si en ellos se almacenan datos personales.
       </div>
 
-      {/* Pregunta 9 */}
+      {/* Pregunta 9: Antigüedad */}
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
-        Calcule porcentualmente (%) la antiguedad que tienen los equipos de
-        cómputo del área universitaria.
+        Calcule porcentualmente (%) la antigüedad que tienen los equipos de cómputo del área universitaria.
       </div>
 
       <div className="tabla-contenedor">
         <table className="tabla">
           <thead>
             <tr>
-              <th className="azul-marino">% Antiguedad de los equipos</th>
+              <th className="azul-marino">% Antigüedad de los equipos</th>
               <th className="rosa-fuerte">Menor a 2 años</th>
               <th className="rosa-fuerte">Entre 2 y 3 años</th>
               <th className="rosa-fuerte">Entre 4 y 5 años</th>
               <th className="rosa-fuerte">Mayor a 6 años</th>
+              <th className="rosa-fuerte">No registrados</th>
               <th className="azul-marino">Total</th>
             </tr>
           </thead>
           <tbody>
-            {datos.map((fila, filaIndex) => {
-              const total = calcularTotal(fila.valores);
+            {datos.map((fila, idx) => {
+              const total = calcularTotalFila(fila.valores);
               return (
-                <tr key={filaIndex}>
+                <tr key={idx}>
                   <td>{fila.nombre}</td>
-                  {fila.valores.map((valor, colIndex) => (
-                    <td key={colIndex}>
+                  {fila.valores.map((valor, colIdx) => (
+                    <td key={colIdx}>
                       <div className="input-contenedor">
                         <input
                           type="number"
+                          step="0.01"
                           value={valor}
-                          onChange={(e) =>
-                            handleChange(filaIndex, colIndex, e.target.value)
-                          }
+                          readOnly
                         />
                         <span className="porcentaje">%</span>
                       </div>
                     </td>
                   ))}
-                  <td
-                    className={`total-celda ${
-                      total > 100 ? "total-error" : ""
-                    }`}
-                  >
+                  <td className={`total-celda ${total > 100.1 ? "total-error" : ""}`}>
                     {total.toFixed(2)}%
                   </td>
                 </tr>
@@ -84,62 +174,7 @@ export default function Pregunta9() {
         </table>
       </div>
 
-      {/* Pregunta 10 */}
-      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
-        ¿Cuántos equipos de cómputo tienen garantía de proveedor?.
-      </div>
-
-      <div className="tabla-contenedor">
-        <table className="tabla">
-          <thead>
-            <tr>
-              <th className="azul-marino">Computadoras de Escritorio (247)</th>
-              <th className="azul-marino">Computadoras Portátiles (767)</th>
-              <th className="azul-marino">Alto Rendimiento (17)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div className="input-contenedor input-sp">
-                  <input
-                    type="number"
-                    value={garantia.escritorio}
-                    onChange={(e) =>
-                      setGarantia({ ...garantia, escritorio: e.target.value })
-                    }
-                  />
-                </div>
-              </td>
-              <td>
-                <div className="input-contenedor input-sp">
-                  <input
-                    type="number"
-                    value={garantia.portatil}
-                    onChange={(e) =>
-                      setGarantia({ ...garantia, portatil: e.target.value })
-                    }
-                  />
-                </div>
-              </td>
-              <td>
-                <div className="input-contenedor input-sp">
-                  <input
-                    type="number"
-                    value={garantia.altoRendimiento}
-                    onChange={(e) =>
-                      setGarantia({
-                        ...garantia,
-                        altoRendimiento: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      
     </div>
   );
 }

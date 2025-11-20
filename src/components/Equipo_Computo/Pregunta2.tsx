@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./pregunta2.module.scss";
-
+import Cookies from "js-cookie";
 type OsEntry = {
   os: string;
   count: number;
@@ -18,57 +19,6 @@ type PlatformKey =
 
 type PlatformData = Record<PlatformKey, OsEntry[]>;
 
-const MOCK_DATA: PlatformData = {
-  "pc-desktop": [
-    { os: "Windows 11", count: 408 },
-    { os: "Windows 10", count: 1171 },
-    { os: "Windows 7/8", count: 177 },
-    { os: "Windows XP/Vista", count: 43 },
-    { os: "Linux", count: 45 },
-    { os: "Total", count: 1844, isTotal: true },
-  ],
-  "apple-desktop": [
-    { os: "Mac OS X (13 - Ventura, 14 - Sonoma)", count: 205 },
-    {
-      os: "Mac OS X (Mojave, Catalina, 11 - Big Sur, 12 - Monterrey)",
-      count: 180,
-    },
-    { os: "Mac OS X (Yosemite, El Capitan, Sierra, High Sierra)", count: 95 },
-    { os: "Mac OS X (Snow Leopard, Mountain Lion, Mavericks)", count: 6 },
-    { os: "Total", count: 480, isTotal: true },
-  ],
-  "pc-laptop": [
-    { os: "Windows 11", count: 40 },
-    { os: "Windows 10", count: 171 },
-    { os: "Windows 7/8", count: 17 },
-    { os: "Windows XP/Vista", count: 3 },
-    { os: "Linux", count: 5 },
-    { os: "Total", count: 236, isTotal: true },
-  ],
-  "apple-laptop": [
-    { os: "Mac OS X (13 - Ventura, 14 - Sonoma)", count: 205 },
-    {
-      os: "Mac OS X (Mojave, Catalina, 11 - Big Sur, 12 - Monterrey)",
-      count: 180,
-    },
-    { os: "Mac OS X (Yosemite, El Capitan, Sierra, High Sierra)", count: 95 },
-    { os: "Mac OS X (Snow Leopard, Mountain Lion, Mavericks)", count: 6 },
-    { os: "Total", count: 480, isTotal: true },
-  ],
-  servers: [
-    {
-      os: "Linux (CentOS, Fedora, Ubuntu, Red Hat Enterprise, entre otros)",
-      count: 120,
-    },
-    { os: "Unix (AIX, Mac OS Server, Solaris, etc.)", count: 80 },
-    { os: "Windows Server 2022/2023", count: 50 },
-    { os: "Windows Server 2016/2019", count: 80 },
-    { os: "Windows Server 2008/2012", count: 50 },
-    { os: "Windows Server 2000/2003", count: 12 },
-    { os: "Total", count: 392, isTotal: true },
-  ],
-};
-
 const PLATFORM_LABELS: Record<PlatformKey, string> = {
   "pc-desktop": "Computadoras de escritorio Plataforma PC",
   "apple-desktop": "Computadoras de escritorio Plataforma Apple",
@@ -76,23 +26,65 @@ const PLATFORM_LABELS: Record<PlatformKey, string> = {
   "apple-laptop": "Computadoras portátiles Plataforma Apple",
   servers: "Servidores de alto rendimiento",
 };
+interface RawOsEntry {
+  sistema_operativo: string;
+  total: string;
+}
+// ✔ Función profesional para transformar tu JSON a OsEntry[]
+function transformPlatform(raw: RawOsEntry[]): OsEntry[] {
+  const rows: OsEntry[] = raw.map((item) => ({
+    os: item.sistema_operativo,
+    count: Number(item.total), // Convierte string a número
+  }));
 
-export default function Pregunta1() {
+  const total = rows.reduce((acc, r) => acc + r.count, 0);
+
+  rows.push({
+    os: "Total",
+    count: total,
+    isTotal: true,
+  });
+
+  return rows;
+}
+
+export default function Pregunta2() {
   const [activeTab, setActiveTab] = useState<PlatformKey>("pc-desktop");
+  const [data, setData] = useState<PlatformData | null>(null);
 
-  const currentData = MOCK_DATA[activeTab];
+  // ✔ GET AXIOS PROFESIONAL
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const headers = {Authorization: `Bearer ${token}`};
+    axios
+      .get("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_sistemasOperativos",{headers}) // ← TU API AQUI
+      .then((res) => {
+        const json = res.data; // Tu JSON con 5 arreglos
+
+        const formatted: PlatformData = {
+          "pc-desktop": transformPlatform(json[0]),
+          "apple-desktop": transformPlatform(json[1]),
+          "pc-laptop": transformPlatform(json[2]),
+          "apple-laptop": transformPlatform(json[3]),
+          servers: transformPlatform(json[4]),
+        };
+
+        setData(formatted);
+      })
+      .catch((err) => console.error("Error cargando datos", err));
+  }, []);
+
+  if (!data) return <div>Cargando datos...</div>;
+
+  const currentData = data[activeTab];
 
   return (
     <div className={styles.scanView_P1}>
       <div className={styles.container_P1}>
-            <div className="contenedor-censo">
-        Censo de equipos periféricos - Equipo de digitalización
-      </div>
+        <div className="contenedor-censo">
+          Censo de equipos — Sistemas Operativos
+        </div>
 
-      <div className="pregunta-cuadro">
-        5. Indique el número de equipos de digitalización de acuerdo con la
-        población universitaria al que se destina su uso primordialmente.
-      </div>
         <div className={styles.header_P1}>
           Presione cada pestaña para ver la información de las plataformas.
         </div>
@@ -107,28 +99,26 @@ export default function Pregunta1() {
                   activeTab === key ? styles.active_P1 : ""
                 }`}
                 onClick={() => setActiveTab(key as PlatformKey)}
-                aria-selected={activeTab === key}
               >
                 {label}
               </button>
             ))}
           </div>
 
-          {/* Data Table */}
-            <div className={styles["data-table_P1"]}>
-              {currentData.map((item, index) => (
-                <div
-                  key={index}
-                  className={`${styles["data-row_P1"]} ${
-                    item.isTotal ? styles["total-row_P1"] : ""
-                  }`}
-                >
-                  <div className={styles["os-name_P1"]}>{item.os}</div>
-                  <div className={styles["count-box_P1"]}>{item.count}</div>
-                </div>
-              ))}
-            </div>
-      
+          {/* Tabla */}
+          <div className={styles["data-table_P1"]}>
+            {currentData.map((item, index) => (
+              <div
+                key={index}
+                className={`${styles["data-row_P1"]} ${
+                  item.isTotal ? styles["total-row_P1"] : ""
+                }`}
+              >
+                <div className={styles["os-name_P1"]}>{item.os}</div>
+                <div className={styles["count-box_P1"]}>{item.count}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
