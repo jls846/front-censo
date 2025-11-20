@@ -21,7 +21,7 @@ export default function Pregunta7() {
       </div>
 
       <div className="pregunta-cuadro">
-        7. Calcule porcentualmente (%) la antiguedad que tienen los equipos
+        Antiguedad que tienen los equipos
         periféricos del área universitaria.
       </div>
 

@@ -41,12 +41,9 @@ export default function Pregunta2EP() {
 
   return (
     <div className={styles.container_P2}>
-      <div className="contenedor-censo">
-        Censo de equipos periféricos - Equipo de digitalización
-      </div>
 
       <div className="pregunta-cuadro">
-        2. Indique el número de equipos de impresión de acuerdo con la población universitaria al que se destina su uso primordialmente.
+        Indique el número de equipos de impresión de acuerdo con la población universitaria al que se destina su uso primordialmente.
       </div>
 
       <div className={styles.row_P2}>

@@ -5,11 +5,12 @@
 .contenedor-censo{
 background-color: #001f3f;
 color: white;
+border-radius: 4px;
 }
  
 
 .pregunta-cuadro {
-  border-left: 6px solid #001f3f;
+  border-left: 10px solid #001f3f;
   padding: 15px;
   border-radius: 8px;
   font-size: 16px;

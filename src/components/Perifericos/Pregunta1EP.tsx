@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "./pregunta1EP.module.scss";
+import style from "./pregunta1EP.module.scss";
 
 interface EquiposImpresion {
   inyeccionTinta: string;
@@ -48,15 +48,15 @@ export default function Pregunta1EP() {
   return (
     <div className="container">
       <div className="contenedor-censo">
-        Censo de equipos periféricos - Equipo de digitalización
+        Censo de equipos periféricos - Equipo de Impresion
       </div>
 
       <div className="pregunta-cuadro">
-        1. Desglose el número de equipos de impresión con que cuenta el área
+        Desglose el número de equipos de impresión con que cuenta el área
         universitaria.
       </div>
 
-      <div className="grid">
+      <div className={style.grid}>
         {/* Columna 1 */}
         <div className="item">
           <label htmlFor="inyeccionTinta">Inyección de tinta</label>
