@@ -60,7 +60,7 @@ export default function Pregunta1() {
 
     axios
       .get<RawEntry[]>(
-        "https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_tipoUso",
+        `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_tipoUso`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

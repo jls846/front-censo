@@ -33,6 +33,8 @@ export default function Editar() {
     observaciones: "",
     responsable: "",
     id_periferico: 0,
+    id_laboratorio: 0,
+    id_proyecto: 0,
     fechaMovimiento: "",
   });
 
@@ -76,14 +78,24 @@ export default function Editar() {
     periferico: string;
   }
 
+  interface Laboratorio {
+    id_laboratorio: number;
+    laboratorio: string;
+  }
+
+  interface Proyecto {
+    id_proyecto: number;
+    proyecto: string;
+  }
+
   const [tiposUso, setTiposUso] = useState<TipoUso[]>([]);
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [estados, setEstados] = useState<Estado[]>([]);
   const [adscripciones, setAdscripciones] = useState<Adscripcion[]>([]);
   const [tiposEquipo, setTiposEquipo] = useState<TipoEquipo[]>([]);
-  const [sistemasOperativos, setSistemasOperativos] = useState<
-    SistemaOperativo[]
-  >([]);
+  const [laboratorios, setLaboratorios] = useState<Laboratorio[]>([]);
+  const [proyectos, setProyectos] = useState<Proyecto[]>([]);
+  const [sistemasOperativos, setSistemasOperativos] = useState<SistemaOperativo[]>([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
   const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
   const [adscripcionLabel, setAdscripcionLabel] = useState("");
@@ -111,6 +123,8 @@ export default function Editar() {
           tiposEquipoRes,
           sistemasOperativosRes,
           procesadoresRes,
+          laboratoriosRes,
+          proyectosRes,
         ] = await Promise.all([
           axios.get(`${api_url}/equipos/usos`, { headers }),
           axios.get(`${api_url}/equipos/marcas`, { headers }),
@@ -119,6 +133,8 @@ export default function Editar() {
           axios.get(`${api_url}/equipos/tipos-equipo`, { headers }),
           axios.get(`${api_url}/equipos/sistemas-operativos`, { headers }),
           axios.get(`${api_url}/equipos/procesadores`, { headers }),
+          axios.get(`${api_url}/equipos/laboratorios`, { headers }),
+          axios.get(`${api_url}/equipos/proyectos`, { headers }),
         ]);
 
         setTiposUso(usosRes.data);
@@ -128,6 +144,8 @@ export default function Editar() {
         setTiposEquipo(tiposEquipoRes.data);
         setSistemasOperativos(sistemasOperativosRes.data);
         setProcesadores(procesadoresRes.data);
+        setLaboratorios(laboratoriosRes.data);
+        setProyectos(proyectosRes.data);
       } catch (error) {
         console.error("Error cargando catálogos:", error);
         toast.error("No se pudieron cargar los catálogos de datos");
@@ -176,6 +194,8 @@ export default function Editar() {
       marca: { id_marca: number; marca: string };
       periferico: { id_periferico: number; periferico: string };
       observaciones?: string;
+      id_laboratorio?: number;
+      id_proyecto?: number;
     }
 
     const fetchEquipo = async () => {
@@ -225,6 +245,8 @@ export default function Editar() {
           id_adscripcion: equipo.adscripcion?.id_adscripcion || 0,
           lugar: equipo.lugar || "",
           id_periferico: equipo.periferico?.id_periferico || 0,
+          id_laboratorio: equipo.id_laboratorio || 0,
+          id_proyecto: equipo.id_proyecto || 0,
           fechaMovimiento: equipo.fechaMovimiento || "",
           responsable,
         });
@@ -305,13 +327,23 @@ export default function Editar() {
     }
 
     if (!formData.id_adscripcion) {
-      toast.error("adscripcion no encontrado");
+      toast.error("adscripción no encontrada");
       return;
     }
 
+    {/*if (!formData.id_laboratorio) {
+      toast.error("Laboratorio no seleccionado");
+      return;
+    }
+
+    if (!formData.id_proyecto) {
+      toast.error("Proyecto no seleccionado");
+      return;
+    }*/}
+
     if (formData.id_tipo_equipo == 9) {
       if (!formData.id_periferico) {
-        toast.error("Periferico no encontrado");
+        toast.error("Periférico no encontrado");
         return;
       }
     }
@@ -322,7 +354,7 @@ export default function Editar() {
       formData.id_tipo_equipo != 9
     ) {
       if (!formData.id_sistema_operativo) {
-        toast.error("Sistema operativo no encontrado ");
+        toast.error("Sistema operativo no encontrado");
         return;
       }
     }
@@ -341,6 +373,8 @@ export default function Editar() {
       id_procesador: formData.id_procesador,
       id_estado: formData.id_estado,
       id_adscripcion: formData.id_adscripcion,
+      id_laboratorio: formData.id_laboratorio,
+      id_proyecto: formData.id_proyecto,
       lugar: formData.lugar,
       id_sistema_operativo: formData.id_sistema_operativo,
       id_tipo_uso: formData.id_uso,
@@ -405,7 +439,6 @@ export default function Editar() {
         };
       }
 
-      // Caso general
       return { ...prev, [field]: newValue };
     });
   };
@@ -429,9 +462,7 @@ export default function Editar() {
           const first = data[0];
           setFormData((prev) => ({
             ...prev,
-            responsable: `${first.nombre ?? ""} ${
-              first.apellidos ?? ""
-            }`.trim(),
+            responsable: `${first.nombre ?? ""} ${first.apellidos ?? ""}`.trim(),
           }));
         } else {
           toast.error(
@@ -557,7 +588,9 @@ export default function Editar() {
                 ))}
               </select>
             </div>
+            
           </div>
+          
 
           {/* Columna 2 */}
           <div className="column">
@@ -577,7 +610,6 @@ export default function Editar() {
                 ))}
               </select>
             </div>
-
             {mostrarCamposComputadora && (
               <>
                 <div className="formGroup">
@@ -631,7 +663,7 @@ export default function Editar() {
                 <select
                   value={formData.id_periferico || 0}
                   onChange={(e) =>
-                    handleInputChange("tipoPeriferico", e.target.value)
+                    handleInputChange("id_periferico", e.target.value)
                   }
                 >
                   <option value="">Selecciona periférico</option>
@@ -692,13 +724,42 @@ export default function Editar() {
                 type="text"
                 value={formData.responsable}
                 disabled
-                placeholder="Selecciona una Adscripcion"
+                placeholder="Selecciona una Adscripción"
               />
             </div>
+            <div className="formGroup">
+              <label>Laboratorio</label>
+              <select
+                value={formData.id_laboratorio}
+                onChange={(e) => handleInputChange("id_laboratorio", e.target.value)}
+              >
+                <option value="">Selecciona laboratorio</option>
+                {laboratorios.map((lab) => (
+                  <option key={lab.id_laboratorio} value={lab.id_laboratorio}>
+                    {lab.laboratorio}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
           </div>
 
           {/* Columna 3 */}
           <div className="column">
+            <div className="formGroup">
+              <label>Proyecto</label>
+              <select
+                value={formData.id_proyecto}
+                onChange={(e) => handleInputChange("id_proyecto", e.target.value)}
+              >
+                <option value="">Selecciona proyecto</option>
+                {proyectos.map((proy) => (
+                  <option key={proy.id_proyecto} value={proy.id_proyecto}>
+                    {proy.proyecto}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="formGroup">
               <label>Lugar</label>
               <textarea
@@ -706,6 +767,7 @@ export default function Editar() {
                 onChange={(e) =>
                   setFormData({ ...formData, lugar: e.target.value })
                 }
+                maxLength={200}
                 rows={5}
                 className="textAreaLarge"
               />
@@ -718,6 +780,7 @@ export default function Editar() {
                 onChange={(e) =>
                   setFormData({ ...formData, observaciones: e.target.value })
                 }
+                maxLength={200}
                 rows={5}
                 className="textAreaLarge"
               />
@@ -745,4 +808,3 @@ export default function Editar() {
     </div>
   );
 }
-//IO
