@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import "./pregunta9.css";
 import Pregunta4 from "./Pregunta_4";
+import Pregunta10 from "./pregunta10";
 
 type AntiguedadItem = {
   antiguedad: string | null;
@@ -72,7 +73,6 @@ export default function Pregunta9() {
 
     const pct = (valor: number) => ((valor / totalEquipo) * 100).toFixed(2);
 
-    // [Menor a 2, Entre 2-3, Entre 4-5, Mayor a 6]
     return [pct(menores2), pct(entre2_3), pct(entre4_6), pct(mayores6),pct(notfound)];
   };
 
@@ -177,7 +177,8 @@ export default function Pregunta9() {
         </table>
       </div>
 
-      
+      <Pregunta10/>
+
     </div>
   );
 }
