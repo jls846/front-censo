@@ -378,6 +378,7 @@ export default function Editar() {
       lugar: formData.lugar,
       id_sistema_operativo: formData.id_sistema_operativo,
       id_tipo_uso: formData.id_uso,
+      id_periferico:formData.id_periferico,
       serie: formData.serie,
       modelo: formData.modelo,
       id_marca: formData.id_marca,
@@ -389,7 +390,7 @@ export default function Editar() {
         headers,
       });
       toast.success("Equipo actualizado correctamente");
-      router.push("/escaner");
+      // router.push("/escaner");
     } catch (error) {
       console.error("Error al guardar:", error);
       toast.error("Hubo un error al guardar el equipo.");

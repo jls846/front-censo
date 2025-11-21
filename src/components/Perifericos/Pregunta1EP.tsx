@@ -14,6 +14,7 @@ interface EquiposImpresion {
   laserAltoVolumenColor: string;
   impresora3D: string;
   plotter: string;
+  // credencial: string;
 }
 
 export default function Pregunta1EP() {
@@ -27,6 +28,7 @@ export default function Pregunta1EP() {
     laserAltoVolumenColor: "0",
     impresora3D: "0",
     plotter: "0",
+    // credencial: "0",
   });
 
   const api_url = process.env.NEXT_PUBLIC_API_URL;
@@ -52,6 +54,7 @@ export default function Pregunta1EP() {
           laserAltoVolumenColor: "0",
           impresora3D: "0",
           plotter: "0",
+          // credencial: "0",
         };
 
         data.forEach((item: any) => {
@@ -89,6 +92,9 @@ export default function Pregunta1EP() {
             case "3D":
               valores.impresora3D = total;
               break;
+            // case "IMPRESORA CREDENCIALES":
+            //   valores.credencial = total;
+            //   break;
             case "PLOTTER":
               valores.plotter = total;
               break;
@@ -213,6 +219,15 @@ export default function Pregunta1EP() {
             disabled
           />
         </div>
+
+        {/* <div className="item">
+          <label>Credencial</label>
+          <input
+            type="text"
+            value={equipos.credencial}
+            disabled
+          />
+        </div> */}
       </div>
     </div>
   );
