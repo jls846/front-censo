@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import style from "./pregunta1EP.module.scss";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 interface EquiposImpresion {
   inyeccionTinta: string;
@@ -27,15 +29,77 @@ export default function Pregunta1EP() {
     plotter: "0",
   });
 
-  // 🔹 Preparado para conectar con API del backend
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
-    // Cuando te den la API, descomenta y edita la URL 👇
-    /*
-    fetch("https://tu-api-backend.com/api/equipos-impresion")
-      .then((res) => res.json())
-      .then((data) => setEquipos(data))
-      .catch((err) => console.error("Error al obtener datos:", err));
-    */
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    axios
+      .get(`${api_url}/equipos/reporte/equipos_impesion_group/impresoras`, {
+        headers,
+      })
+      .then((res) => {
+        const data = res.data;
+
+        const valores = {
+          inyeccionTinta: "0",
+          laserPequenaBN: "0",
+          matrizPuntos: "0",
+          laserAltoVolumenBN: "0",
+          laserPequenaColor: "0",
+          multifuncionales: "0",
+          laserAltoVolumenColor: "0",
+          impresora3D: "0",
+          plotter: "0",
+        };
+
+        data.forEach((item: any) => {
+          const uso = item.periferico.toUpperCase().trim();
+          const total = item.total ?? "0";
+
+          switch (uso) {
+            case "INYECCIÓN TINTA":
+              valores.inyeccionTinta = total;
+              break;
+
+            case "LÁSER PEQUEÑA B/N":
+              valores.laserPequenaBN = total;
+              break;
+
+            case "MATRIZ DE PUNTOS":
+              valores.matrizPuntos = total;
+              break;
+
+            case "LÁSER DE ALTO VOLUMEN B/N":
+              valores.laserAltoVolumenBN = total;
+              break;
+
+            case "LÁSER PEQUEÑA COLOR":
+              valores.laserPequenaColor = total;
+              break;
+
+            case "MULTIFUNCIONALES":
+              valores.multifuncionales = total;
+              break;
+
+            case "LÁSER DE ALTO VOLUMEN COLOR":
+              valores.laserAltoVolumenColor = total;
+              break;
+            case "3D":
+              valores.impresora3D = total;
+              break;
+            case "PLOTTER":
+              valores.plotter = total;
+              break;
+          }
+        });
+
+        setEquipos(valores);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
