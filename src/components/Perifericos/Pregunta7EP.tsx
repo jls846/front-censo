@@ -73,12 +73,11 @@ export default function Pregunta7EP() {
 
   const startItem = (currentPage - 1) * recordsPerPage + 1;
   const endItem = Math.min(startItem + recordsPerPage - 1, sortedData.length);
+  const totalLaboratorios = data.reduce((sum, item) => sum + Number(item.cantidad), 0);
 
   return (
     <div className="container">
-      <div className="pregunta-cuadro">
-        Numero de laboratorios.
-      </div>
+      <div className="pregunta-cuadro">Numero de laboratorios.</div>
 
       <div className="controls">
         <div className="show-records">
@@ -136,6 +135,10 @@ export default function Pregunta7EP() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="total-labs">
+        Total de laboratorios: <strong>{totalLaboratorios}</strong>
       </div>
 
       <div className="pagination">

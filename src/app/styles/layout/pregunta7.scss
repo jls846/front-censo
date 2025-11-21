@@ -110,6 +110,15 @@ tr:nth-child(even) {
   }
 }
 
+.total-labs {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  background: #fff;
+  border-radius: 8px;
+}
+
 @media (max-width: 768px) {
   .controls {
     flex-direction: column;

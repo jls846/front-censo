@@ -14,6 +14,7 @@ type PreguntaKey =
   | "pregunta2"
   | "pregunta3"
   | "pregunta7EP"
+  | "pregunta8"
   | "pregunta9";
 
 const LABELS: Record<PreguntaKey, string> = {
@@ -21,6 +22,7 @@ const LABELS: Record<PreguntaKey, string> = {
   pregunta2: "Sistema Operativo",
   pregunta3: "Plataforma y tipo procesador",
   pregunta7EP: "Laboratorios",
+  pregunta8:"Proyectos",
   pregunta9: "Generales",
 };
 
@@ -30,6 +32,7 @@ const TAB_BACKGROUNDS: Record<PreguntaKey, string> = {
   pregunta2: "bg-gray",
   pregunta3: "bg-gray",
   pregunta7EP: "bg-gray",
+  pregunta8:"bg-gray",
   pregunta9: "bg-blue",
 };
 
@@ -45,12 +48,9 @@ export default function Page() {
       case "pregunta3":
         return <Pregunta3 />;
       case "pregunta7EP":
-        return (
-          <>
-            <Pregunta7EP />
-            <Pregunta8 />
-          </>
-        );
+        return <Pregunta7EP />
+      case "pregunta8":
+        return <Pregunta8 />;
       case "pregunta9":
         return <Pregunta9 />;
       default:

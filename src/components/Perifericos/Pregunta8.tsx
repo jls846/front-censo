@@ -73,6 +73,10 @@ export default function Pregunta8() {
 
   const startItem = (currentPage - 1) * recordsPerPage + 1;
   const endItem = Math.min(startItem + recordsPerPage - 1, sortedData.length);
+  const totalLaboratorios = data.reduce(
+    (sum, item) => sum + Number(item.cantidad),
+    0
+  );
 
   return (
     <div className="container">
@@ -133,6 +137,10 @@ export default function Pregunta8() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="total-labs">
+        Total de proyecto: <strong>{totalLaboratorios}</strong>
       </div>
 
       <div className="pagination">

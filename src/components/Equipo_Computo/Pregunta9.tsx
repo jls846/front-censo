@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import "./pregunta9.css";
-import Pregunta4 from "./Pregunta_4";
 import Pregunta10 from "./pregunta10";
 
 type AntiguedadItem = {
   antiguedad: string | null;
   total: string;
-  porcentaje: string; // lo ignoramos
+  porcentaje: string; 
 };
 
 type ApiResponse = {
@@ -25,12 +24,6 @@ export default function Pregunta9() {
     { nombre: "Computadoras Portátiles", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
     { nombre: "Alto Rendimiento", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
   ]);
-
-  const [garantia, setGarantia] = useState({
-    escritorio: "",
-    portatil: "",
-    altoRendimiento: "",
-  });
 
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +41,7 @@ export default function Pregunta9() {
       const total = Number(item.total) || 0;
 
       switch (item.antiguedad) {
-        case "MENOR A 2":
+        case "MENORES DE 2":
           menores2 += total;
           break;
         case "ENTRE 2 Y 3":
@@ -57,7 +50,7 @@ export default function Pregunta9() {
         case "ENTRE 4 Y 5":
           entre4_6 += total;
           break;
-        case "MAYORES DE 6":
+        case "ENTRE 6 Y MAYORES":
           mayores6 += total;
           break;
                 // Cualquier otro valor (aunque no debería haber) lo meteríamos en mayores6
