@@ -16,15 +16,15 @@ interface EquiposImpresion {
 
 export default function Pregunta1EP() {
   const [equipos, setEquipos] = useState<EquiposImpresion>({
-    inyeccionTinta: "7",
-    laserPequenaBN: "186",
-    matrizPuntos: "",
-    laserAltoVolumenBN: "28",
-    laserPequenaColor: "20",
-    multifuncionales: "108",
-    laserAltoVolumenColor: "18",
-    impresora3D: "2",
-    plotter: "11",
+    inyeccionTinta: "0",
+    laserPequenaBN: "0",
+    matrizPuntos: "0",
+    laserAltoVolumenBN: "0",
+    laserPequenaColor: "0",
+    multifuncionales: "0",
+    laserAltoVolumenColor: "0",
+    impresora3D: "0",
+    plotter: "0",
   });
 
   // 🔹 Preparado para conectar con API del backend
@@ -51,9 +51,7 @@ export default function Pregunta1EP() {
         Censo de equipos periféricos - Equipo de Impresion
       </div>
 
-      <div className="pregunta-cuadro">
-        Equipos de impresión.
-      </div>
+      <div className="pregunta-cuadro">Equipos de impresión.</div>
 
       <div className={style.grid}>
         {/* Columna 1 */}
@@ -64,29 +62,7 @@ export default function Pregunta1EP() {
             id="inyeccionTinta"
             name="inyeccionTinta"
             value={equipos.inyeccionTinta}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="item">
-          <label htmlFor="laserPequenaBN">Láser pequeña B/N</label>
-          <input
-            type="text"
-            id="laserPequenaBN"
-            name="laserPequenaBN"
-            value={equipos.laserPequenaBN}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="item">
-          <label htmlFor="matrizPuntos">Matriz de puntos</label>
-          <input
-            type="text"
-            id="matrizPuntos"
-            name="matrizPuntos"
-            value={equipos.matrizPuntos}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -98,7 +74,31 @@ export default function Pregunta1EP() {
             id="laserAltoVolumenBN"
             name="laserAltoVolumenBN"
             value={equipos.laserAltoVolumenBN}
-            onChange={handleChange}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="laserAltoVolumenColor">
+            Láser de alto volumen Color
+          </label>
+          <input
+            type="text"
+            id="laserAltoVolumenColor"
+            name="laserAltoVolumenColor"
+            value={equipos.laserAltoVolumenColor}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="laserPequenaBN">Láser pequeña B/N</label>
+          <input
+            type="text"
+            id="laserPequenaBN"
+            name="laserPequenaBN"
+            value={equipos.laserPequenaBN}
+            disabled
           />
         </div>
 
@@ -109,32 +109,7 @@ export default function Pregunta1EP() {
             id="laserPequenaColor"
             name="laserPequenaColor"
             value={equipos.laserPequenaColor}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="item">
-          <label htmlFor="multifuncionales">Multifuncionales</label>
-          <input
-            type="text"
-            id="multifuncionales"
-            name="multifuncionales"
-            value={equipos.multifuncionales}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Columna 3 */}
-        <div className="item">
-          <label htmlFor="laserAltoVolumenColor">
-            Láser de alto volumen Color
-          </label>
-          <input
-            type="text"
-            id="laserAltoVolumenColor"
-            name="laserAltoVolumenColor"
-            value={equipos.laserAltoVolumenColor}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -145,7 +120,29 @@ export default function Pregunta1EP() {
             id="impresora3D"
             name="impresora3D"
             value={equipos.impresora3D}
-            onChange={handleChange}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="matrizPuntos">Matriz de puntos</label>
+          <input
+            type="text"
+            id="matrizPuntos"
+            name="matrizPuntos"
+            value={equipos.matrizPuntos}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="multifuncionales">Multifuncionales</label>
+          <input
+            type="text"
+            id="multifuncionales"
+            name="multifuncionales"
+            value={equipos.multifuncionales}
+            disabled
           />
         </div>
 
@@ -156,7 +153,7 @@ export default function Pregunta1EP() {
             id="plotter"
             name="plotter"
             value={equipos.plotter}
-            onChange={handleChange}
+            disabled
           />
         </div>
       </div>

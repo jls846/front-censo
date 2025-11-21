@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "@/app/styles/layout/pregunta4EP.scss";
 import Cookies from "js-cookie";
 import axios from "axios";
