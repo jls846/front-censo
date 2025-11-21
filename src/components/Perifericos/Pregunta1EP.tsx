@@ -14,7 +14,8 @@ interface EquiposImpresion {
   laserAltoVolumenColor: string;
   impresora3D: string;
   plotter: string;
-  // credencial: string;
+  credencial: string;
+  termica: string;
 }
 
 export default function Pregunta1EP() {
@@ -28,7 +29,8 @@ export default function Pregunta1EP() {
     laserAltoVolumenColor: "0",
     impresora3D: "0",
     plotter: "0",
-    // credencial: "0",
+    credencial: "0",
+    termica: "0",
   });
 
   const api_url = process.env.NEXT_PUBLIC_API_URL;
@@ -54,7 +56,8 @@ export default function Pregunta1EP() {
           laserAltoVolumenColor: "0",
           impresora3D: "0",
           plotter: "0",
-          // credencial: "0",
+          credencial: "0",
+          termica: "0",
         };
 
         data.forEach((item: any) => {
@@ -92,9 +95,12 @@ export default function Pregunta1EP() {
             case "3D":
               valores.impresora3D = total;
               break;
-            // case "IMPRESORA CREDENCIALES":
-            //   valores.credencial = total;
-            //   break;
+            case "IMPRESORA CREDENCIALES":
+              valores.credencial = total;
+              break;
+            case "IMPRESORA TÉRMICA":
+              valores.termica = total;
+              break;
             case "PLOTTER":
               valores.plotter = total;
               break;
@@ -155,6 +161,17 @@ export default function Pregunta1EP() {
         </div>
 
         <div className="item">
+          <label htmlFor="laserAltoVolumenColor">IMPRESORA CREDENCIALES</label>
+          <input
+            type="text"
+            id="laserAltoVolumenColor"
+            name="laserAltoVolumenColor"
+            value={equipos.credencial}
+            disabled
+          />
+        </div>
+
+        <div className="item">
           <label htmlFor="laserPequenaBN">Láser pequeña B/N</label>
           <input
             type="text"
@@ -183,6 +200,17 @@ export default function Pregunta1EP() {
             id="impresora3D"
             name="impresora3D"
             value={equipos.impresora3D}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="matrizPuntos">IMPRESORA TÉRMICA</label>
+          <input
+            type="text"
+            id="matrizPuntos"
+            name="matrizPuntos"
+            value={equipos.termica}
             disabled
           />
         </div>
@@ -219,15 +247,6 @@ export default function Pregunta1EP() {
             disabled
           />
         </div>
-
-        {/* <div className="item">
-          <label>Credencial</label>
-          <input
-            type="text"
-            value={equipos.credencial}
-            disabled
-          />
-        </div> */}
       </div>
     </div>
   );
