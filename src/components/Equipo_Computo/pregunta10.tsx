@@ -56,7 +56,7 @@ export default function Pregunta10() {
   return (
     <>
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
-        ¿Cuántos equipos de cómputo tienen garantía de proveedor?
+        Equipos de cómputo que tienen garantía de proveedor
       </div>
 
       <div className="tabla-contenedor">

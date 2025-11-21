@@ -243,9 +243,6 @@ export default function Pregunta3_2() {
                     </tbody>
                   </table>
                 </div>
-                <button className={styles.consultarBtn_P3}>
-                  Consultar las equivalencias de procesadores
-                </button>
               </>
             ) : (
               <div className={styles.emptyState_P3}>

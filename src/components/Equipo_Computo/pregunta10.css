@@ -1,5 +1,6 @@
 /* === Cuadro de la pregunta === */
 .pregunta-cuadro {
+  background-color: #fff;
   border-left: 6px solid #001f3f;
   padding: 15px;
   border-radius: 8px;

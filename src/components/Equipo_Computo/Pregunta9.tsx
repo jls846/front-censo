@@ -132,7 +132,7 @@ export default function Pregunta9() {
 
       {/* Pregunta 9: Antigüedad */}
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
-        Calcule porcentualmente (%) la antigüedad que tienen los equipos de cómputo del área universitaria.
+        Antigüedad que tienen los equipos de cómputo del área universitaria.
       </div>
 
       <div className="tabla-contenedor">
