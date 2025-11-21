@@ -161,7 +161,7 @@ export default function Pregunta1EP() {
         </div>
 
         <div className="item">
-          <label htmlFor="laserAltoVolumenColor">IMPRESORA CREDENCIALES</label>
+          <label htmlFor="laserAltoVolumenColor">Impresora credenciales</label>
           <input
             type="text"
             id="laserAltoVolumenColor"
@@ -205,7 +205,7 @@ export default function Pregunta1EP() {
         </div>
 
         <div className="item">
-          <label htmlFor="matrizPuntos">IMPRESORA TÉRMICA</label>
+          <label htmlFor="matrizPuntos">Impresora termica</label>
           <input
             type="text"
             id="matrizPuntos"
