@@ -10,7 +10,7 @@ interface Dato {
   cantidad: number;
 }
 
-export default function Pregunta7EP() {
+export default function Pregunta8() {
   const [data, setData] = useState<Dato[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [recordsPerPage, setRecordsPerPage] = useState<number>(10);
@@ -24,11 +24,11 @@ export default function Pregunta7EP() {
     const headers = { Authorization: `Bearer ${token}` };
 
     axios
-      .get(`${api_url}/equipos/reporte/contar_laboratorio`, { headers })
+      .get(`${api_url}/equipos/reporte/contar_proyecto`, { headers })
       .then((res) => {
         const formato: Dato[] = res.data.map((item: any) => ({
-          nombre: item.laboratorio || "SIN NOMBRE",
-          cantidad: item.total || 0,
+          nombre: item.proyecto || "SIN PROYECTO",
+          cantidad: Number(item.total) || 0,
         }));
 
         setData(formato);
@@ -76,10 +76,7 @@ export default function Pregunta7EP() {
 
   return (
     <div className="container">
-      <div className="pregunta-cuadro">
-        Numero de laboratorios.
-      </div>
-
+      <div className="pregunta-cuadro">Numero de proyectos.</div>
       <div className="controls">
         <div className="show-records">
           Mostrar
@@ -103,7 +100,7 @@ export default function Pregunta7EP() {
                 onClick={() => handleSort("nombre")}
                 style={{ textAlign: "center" }}
               >
-                Nombre del laboratorio o aula
+                Proyecto
                 {sortColumn === "nombre" && (
                   <img
                     src={sortAsc ? "/arrow_up.svg" : "/arrow_down.svg"}

@@ -88,11 +88,12 @@
 .data-table_reporte {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   justify-content: center;
   padding: 20px;
   background-color: #f5f5f7;
 
+  text-align: center;
   border: none;
   min-height: 300px;
   animation: fadein 0.2s ease;

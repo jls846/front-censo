@@ -7,6 +7,7 @@ import Pregunta3 from "@/components/Equipo_Computo/Pregunta3";
 import Pregunta7EP from "@/components/Perifericos/Pregunta7EP";
 import Pregunta9 from "@/components/Equipo_Computo/Pregunta9";
 import "../../styles/layout/reporte.scss";
+import Pregunta8 from "@/components/Perifericos/Pregunta8";
 
 type PreguntaKey =
   | "pregunta1"
@@ -44,7 +45,12 @@ export default function Page() {
       case "pregunta3":
         return <Pregunta3 />;
       case "pregunta7EP":
-        return <Pregunta7EP />;
+        return (
+          <>
+            <Pregunta7EP />
+            <Pregunta8 />
+          </>
+        );
       case "pregunta9":
         return <Pregunta9 />;
       default:

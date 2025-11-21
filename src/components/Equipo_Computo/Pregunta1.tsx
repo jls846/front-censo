@@ -170,9 +170,8 @@ export default function Pregunta1() {
       <div className="contenedor-censo">Censo de equipos de cómputo</div>
 
       <div className="pregunta-cuadro">
-        1. Desglose en cada renglón, el número de equipos de cómputo dedicado
-        por cada categoría enlistada, de acuerdo con el perfil de usuario al que
-        se destina su uso primordialmente. *
+        Número de equipos de cómputo
+        por cada categoría enlistada, de acuerdo con el perfil de usuario.
       </div>
 
       <div className="contenedor-tablas">
