@@ -102,13 +102,6 @@ export default function Pregunta1EP() {
       });
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEquipos({
-      ...equipos,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   return (
     <div className="container">
       <div className="contenedor-censo">
