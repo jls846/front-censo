@@ -385,10 +385,8 @@ export default function Page() {
       toast.success("Equipo guardado correctamente");
       router.push("/escaner");
     } catch (err: any) {
-      console.error(err);
-
       if (err.response && err.response.status === 400) {
-        const mensaje = err.response.data?.message || "El equipo ya 1existe";
+        const mensaje = err.response.data?.message || "El equipo ya existe";
         toast.error(mensaje);
         return;
       }

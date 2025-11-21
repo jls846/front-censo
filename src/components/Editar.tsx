@@ -108,7 +108,6 @@ export default function Editar() {
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const mostrarCamposComputadora = Number(formData.id_tipo_equipo) !== 9;
 
-  // 🔹 Cargar catálogos
   useEffect(() => {
     const fetchCatalogos = async () => {
       const token = Cookies.get("token");
@@ -194,8 +193,12 @@ export default function Editar() {
       marca: { id_marca: number; marca: string };
       periferico: { id_periferico: number; periferico: string };
       observaciones?: string;
-      id_laboratorio?: number;
-      id_proyecto?: number;
+      laboratorio:{
+        id_laboratorio?: number;
+      }
+      proyecto:{
+        id_proyecto?: number;
+      }
     }
 
     const fetchEquipo = async () => {
@@ -245,8 +248,8 @@ export default function Editar() {
           id_adscripcion: equipo.adscripcion?.id_adscripcion || 0,
           lugar: equipo.lugar || "",
           id_periferico: equipo.periferico?.id_periferico || 0,
-          id_laboratorio: equipo.id_laboratorio || 0,
-          id_proyecto: equipo.id_proyecto || 0,
+          id_laboratorio: equipo.laboratorio?.id_laboratorio || 0,
+          id_proyecto: equipo.proyecto?.id_proyecto || 0,
           fechaMovimiento: equipo.fechaMovimiento || "",
           responsable,
         });
@@ -390,7 +393,7 @@ export default function Editar() {
         headers,
       });
       toast.success("Equipo actualizado correctamente");
-      // router.push("/escaner");
+      router.push("/escaner");
     } catch (error) {
       console.error("Error al guardar:", error);
       toast.error("Hubo un error al guardar el equipo.");

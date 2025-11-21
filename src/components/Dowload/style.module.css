@@ -1,0 +1,47 @@
+.downloadBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.downloadBtn:hover {
+  background: #1459b3;
+}
+
+/* Icono con css puro */
+.icon {
+  width: 18px;
+  height: 18px;
+  position: relative;
+}
+
+.icon::before {
+  content: "";
+  width: 3px;
+  height: 10px;
+  background: white;
+  position: absolute;
+  left: 7px;
+  top: 0;
+}
+
+.icon::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-left: 3px solid white;
+  border-bottom: 3px solid white;
+  transform: rotate(-45deg);
+  position: absolute;
+  left: 4px;
+  top: 8px;
+}
