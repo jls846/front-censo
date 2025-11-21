@@ -63,9 +63,9 @@ export default function Pregunta10() {
         <table className="tabla">
           <thead>
             <tr>
-              <th className="azul-marino">Computadoras de Escritorio (247)</th>
-              <th className="azul-marino">Computadoras Portátiles (767)</th>
-              <th className="azul-marino">Alto Rendimiento (17)</th>
+              <th className="azul-marino">Computadoras de Escritorio</th>
+              <th className="azul-marino">Computadoras Portátiles</th>
+              <th className="azul-marino">Alto Rendimiento</th>
             </tr>
           </thead>
           <tbody>

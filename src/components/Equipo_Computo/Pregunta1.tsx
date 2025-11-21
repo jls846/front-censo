@@ -71,7 +71,7 @@ export default function Pregunta1() {
         );
 
         for (const item of res.data) {
-          const categoria = item.categoria.trim(); // ⚠️ elimina espacios basura
+          const categoria = item.categoria.trim();
           const mapping = CATEGORIA_MAP[categoria];
           if (!mapping) continue;
 

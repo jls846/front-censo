@@ -14,8 +14,8 @@ type PreguntaKey =
   | "pregunta7";
 
 const LABELS: Record<PreguntaKey, string> = {
-  pregunta1: "Impresion",
-  pregunta4: "Digitalizacion",
+  pregunta1: "Impresoras",
+  pregunta4: "Digitales",
   pregunta7: "Antiguedad",
 };
 

@@ -37,7 +37,6 @@ export default function Pregunta5EP() {
       .then((res) => {
         const data = res.data;
 
-        // Valores por defecto
         const valores = {
           alumnos: "0",
           profesores: "0",
