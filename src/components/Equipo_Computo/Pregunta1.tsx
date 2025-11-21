@@ -27,7 +27,7 @@ const CATEGORIA_MAP: Record<string, { tabla: number; so: string }> = {
   "ESCRITORIO LINUX": { tabla: 0, so: "Linux" },
   "PORTÁTILES WINDOWS": { tabla: 2, so: "Windows" },
   "PORTÁTILES MAC OS": { tabla: 2, so: "Mac OS" },
-  "TABLETA IPAD OS": { tabla: 1, so: "Mac OS" },
+  "TABLETA iPAD OS": { tabla: 1, so: "Mac OS" },
   "SERVIDOR": { tabla: 3, so: "Linux" },
 };
 

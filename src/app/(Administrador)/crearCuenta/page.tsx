@@ -24,8 +24,8 @@ export default function Page() {
   async function CrearCuenta() {
     const res=await axios.post("https",{
       nombre,
-      correo,
-      password
+      contraseña:password,
+      tipoUsuario:2
     });
     setCrearCuenta(res.data);
   }
@@ -42,14 +42,14 @@ export default function Page() {
     setLoading(true);
 
     try {
-      // const response = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-      //   {
-      //     nombre,
-      //     correo,
-      //     contraseña: password,
-      //   }
-      // );
+       const response = await axios.post(
+         `${process.env.NEXT_PUBLIC_API_URL}/auth/registro`,
+         {
+           nombre,
+           contraseña: password,
+           tipoUsuario: 2,
+         }
+       );
 
       toast.success("Cuenta creada correctamente");
       router.push("/"); // redirige al login
