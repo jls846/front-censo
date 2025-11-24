@@ -155,8 +155,13 @@ export default function Page() {
           axios.get(`${api_url}/equipos/laboratorios`, { headers }),
           axios.get(`${api_url}/equipos/proyectos`, { headers }),
         ]);
+
+        const ordenados = marcasRes.data.sort((a: Marca, b: Marca) =>
+          a.marca.localeCompare(b.marca)
+        );
+
         setTiposUso(usosRes.data);
-        setMarcas(marcasRes.data);
+        setMarcas(ordenados);
         setEstados(estadosRes.data);
         setAdscripciones(adscripcionesRes.data);
         setTiposEquipo(tiposEquipoRes.data);
