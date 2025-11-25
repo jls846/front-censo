@@ -74,7 +74,7 @@ export default function Pregunta8() {
   const startItem = (currentPage - 1) * recordsPerPage + 1;
   const endItem = Math.min(startItem + recordsPerPage - 1, sortedData.length);
   const totalLaboratorios = data.reduce(
-    (sum, item) => sum + Number(item.cantidad),
+    (sum, item) => sum + (item.nombre != "NO_APLICA" ? Number(item.cantidad):0),
     0
   );
 
