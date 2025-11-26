@@ -615,41 +615,46 @@ export default function Page() {
 
           {/* Columna Derecha */}
           <div className="column">
-            {/* Laboratorio */}
-            <div className="formGroup">
-              <label>Laboratorio</label>
-              <select
-                value={formData.id_laboratorio ?? ""}
-                onChange={(e) =>
-                  handleInputChange("id_laboratorio", e.target.value)
-                }
-              >
-                <option value="">Selecciona un laboratorio</option>
-                {laboratorios.map((lab) => (
-                  <option key={lab.id_laboratorio} value={lab.id_laboratorio}>
-                    {lab.laboratorio}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {mostrarCamposComputadora && (
+              <>
+                <div className="formGroup">
+                  <label>Laboratorio</label>
+                  <select
+                    value={formData.id_laboratorio ?? ""}
+                    onChange={(e) =>
+                      handleInputChange("id_laboratorio", e.target.value)
+                    }
+                  >
+                    <option value="">Selecciona un laboratorio</option>
+                    {laboratorios.map((lab) => (
+                      <option
+                        key={lab.id_laboratorio}
+                        value={lab.id_laboratorio}
+                      >
+                        {lab.laboratorio}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            {/* Proyecto */}
-            <div className="formGroup">
-              <label>Proyecto</label>
-              <select
-                value={formData.id_proyecto ?? ""}
-                onChange={(e) =>
-                  handleInputChange("id_proyecto", e.target.value)
-                }
-              >
-                <option value="">Selecciona un proyecto</option>
-                {proyectos.map((proy) => (
-                  <option key={proy.id_proyecto} value={proy.id_proyecto}>
-                    {proy.proyecto}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div className="formGroup">
+                  <label>Proyecto</label>
+                  <select
+                    value={formData.id_proyecto ?? ""}
+                    onChange={(e) =>
+                      handleInputChange("id_proyecto", e.target.value)
+                    }
+                  >
+                    <option value="">Selecciona un proyecto</option>
+                    {proyectos.map((proy) => (
+                      <option key={proy.id_proyecto} value={proy.id_proyecto}>
+                        {proy.proyecto}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
 
             {/* Lugar */}
             <div className="formGroup">
