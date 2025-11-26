@@ -1,40 +1,73 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "@/app/styles/layout/pregunta4EP.scss";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 interface EquiposDigitalizacion {
   digitalizadorCamaPlana: string;
-  digitalizador3d: string;
+  d3D: string;
   digitalizadorAlimentador: string;
   digitalizadorGranVolumen: string;
 }
 
 export default function Pregunta4EP() {
   const [equipos, setEquipos] = useState<EquiposDigitalizacion>({
-    digitalizadorCamaPlana: "27",
-    digitalizador3d: "",
-    digitalizadorAlimentador: "108",
-    digitalizadorGranVolumen: "1",
+    digitalizadorCamaPlana: "0",
+    d3D: "0",
+    digitalizadorAlimentador: "0",
+    digitalizadorGranVolumen: "0",
   });
 
-  // 🔹 Preparado para conectar con el backend
-  useEffect(() => {
-    // Cuando tengas la API, descomenta y reemplaza la URL:
-    /*
-    fetch("https://tu-api-backend.com/api/equipos-digitalizacion")
-      .then((res) => res.json())
-      .then((data) => setEquipos(data))
-      .catch((err) => console.error("Error al obtener datos:", err));
-    */
-  }, []);
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setEquipos({
-      ...equipos,
-      [name]: value,
-    });
-  };
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+    axios
+      .get(`${api_url}/equipos/reporte/equipos_impesion_group/dijitales`, {
+        headers,
+      })
+      .then((res) => {
+        const data = res.data;
+
+        const valores = {
+          digitalizadorCamaPlana: "0",
+          d3D: "0",
+          digitalizadorAlimentador: "0",
+          digitalizadorGranVolumen: "0",
+        };
+
+        data.forEach((item: any) => {
+          const periferico = item.periferico.toUpperCase().trim();
+          const total = item.total ?? "0";
+
+          switch (periferico) {
+            case "DIGITALIZADOR DE CAMA PLANA PARA OFICINA":
+              valores.digitalizadorCamaPlana = total;
+              break;
+
+            case "3D":
+              valores.d3D = total;
+              break;
+
+            case "DIGITALIZADOR CON ALIMENTADOR DE HOJAS PARA OFICINA":
+              valores.digitalizadorAlimentador = total;
+              break;
+
+            case "DIGITALIZADOR DE GRAN VOLUMEN":
+              valores.digitalizadorGranVolumen = total;
+              break;
+          }
+        });
+
+        setEquipos(valores);
+      })
+
+      .catch((err) => {
+        console.error("Error:", err);
+      });
+  }, []);
 
   return (
     <div className="container">
@@ -43,8 +76,7 @@ export default function Pregunta4EP() {
       </div>
 
       <div className="pregunta-cuadro">
-        4. Desglose el número de equipos de digitalización con que cuenta el
-        área universitaria.
+        Número de equipos de digitalización.
       </div>
 
       <div className="grid">
@@ -57,7 +89,7 @@ export default function Pregunta4EP() {
             id="digitalizadorCamaPlana"
             name="digitalizadorCamaPlana"
             value={equipos.digitalizadorCamaPlana}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -67,8 +99,8 @@ export default function Pregunta4EP() {
             type="text"
             id="digitalizador3d"
             name="digitalizador3d"
-            value={equipos.digitalizador3d}
-            onChange={handleChange}
+            value={equipos.d3D}
+            disabled
           />
         </div>
 
@@ -81,7 +113,7 @@ export default function Pregunta4EP() {
             id="digitalizadorAlimentador"
             name="digitalizadorAlimentador"
             value={equipos.digitalizadorAlimentador}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -94,7 +126,7 @@ export default function Pregunta4EP() {
             id="digitalizadorGranVolumen"
             name="digitalizadorGranVolumen"
             value={equipos.digitalizadorGranVolumen}
-            onChange={handleChange}
+            disabled
           />
         </div>
       </div>

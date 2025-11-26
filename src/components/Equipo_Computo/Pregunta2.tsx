@@ -57,9 +57,9 @@ export default function Pregunta2() {
     const token = Cookies.get("token");
     const headers = {Authorization: `Bearer ${token}`};
     axios
-      .get("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_sistemasOperativos",{headers}) // ← TU API AQUI
+      .get("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_sistemasOperativos",{headers})
       .then((res) => {
-        const json = res.data; // Tu JSON con 5 arreglos
+        const json = res.data; 
 
         const formatted: PlatformData = {
           "pc-desktop": transformPlatform(json[0]),
@@ -83,10 +83,6 @@ export default function Pregunta2() {
       <div className={styles.container_P1}>
         <div className="contenedor-censo">
           Censo de equipos — Sistemas Operativos
-        </div>
-
-        <div className={styles.header_P1}>
-          Presione cada pestaña para ver la información de las plataformas.
         </div>
 
         <div className={styles["main-content_P1"]}>

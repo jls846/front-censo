@@ -10,7 +10,7 @@ import { SO_POR_EQUIPO } from "@/data/so_por_equipo";
 import { PROCESADORES_POR_EQUIPO } from "@/data/procesadores";
 import { useRouter } from "next/navigation";
 import "../app/styles/layout/agregarEquipo.scss";
-  interface FormData {
+interface FormData {
   inventario: string;
   serie: string;
   lugar: string;
@@ -25,8 +25,8 @@ import "../app/styles/layout/agregarEquipo.scss";
   id_uso: number;
   id_marca: number;
   id_periferico: number;
-  id_laboratorio: number | null;   // ✅ ahora acepta null
-  id_proyecto: number | null;      // ✅ ahora acepta null
+  id_laboratorio: number | null;
+  id_proyecto: number | null;
   isImpresora: boolean;
 }
 export default function Page() {
@@ -69,7 +69,6 @@ export default function Page() {
       setFormData((prev) => ({ ...prev, inventario }));
     }
   }, [inventario]);
-
 
   // Interfaces
   interface TipoUso {
@@ -156,8 +155,13 @@ export default function Page() {
           axios.get(`${api_url}/equipos/laboratorios`, { headers }),
           axios.get(`${api_url}/equipos/proyectos`, { headers }),
         ]);
+
+        const ordenados = marcasRes.data.sort((a: Marca, b: Marca) =>
+          a.marca.localeCompare(b.marca)
+        );
+
         setTiposUso(usosRes.data);
-        setMarcas(marcasRes.data);
+        setMarcas(ordenados);
         setEstados(estadosRes.data);
         setAdscripciones(adscripcionesRes.data);
         setTiposEquipo(tiposEquipoRes.data);
@@ -190,7 +194,7 @@ export default function Page() {
       }
     };
     fetchProcesador();
-  }, []); // Ya no depende de tiposEquipo (si la API los da todos juntos)
+  }, []);
 
   useEffect(() => {
     const fetchPerifericos = async () => {
@@ -203,7 +207,12 @@ export default function Page() {
         const response = await axios.get(`${api_url}/equipos/perifericos`, {
           headers,
         });
-        setPerifericos(response.data);
+
+        const ordenados = response.data.sort((a: any, b: any) =>
+          a.periferico.localeCompare(b.periferico)
+        );
+
+        setPerifericos(ordenados);
       } catch (err) {
         console.error(err);
         toast.error("No se pudieron cargar los periféricos");
@@ -265,18 +274,18 @@ export default function Page() {
     setFormData((prev) => {
       let newValue: string | number | null | boolean = value;
 
-if (field.startsWith("id_")) {
-  if (value === "" || value === 0) {
-    // Para campos opcionales, usamos null en lugar de 0
-    if (field === "id_laboratorio" || field === "id_proyecto") {
-      newValue = null;
-    } else {
-      newValue = 0;
-    }
-  } else {
-    newValue = Number(value);
-  }
-}
+      if (field.startsWith("id_")) {
+        if (value === "" || value === 0) {
+          // Para campos opcionales, usamos null en lugar de 0
+          if (field === "id_laboratorio" || field === "id_proyecto") {
+            newValue = null;
+          } else {
+            newValue = 0;
+          }
+        } else {
+          newValue = Number(value);
+        }
+      }
       if (field === "id_tipo_equipo") {
         const idTipoEquipo = Number(value);
         const tipoSeleccionado = tiposEquipo.find(
@@ -380,8 +389,13 @@ if (field.startsWith("id_")) {
       await axios.post(`${api_url}/equipos/crear`, dataToSend, { headers });
       toast.success("Equipo guardado correctamente");
       router.push("/escaner");
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      if (err.response && err.response.status === 400) {
+        const mensaje = err.response.data?.message || "El equipo ya existe";
+        toast.error(mensaje);
+        return;
+      }
+
       toast.error("Error al guardar el equipo");
     }
   };
@@ -601,42 +615,46 @@ if (field.startsWith("id_")) {
 
           {/* Columna Derecha */}
           <div className="column">
-            {/* Laboratorio */}
-            <div className="formGroup">
-              <label>Laboratorio</label>
-              <select
-        
-                value={formData.id_laboratorio ?? ""}
-                onChange={(e) =>
-                  handleInputChange("id_laboratorio", e.target.value)
-                }
-              >
-                <option value="">Selecciona un laboratorio</option>
-                {laboratorios.map((lab) => (
-                  <option key={lab.id_laboratorio} value={lab.id_laboratorio}>
-                    {lab.laboratorio}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {mostrarCamposComputadora && (
+              <>
+                <div className="formGroup">
+                  <label>Laboratorio</label>
+                  <select
+                    value={formData.id_laboratorio ?? ""}
+                    onChange={(e) =>
+                      handleInputChange("id_laboratorio", e.target.value)
+                    }
+                  >
+                    <option value="">Selecciona un laboratorio</option>
+                    {laboratorios.map((lab) => (
+                      <option
+                        key={lab.id_laboratorio}
+                        value={lab.id_laboratorio}
+                      >
+                        {lab.laboratorio}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            {/* Proyecto */}
-            <div className="formGroup">
-              <label>Proyecto</label>
-              <select
-                value={formData.id_proyecto ?? ""}
-                onChange={(e) =>
-                  handleInputChange("id_proyecto", e.target.value)
-                }
-              >
-                <option value="">Selecciona un proyecto</option>
-                {proyectos.map((proy) => (
-                  <option key={proy.id_proyecto} value={proy.id_proyecto}>
-                    {proy.proyecto}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div className="formGroup">
+                  <label>Proyecto</label>
+                  <select
+                    value={formData.id_proyecto ?? ""}
+                    onChange={(e) =>
+                      handleInputChange("id_proyecto", e.target.value)
+                    }
+                  >
+                    <option value="">Selecciona un proyecto</option>
+                    {proyectos.map((proy) => (
+                      <option key={proy.id_proyecto} value={proy.id_proyecto}>
+                        {proy.proyecto}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
 
             {/* Lugar */}
             <div className="formGroup">
@@ -673,3 +691,4 @@ if (field.startsWith("id_")) {
     </div>
   );
 }
+//IO

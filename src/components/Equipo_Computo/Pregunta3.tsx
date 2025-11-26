@@ -143,11 +143,9 @@ export default function Pregunta3_2() {
     <div className={styles.scanView_P3}>
       <div className={styles.container_P3}>
         <div className={styles.header_P3}>
-          <h1 className={styles.titulo}>PREGUNTA 3 (2/5)</h1>
           <p className={styles.texto}>
-            3. Desglose la cantidad de población beneficiada por plataforma y tipo de procesador: *
+            Cantidad de población beneficiada por plataforma y tipo de procesador:
           </p>
-          <p className={styles.subtexto}>Presione cada pestaña para ingresar la información.</p>
         </div>
 
         <div className={styles.mainContent_P3}>
@@ -245,9 +243,6 @@ export default function Pregunta3_2() {
                     </tbody>
                   </table>
                 </div>
-                <button className={styles.consultarBtn_P3}>
-                  Consultar las equivalencias de procesadores
-                </button>
               </>
             ) : (
               <div className={styles.emptyState_P3}>

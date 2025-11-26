@@ -95,7 +95,9 @@ export default function Editar() {
   const [tiposEquipo, setTiposEquipo] = useState<TipoEquipo[]>([]);
   const [laboratorios, setLaboratorios] = useState<Laboratorio[]>([]);
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
-  const [sistemasOperativos, setSistemasOperativos] = useState<SistemaOperativo[]>([]);
+  const [sistemasOperativos, setSistemasOperativos] = useState<
+    SistemaOperativo[]
+  >([]);
   const [procesadores, setProcesadores] = useState<Procesador[]>([]);
   const [perifericos, setPerifericos] = useState<Perifericos[]>([]);
   const [adscripcionLabel, setAdscripcionLabel] = useState("");
@@ -108,7 +110,6 @@ export default function Editar() {
   const api_url = process.env.NEXT_PUBLIC_API_URL;
   const mostrarCamposComputadora = Number(formData.id_tipo_equipo) !== 9;
 
-  // 🔹 Cargar catálogos
   useEffect(() => {
     const fetchCatalogos = async () => {
       const token = Cookies.get("token");
@@ -194,8 +195,12 @@ export default function Editar() {
       marca: { id_marca: number; marca: string };
       periferico: { id_periferico: number; periferico: string };
       observaciones?: string;
-      id_laboratorio?: number;
-      id_proyecto?: number;
+      laboratorio: {
+        id_laboratorio?: number;
+      };
+      proyecto: {
+        id_proyecto?: number;
+      };
     }
 
     const fetchEquipo = async () => {
@@ -245,16 +250,28 @@ export default function Editar() {
           id_adscripcion: equipo.adscripcion?.id_adscripcion || 0,
           lugar: equipo.lugar || "",
           id_periferico: equipo.periferico?.id_periferico || 0,
-          id_laboratorio: equipo.id_laboratorio || 0,
-          id_proyecto: equipo.id_proyecto || 0,
+          id_laboratorio: equipo.laboratorio?.id_laboratorio || 0,
+          id_proyecto: equipo.proyecto?.id_proyecto || 0,
           fechaMovimiento: equipo.fechaMovimiento || "",
           responsable,
         });
 
         setAdscripcionLabel(equipo.adscripcion?.adscripcion);
         setId(equipo.id_equipo);
-      } catch (error) {
-        console.error("Error al obtener el equipo:", error);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            toast.error(
+              err.response.data?.message || "Error al crear la cuenta"
+            );
+          } else if (err.request) {
+            toast.error("No se pudo conectar con el servidor");
+          } else {
+            toast.error("Ocurrió un error inesperado");
+          }
+        } else {
+          toast.error("Ocurrió un error inesperado");
+        }
         toast.error("No se pudo cargar la información del equipo.");
       }
     };
@@ -331,7 +348,8 @@ export default function Editar() {
       return;
     }
 
-    {/*if (!formData.id_laboratorio) {
+    {
+      /*if (!formData.id_laboratorio) {
       toast.error("Laboratorio no seleccionado");
       return;
     }
@@ -339,7 +357,8 @@ export default function Editar() {
     if (!formData.id_proyecto) {
       toast.error("Proyecto no seleccionado");
       return;
-    }*/}
+    }*/
+    }
 
     if (formData.id_tipo_equipo == 9) {
       if (!formData.id_periferico) {
@@ -378,6 +397,7 @@ export default function Editar() {
       lugar: formData.lugar,
       id_sistema_operativo: formData.id_sistema_operativo,
       id_tipo_uso: formData.id_uso,
+      id_periferico: formData.id_periferico,
       serie: formData.serie,
       modelo: formData.modelo,
       id_marca: formData.id_marca,
@@ -462,7 +482,9 @@ export default function Editar() {
           const first = data[0];
           setFormData((prev) => ({
             ...prev,
-            responsable: `${first.nombre ?? ""} ${first.apellidos ?? ""}`.trim(),
+            responsable: `${first.nombre ?? ""} ${
+              first.apellidos ?? ""
+            }`.trim(),
           }));
         } else {
           toast.error(
@@ -549,7 +571,7 @@ export default function Editar() {
               />
             </div>
 
-            <div className="formGroup">
+            {/* <div className="formGroup">
               <label>Tipo de equipo</label>
               <select
                 style={{ background: "#f6f7f9" }}
@@ -567,7 +589,7 @@ export default function Editar() {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             <div className="formGroup">
               <label>Estado</label>
@@ -588,9 +610,7 @@ export default function Editar() {
                 ))}
               </select>
             </div>
-            
           </div>
-          
 
           {/* Columna 2 */}
           <div className="column">
@@ -727,39 +747,46 @@ export default function Editar() {
                 placeholder="Selecciona una Adscripción"
               />
             </div>
-            <div className="formGroup">
-              <label>Laboratorio</label>
-              <select
-                value={formData.id_laboratorio}
-                onChange={(e) => handleInputChange("id_laboratorio", e.target.value)}
-              >
-                <option value="">Selecciona laboratorio</option>
-                {laboratorios.map((lab) => (
-                  <option key={lab.id_laboratorio} value={lab.id_laboratorio}>
-                    {lab.laboratorio}
-                  </option>
-                ))}
-              </select>
-            </div>
-            
+            {mostrarCamposComputadora && (
+              <div className="formGroup">
+                <label>Laboratorio</label>
+                <select
+                  value={formData.id_laboratorio}
+                  onChange={(e) =>
+                    handleInputChange("id_laboratorio", e.target.value)
+                  }
+                >
+                  <option value="">Selecciona laboratorio</option>
+                  {laboratorios.map((lab) => (
+                    <option key={lab.id_laboratorio} value={lab.id_laboratorio}>
+                      {lab.laboratorio}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
 
           {/* Columna 3 */}
           <div className="column">
-            <div className="formGroup">
-              <label>Proyecto</label>
-              <select
-                value={formData.id_proyecto}
-                onChange={(e) => handleInputChange("id_proyecto", e.target.value)}
-              >
-                <option value="">Selecciona proyecto</option>
-                {proyectos.map((proy) => (
-                  <option key={proy.id_proyecto} value={proy.id_proyecto}>
-                    {proy.proyecto}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {mostrarCamposComputadora && (
+              <div className="formGroup">
+                <label>Proyecto</label>
+                <select
+                  value={formData.id_proyecto}
+                  onChange={(e) =>
+                    handleInputChange("id_proyecto", e.target.value)
+                  }
+                >
+                  <option value="">Selecciona proyecto</option>
+                  {proyectos.map((proy) => (
+                    <option key={proy.id_proyecto} value={proy.id_proyecto}>
+                      {proy.proyecto}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div className="formGroup">
               <label>Lugar</label>
               <textarea

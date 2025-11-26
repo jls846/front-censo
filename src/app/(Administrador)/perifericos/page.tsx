@@ -7,20 +7,14 @@ import Pregunta2EP from "@/components/Perifericos/Pregunta2EP";
 import Pregunta4EP from "@/components/Perifericos/Pregunta4EP";
 import Pregunta5EP from "@/components/Perifericos/Pregunta5EP";
 import "../../styles/layout/reporte.scss";
+import DownloadReporteXLSX from "@/components/Dowload/Reporte";
 
-type PreguntaKey =
-  | "pregunta1"
-  | "pregunta2"
-  | "pregunta4"
-  | "pregunta5"
-  | "pregunta7";
+type PreguntaKey = "pregunta1" | "pregunta4" | "pregunta7";
 
 const LABELS: Record<PreguntaKey, string> = {
-  pregunta1: "Pregunta 1",
-  pregunta2: "Pregunta 2",
-  pregunta4: "Pregunta 4",
-  pregunta5: "Pregunta 5",
-  pregunta7: "Pregunta 7",
+  pregunta1: "Impresoras",
+  pregunta4: "Digitales",
+  pregunta7: "Antiguedad",
 };
 
 export default function Page() {
@@ -29,15 +23,26 @@ export default function Page() {
   const renderPregunta = () => {
     switch (activeTab) {
       case "pregunta1":
-        return <Pregunta1EP />;
-      case "pregunta2":
-        return <Pregunta2EP />;
+        return (
+          <>
+            <Pregunta1EP />
+            <Pregunta2EP />
+          </>
+        );
       case "pregunta4":
-        return <Pregunta4EP />;
-      case "pregunta5":
-        return <Pregunta5EP />;
+        return (
+          <>
+            <Pregunta4EP />
+            <Pregunta5EP />
+          </>
+        );
       case "pregunta7":
-        return <Pregunta7 />;
+        return (
+          <>
+            <Pregunta7 />
+            <DownloadReporteXLSX/>
+          </>
+        );
       default:
         return (
           <div className="p-6 text-center text-gray-500">
@@ -64,9 +69,7 @@ export default function Page() {
               </button>
             ))}
           </div>
-          <div className={`data-table_reporte`}>
-            {renderPregunta()}
-          </div>
+          <div className={`data-table_reporte`}>{renderPregunta()}</div>
         </div>
       </div>
     </div>

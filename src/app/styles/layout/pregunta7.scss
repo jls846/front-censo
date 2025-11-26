@@ -47,7 +47,7 @@ table {
 }
 
 thead th {
-  background-color: #0056b3;
+  background-color: #003e79;
   color: #fff;
   text-align: left;
   padding: 14px;
@@ -108,6 +108,15 @@ tr:nth-child(even) {
       font-weight: 600;
     }
   }
+}
+
+.total-labs {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  background: #fff;
+  border-radius: 8px;
 }
 
 @media (max-width: 768px) {

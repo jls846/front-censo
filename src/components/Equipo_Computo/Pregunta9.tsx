@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import "./pregunta9.css";
-import Pregunta4 from "./Pregunta_4";
+import Pregunta10 from "./pregunta10";
 
 type AntiguedadItem = {
   antiguedad: string | null;
   total: string;
-  porcentaje: string; // lo ignoramos
+  porcentaje: string; 
 };
 
 type ApiResponse = {
@@ -24,12 +24,6 @@ export default function Pregunta9() {
     { nombre: "Computadoras Portátiles", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
     { nombre: "Alto Rendimiento", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
   ]);
-
-  const [garantia, setGarantia] = useState({
-    escritorio: "",
-    portatil: "",
-    altoRendimiento: "",
-  });
 
   const [loading, setLoading] = useState(true);
 
@@ -47,7 +41,7 @@ export default function Pregunta9() {
       const total = Number(item.total) || 0;
 
       switch (item.antiguedad) {
-        case "MENOR A 2":
+        case "MENORES DE 2":
           menores2 += total;
           break;
         case "ENTRE 2 Y 3":
@@ -56,7 +50,7 @@ export default function Pregunta9() {
         case "ENTRE 4 Y 5":
           entre4_6 += total;
           break;
-        case "MAYORES DE 6":
+        case "ENTRE 6 Y MAYORES":
           mayores6 += total;
           break;
                 // Cualquier otro valor (aunque no debería haber) lo meteríamos en mayores6
@@ -72,7 +66,6 @@ export default function Pregunta9() {
 
     const pct = (valor: number) => ((valor / totalEquipo) * 100).toFixed(2);
 
-    // [Menor a 2, Entre 2-3, Entre 4-5, Mayor a 6]
     return [pct(menores2), pct(entre2_3), pct(entre4_6), pct(mayores6),pct(notfound)];
   };
 
@@ -124,15 +117,15 @@ export default function Pregunta9() {
   return (
     <div className="contenedor-pregunta">
       {/* Pregunta intro (servidores) */}
-      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
+      {/* <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
         Indique cuantos servidores son utilizados en ambientes productivos y si en ellos se almacenan datos personales.
       </div>
       
-      <Pregunta4/>
+      <Pregunta4/> */}
 
       {/* Pregunta 9: Antigüedad */}
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
-        Calcule porcentualmente (%) la antigüedad que tienen los equipos de cómputo del área universitaria.
+        Antigüedad que tienen los equipos de cómputo del área universitaria.
       </div>
 
       <div className="tabla-contenedor">
@@ -177,7 +170,8 @@ export default function Pregunta9() {
         </table>
       </div>
 
-      
+      <Pregunta10/>
+
     </div>
   );
 }

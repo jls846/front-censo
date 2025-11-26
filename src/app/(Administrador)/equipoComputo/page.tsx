@@ -3,29 +3,27 @@
 import { useState } from "react";
 import Pregunta1 from "@/components/Equipo_Computo/Pregunta1";
 import Pregutna2 from "@/components/Equipo_Computo/Pregunta2";
-import Pregunta2_1 from "@/components/Equipo_Computo/Pregunta2_1";
 import Pregunta3 from "@/components/Equipo_Computo/Pregunta3";
 import Pregunta7EP from "@/components/Perifericos/Pregunta7EP";
 import Pregunta9 from "@/components/Equipo_Computo/Pregunta9";
-import Pregunta10 from "@/components/Equipo_Computo/pregunta10"; 
 import "../../styles/layout/reporte.scss";
-import Pregunta_4 from "@/components/Equipo_Computo/Pregunta_4";
+import Pregunta8 from "@/components/Perifericos/Pregunta8";
 
 type PreguntaKey =
   | "pregunta1"
   | "pregunta2"
   | "pregunta3"
   | "pregunta7EP"
-  | "pregunta9"
-  | "pregunta10";
+  | "pregunta8"
+  | "pregunta9";
 
 const LABELS: Record<PreguntaKey, string> = {
   pregunta1: "Perfil de Usuario",
   pregunta2: "Sistema Operativo",
   pregunta3: "Plataforma y tipo procesador",
   pregunta7EP: "Laboratorios",
+  pregunta8:"Proyectos",
   pregunta9: "Generales",
-  pregunta10: "Garantía de Proveedor",
 };
 
 // Mapeo de fondo por pregunta (puedes personalizarlo)
@@ -34,8 +32,8 @@ const TAB_BACKGROUNDS: Record<PreguntaKey, string> = {
   pregunta2: "bg-gray",
   pregunta3: "bg-gray",
   pregunta7EP: "bg-gray",
+  pregunta8:"bg-gray",
   pregunta9: "bg-blue",
-  pregunta10: "bg-blue",
 };
 
 export default function Page() {
@@ -50,11 +48,11 @@ export default function Page() {
       case "pregunta3":
         return <Pregunta3 />;
       case "pregunta7EP":
-        return <Pregunta7EP />;
+        return <Pregunta7EP />
+      case "pregunta8":
+        return <Pregunta8 />;
       case "pregunta9":
         return <Pregunta9 />;
-      case "pregunta10":
-        return <Pregunta10 />;
       default:
         return (
           <div className="p-6 text-center text-gray-500">

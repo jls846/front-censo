@@ -7,6 +7,7 @@ import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
   const [nombre, setNombre] = useState("");
@@ -31,7 +32,18 @@ export default function Login() {
       const { token } = response.data;
 
       document.cookie = `token=${token}; path=/; SameSite=Strict`;
-      router.push("/escaner");
+
+      const decoded: any = jwtDecode(token);
+      const tipo = decoded?.tipoUsuario;
+
+      if (tipo === 2) {
+        router.push("/escaner");
+      } else if (tipo === 1) {
+        router.push("/equipoComputo");
+      } else {
+        toast.error("Tipo de usuario no válido");
+      }
+
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
@@ -79,9 +91,6 @@ export default function Login() {
           <button type="submit" disabled={loading}>
             {loading ? "Buscando..." : "Iniciar sesión"}
           </button>
-
-          {/* <Link href={"/forgotPassword"}>Olvidaste Contraseña?</Link> */}
-          {/* <Link href={"/crearCuenta"}>Crear Cuenta</Link> */}
         </form>
       </div>
 

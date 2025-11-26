@@ -1,35 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 import "../../app/styles/layout/pregunta7.scss";
 
 interface Dato {
   nombre: string;
   cantidad: number;
 }
-
-const datosSimulados: Dato[] = [
-  { nombre: "AULA DE ROBÓTICA 101", cantidad: 18 },
-  { nombre: "LAB DE QUÍMICA 201", cantidad: 25 },
-  { nombre: "LAB DE FÍSICA 202", cantidad: 30 },
-  { nombre: "LAB DE PROGRAMACIÓN 301", cantidad: 40 },
-  { nombre: "AULA DE DISEÑO 102", cantidad: 22 },
-  { nombre: "LAB ELECTRÓNICA 204", cantidad: 35 },
-  { nombre: "LAB COMPUTACIÓN 305", cantidad: 28 },
-  { nombre: "AULA INTERACTIVA 106", cantidad: 15 },
-  { nombre: "LAB DE INNOVACIÓN 307", cantidad: 33 },
-  { nombre: "SALA DE CONFERENCIAS A", cantidad: 12 },
-  { nombre: "LAB DE MECATRÓNICA 308", cantidad: 45 },
-  { nombre: "LAB DE INTELIGENCIA ARTIFICIAL 309", cantidad: 38 },
-  { nombre: "LAB DE REDES 310", cantidad: 27 },
-  { nombre: "SALA MULTIMEDIA B", cantidad: 20 },
-  { nombre: "LAB DE BIOLOGÍA 205", cantidad: 26 },
-  { nombre: "LAB DE MECÁNICA 210", cantidad: 32 },
-  { nombre: "AULA DE INGLÉS 110", cantidad: 19 },
-  { nombre: "SALA DE DOCENTES", cantidad: 14 },
-  { nombre: "LAB DE BIG DATA 311", cantidad: 36 },
-  { nombre: "LAB DE CIBERSEGURIDAD 312", cantidad: 29 },
-];
 
 export default function Pregunta7EP() {
   const [data, setData] = useState<Dato[]>([]);
@@ -38,8 +17,25 @@ export default function Pregunta7EP() {
   const [sortColumn, setSortColumn] = useState<keyof Dato | null>(null);
   const [sortAsc, setSortAsc] = useState<boolean>(true);
 
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
-    setData(datosSimulados);
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    axios
+      .get(`${api_url}/equipos/reporte/contar_laboratorio`, { headers })
+      .then((res) => {
+        const formato: Dato[] = res.data.map((item: any) => ({
+          nombre: item.laboratorio || "SIN NOMBRE",
+          cantidad: item.total || 0,
+        }));
+
+        setData(formato);
+      })
+      .catch((err) => {
+        console.error("Error cargando datos:", err);
+      });
   }, []);
 
   const sortedData = React.useMemo(() => {
@@ -77,9 +73,15 @@ export default function Pregunta7EP() {
 
   const startItem = (currentPage - 1) * recordsPerPage + 1;
   const endItem = Math.min(startItem + recordsPerPage - 1, sortedData.length);
-
+  const totalLaboratorios = data.reduce(
+    (sum, item) => sum + (item.nombre != "NO_APLICA" ? Number(item.cantidad):0),
+    0
+  );
+  
   return (
     <div className="container">
+      <div className="pregunta-cuadro">Numero de laboratorios.</div>
+
       <div className="controls">
         <div className="show-records">
           Mostrar
@@ -99,7 +101,10 @@ export default function Pregunta7EP() {
         <table>
           <thead>
             <tr>
-              <th onClick={() => handleSort("nombre")}>
+              <th
+                onClick={() => handleSort("nombre")}
+                style={{ textAlign: "center" }}
+              >
                 Nombre del laboratorio o aula
                 {sortColumn === "nombre" && (
                   <img
@@ -109,7 +114,10 @@ export default function Pregunta7EP() {
                 )}
               </th>
 
-              <th onClick={() => handleSort("cantidad")}>
+              <th
+                onClick={() => handleSort("cantidad")}
+                style={{ textAlign: "center" }}
+              >
                 Cantidad
                 {sortColumn === "cantidad" && (
                   <img
@@ -130,6 +138,10 @@ export default function Pregunta7EP() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="total-labs">
+        Total de laboratorios: <strong>{totalLaboratorios}</strong>
       </div>
 
       <div className="pagination">

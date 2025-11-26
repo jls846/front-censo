@@ -4,32 +4,15 @@ import { useState } from "react";
 import "../../styles/layout/login.scss";
 import "../../styles/base/globales.scss";
 
-import Link from "next/link";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-
+import Cookies from "js-cookie";
 
 export default function Page() {
   const [nombre, setNombre] = useState("");
-  const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
   const [confirmarPassword, setConfirmarPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const router = useRouter();
-
-  const [crearCuenta,setCrearCuenta]=useState();
-
-  async function CrearCuenta() {
-    const res=await axios.post("https",{
-      nombre,
-      contraseña:password,
-      tipoUsuario:2
-    });
-    setCrearCuenta(res.data);
-  }
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,17 +25,20 @@ export default function Page() {
     setLoading(true);
 
     try {
-       const response = await axios.post(
-         `${process.env.NEXT_PUBLIC_API_URL}/auth/registro`,
-         {
-           nombre,
-           contraseña: password,
-           tipoUsuario: 2,
-         }
-       );
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/registro`,
+        {
+          nombre,
+          contraseña: password,
+          tipoUsuario: 2,
+        },
+        { headers }
+      );
 
       toast.success("Cuenta creada correctamente");
-      router.push("/"); // redirige al login
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
@@ -111,7 +97,6 @@ export default function Page() {
           <button type="submit" disabled={loading}>
             {loading ? "Creando cuenta..." : "Registrarse"}
           </button>
-
         </form>
       </div>
     </section>

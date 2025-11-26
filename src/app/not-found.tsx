@@ -14,7 +14,7 @@ export default function NotFound() {
         Lo sentimos, la página que buscas no existe o ha sido movida. Verifica
         la URL o regresa a la página principal.
       </p>
-      <button onClick={() => router.push("/front-Censo")}>
+      <button onClick={() => router.push("/")}>
         Regresar al inicio
       </button>
     </section>

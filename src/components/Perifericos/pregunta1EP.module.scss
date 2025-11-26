@@ -122,6 +122,18 @@
   }
 }
 
+.grid {
+  background-color: #fff;
+  border-radius: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+  gap: 20px;
+  padding: 20px;
+  display: grid;
+  overflow-x: auto;
+  box-shadow: 0 4px 10px #0000001a;
+}
+
 @media (max-width: 700px) {
   .scanView_P1 .tabs_P1 {
     width: 160px;

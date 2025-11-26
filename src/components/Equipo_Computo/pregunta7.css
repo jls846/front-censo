@@ -3,23 +3,22 @@
 }
 
 .contenedor-censo{
-  background-color: #002855;
+  background-color: #003e79;
   color: white;
   padding: 15px;
   font-size: 16px;
   margin-bottom: 25px;
+  border-radius: 4px;
 }
- 
 
 .pregunta-cuadro {
   background-color: #fff;
-  border-left: 6px solid #001f3f;
+  border-left: 10px solid #003e79;
   padding: 15px;
   border-radius: 8px;
   font-size: 16px;
   margin-bottom: 25px;
 }
-
 
 .tabla-contenedor {
   background: white;
@@ -56,7 +55,7 @@
 
 /* Colores personalizados */
 .azul-marino {
-  background-color: #002855;
+  background-color: #003e79;
   color: white;
 }
 
@@ -78,7 +77,7 @@
 .input-contenedor input {
   width: 40%;
   padding: 6px 6px 6px 6px;
-  border: 2px solid #002855; 
+  border: 2px solid #003e79; 
   border-radius: 6px;
   font-size: 14px;
   color: #333;
@@ -123,7 +122,7 @@
 /* Celda del total */
 .total-celda {
   font-weight: bold;
-  color: #002855;
+  color: #003e79;
   background-color: #eef2f6;
 }
 

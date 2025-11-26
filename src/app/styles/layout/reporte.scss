@@ -77,7 +77,7 @@
     box-shadow: 
       0 -2px 6px rgba(0,0,0,0.05),
       inset 0 -3px 0 #fff;     /* simula borde inferior */
-    z-index: 5;
+    z-index: 0;
   }
 }
 
@@ -87,10 +87,13 @@
 
 .data-table_reporte {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   justify-content: center;
   padding: 20px;
   background-color: #f5f5f7;
 
+  text-align: center;
   border: none;
   min-height: 300px;
   animation: fadein 0.2s ease;

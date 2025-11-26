@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "./pregunta1EP.module.scss";
+import style from "./pregunta1EP.module.scss";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 interface EquiposImpresion {
   inyeccionTinta: string;
@@ -12,51 +14,115 @@ interface EquiposImpresion {
   laserAltoVolumenColor: string;
   impresora3D: string;
   plotter: string;
+  credencial: string;
+  termica: string;
 }
 
 export default function Pregunta1EP() {
   const [equipos, setEquipos] = useState<EquiposImpresion>({
-    inyeccionTinta: "7",
-    laserPequenaBN: "186",
-    matrizPuntos: "",
-    laserAltoVolumenBN: "28",
-    laserPequenaColor: "20",
-    multifuncionales: "108",
-    laserAltoVolumenColor: "18",
-    impresora3D: "2",
-    plotter: "11",
+    inyeccionTinta: "0",
+    laserPequenaBN: "0",
+    matrizPuntos: "0",
+    laserAltoVolumenBN: "0",
+    laserPequenaColor: "0",
+    multifuncionales: "0",
+    laserAltoVolumenColor: "0",
+    impresora3D: "0",
+    plotter: "0",
+    credencial: "0",
+    termica: "0",
   });
 
-  // 🔹 Preparado para conectar con API del backend
-  useEffect(() => {
-    // Cuando te den la API, descomenta y edita la URL 👇
-    /*
-    fetch("https://tu-api-backend.com/api/equipos-impresion")
-      .then((res) => res.json())
-      .then((data) => setEquipos(data))
-      .catch((err) => console.error("Error al obtener datos:", err));
-    */
-  }, []);
+  const api_url = process.env.NEXT_PUBLIC_API_URL;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEquipos({
-      ...equipos,
-      [e.target.name]: e.target.value,
-    });
-  };
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    axios
+      .get(`${api_url}/equipos/reporte/equipos_impesion_group/impresoras`, {
+        headers,
+      })
+      .then((res) => {
+        const data = res.data;
+
+        const valores = {
+          inyeccionTinta: "0",
+          laserPequenaBN: "0",
+          matrizPuntos: "0",
+          laserAltoVolumenBN: "0",
+          laserPequenaColor: "0",
+          multifuncionales: "0",
+          laserAltoVolumenColor: "0",
+          impresora3D: "0",
+          plotter: "0",
+          credencial: "0",
+          termica: "0",
+        };
+
+        data.forEach((item: any) => {
+          const uso = item.periferico.toUpperCase().trim();
+          const total = item.total ?? "0";
+
+          switch (uso) {
+            case "INYECCIÓN TINTA":
+              valores.inyeccionTinta = total;
+              break;
+
+            case "LÁSER PEQUEÑA B/N":
+              valores.laserPequenaBN = total;
+              break;
+
+            case "MATRIZ DE PUNTOS":
+              valores.matrizPuntos = total;
+              break;
+
+            case "LÁSER DE ALTO VOLUMEN B/N":
+              valores.laserAltoVolumenBN = total;
+              break;
+
+            case "LÁSER PEQUEÑA COLOR":
+              valores.laserPequenaColor = total;
+              break;
+
+            case "MULTIFUNCIONALES":
+              valores.multifuncionales = total;
+              break;
+
+            case "LÁSER DE ALTO VOLUMEN COLOR":
+              valores.laserAltoVolumenColor = total;
+              break;
+            case "3D":
+              valores.impresora3D = total;
+              break;
+            case "IMPRESORA CREDENCIALES":
+              valores.credencial = total;
+              break;
+            case "IMPRESORA TÉRMICA":
+              valores.termica = total;
+              break;
+            case "PLOTTER":
+              valores.plotter = total;
+              break;
+          }
+        });
+
+        setEquipos(valores);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
+  }, []);
 
   return (
     <div className="container">
       <div className="contenedor-censo">
-        Censo de equipos periféricos - Equipo de digitalización
+        Censo de equipos periféricos - Equipo de Impresion
       </div>
 
-      <div className="pregunta-cuadro">
-        1. Desglose el número de equipos de impresión con que cuenta el área
-        universitaria.
-      </div>
+      <div className="pregunta-cuadro">Equipos de impresión.</div>
 
-      <div className="grid">
+      <div className={style.grid}>
         {/* Columna 1 */}
         <div className="item">
           <label htmlFor="inyeccionTinta">Inyección de tinta</label>
@@ -65,29 +131,7 @@ export default function Pregunta1EP() {
             id="inyeccionTinta"
             name="inyeccionTinta"
             value={equipos.inyeccionTinta}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="item">
-          <label htmlFor="laserPequenaBN">Láser pequeña B/N</label>
-          <input
-            type="text"
-            id="laserPequenaBN"
-            name="laserPequenaBN"
-            value={equipos.laserPequenaBN}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="item">
-          <label htmlFor="matrizPuntos">Matriz de puntos</label>
-          <input
-            type="text"
-            id="matrizPuntos"
-            name="matrizPuntos"
-            value={equipos.matrizPuntos}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -99,7 +143,42 @@ export default function Pregunta1EP() {
             id="laserAltoVolumenBN"
             name="laserAltoVolumenBN"
             value={equipos.laserAltoVolumenBN}
-            onChange={handleChange}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="laserAltoVolumenColor">
+            Láser de alto volumen Color
+          </label>
+          <input
+            type="text"
+            id="laserAltoVolumenColor"
+            name="laserAltoVolumenColor"
+            value={equipos.laserAltoVolumenColor}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="laserAltoVolumenColor">Impresora credenciales</label>
+          <input
+            type="text"
+            id="laserAltoVolumenColor"
+            name="laserAltoVolumenColor"
+            value={equipos.credencial}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="laserPequenaBN">Láser pequeña B/N</label>
+          <input
+            type="text"
+            id="laserPequenaBN"
+            name="laserPequenaBN"
+            value={equipos.laserPequenaBN}
+            disabled
           />
         </div>
 
@@ -110,32 +189,7 @@ export default function Pregunta1EP() {
             id="laserPequenaColor"
             name="laserPequenaColor"
             value={equipos.laserPequenaColor}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="item">
-          <label htmlFor="multifuncionales">Multifuncionales</label>
-          <input
-            type="text"
-            id="multifuncionales"
-            name="multifuncionales"
-            value={equipos.multifuncionales}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Columna 3 */}
-        <div className="item">
-          <label htmlFor="laserAltoVolumenColor">
-            Láser de alto volumen Color
-          </label>
-          <input
-            type="text"
-            id="laserAltoVolumenColor"
-            name="laserAltoVolumenColor"
-            value={equipos.laserAltoVolumenColor}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -146,7 +200,40 @@ export default function Pregunta1EP() {
             id="impresora3D"
             name="impresora3D"
             value={equipos.impresora3D}
-            onChange={handleChange}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="matrizPuntos">Impresora termica</label>
+          <input
+            type="text"
+            id="matrizPuntos"
+            name="matrizPuntos"
+            value={equipos.termica}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="matrizPuntos">Matriz de puntos</label>
+          <input
+            type="text"
+            id="matrizPuntos"
+            name="matrizPuntos"
+            value={equipos.matrizPuntos}
+            disabled
+          />
+        </div>
+
+        <div className="item">
+          <label htmlFor="multifuncionales">Multifuncionales</label>
+          <input
+            type="text"
+            id="multifuncionales"
+            name="multifuncionales"
+            value={equipos.multifuncionales}
+            disabled
           />
         </div>
 
@@ -157,7 +244,7 @@ export default function Pregunta1EP() {
             id="plotter"
             name="plotter"
             value={equipos.plotter}
-            onChange={handleChange}
+            disabled
           />
         </div>
       </div>

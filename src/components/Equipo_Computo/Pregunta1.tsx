@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./pregunta1.1.css";
@@ -71,7 +71,7 @@ export default function Pregunta1() {
         );
 
         for (const item of res.data) {
-          const categoria = item.categoria.trim(); // ⚠️ elimina espacios basura
+          const categoria = item.categoria.trim();
           const mapping = CATEGORIA_MAP[categoria];
           if (!mapping) continue;
 
@@ -170,9 +170,8 @@ export default function Pregunta1() {
       <div className="contenedor-censo">Censo de equipos de cómputo</div>
 
       <div className="pregunta-cuadro">
-        1. Desglose en cada renglón, el número de equipos de cómputo dedicado
-        por cada categoría enlistada, de acuerdo con el perfil de usuario al que
-        se destina su uso primordialmente. *
+        Número de equipos de cómputo
+        por cada categoría enlistada, de acuerdo con el perfil de usuario.
       </div>
 
       <div className="contenedor-tablas">

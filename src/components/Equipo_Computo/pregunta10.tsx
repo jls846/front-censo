@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./pregunta10.css";
@@ -37,7 +37,6 @@ export default function Pregunta10() {
       })
       .catch((err) => {
         console.error("Error al cargar datos de garantía", err);
-        // Opcional: establecer valores por defecto en caso de error
         setGarantia({ escritorio: "0", portatil: "0", altoRendimiento: "0" });
       })
       .finally(() => {
@@ -56,16 +55,16 @@ export default function Pregunta10() {
   return (
     <>
       <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
-        ¿Cuántos equipos de cómputo tienen garantía de proveedor?
+        Equipos de cómputo que tienen garantía de proveedor
       </div>
 
       <div className="tabla-contenedor">
         <table className="tabla">
           <thead>
             <tr>
-              <th className="azul-marino">Computadoras de Escritorio (247)</th>
-              <th className="azul-marino">Computadoras Portátiles (767)</th>
-              <th className="azul-marino">Alto Rendimiento (17)</th>
+              <th className="azul-marino">Computadoras de Escritorio</th>
+              <th className="azul-marino">Computadoras Portátiles</th>
+              <th className="azul-marino">Alto Rendimiento</th>
             </tr>
           </thead>
           <tbody>
@@ -75,7 +74,7 @@ export default function Pregunta10() {
                   <input
                     type="number"
                     value={garantia.escritorio}
-                    readOnly // 👈 solo lectura, como en otros reportes
+                    readOnly 
                   />
                 </div>
               </td>
