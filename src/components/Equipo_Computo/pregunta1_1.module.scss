@@ -1,0 +1,129 @@
+.contenedor-censo {
+  color: #fff;
+  background-color: #003e79;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  padding: 15px;
+  font-size: 16px;
+}
+
+.pregunta-cuadro {
+    background-color: #fff;
+    border-left: 6px solid #003e79;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.tabla-contenedor {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  min-width: 700px;
+  flex: 1;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  color: black;
+  table-layout: fixed;
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+  }
+
+  th {
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  td {
+    font-size: 14px;
+  }
+}
+
+/* Colores personalizados */
+.azul-marino {
+  background-color: #003e79;
+  color: white;
+}
+
+.rosa-fuerte {
+  background-color: #dc1557;
+  color: white;
+}
+
+/* Contenedor input */
+.input-contenedor {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    width: 100%;
+    padding: 6px 25px 6px 6px;
+    border: 2px solid #003e79;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    outline: none;
+    background-color: rgb(232, 226, 226);
+    box-sizing: border-box;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:focus {
+      border-color: #001f3f;
+      box-shadow: 0 0 6px rgba(0, 47, 95, 0.3);
+    }
+
+    &::placeholder {
+      color: #bbb;
+      opacity: 1;
+    }
+  }
+
+  .porcentaje {
+    position: absolute;
+    right: 8px;
+    color: #555;
+    font-weight: bold;
+    font-size: 14px;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+/* Celdas especiales */
+.total-celda {
+  font-weight: bold;
+  color: #003e79;
+  background-color: #eef2f6;
+}
+
+.total-error {
+  background-color: #ffcccc;
+  color: #a80000;
+}
+
+/* Contenedor de tablas */
+.contenedor-tablas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}

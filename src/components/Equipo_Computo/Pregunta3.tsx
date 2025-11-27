@@ -140,13 +140,13 @@ export default function Pregunta3_2() {
   const currentData = data[activeTab];
 
   return (
-    <div className={styles.scanView_P3}>
-      <div className={styles.container_P3}>
-        <div className={styles.header_P3}>
-          <p className={styles.texto}>
-            Cantidad de población beneficiada por plataforma y tipo de procesador:
-          </p>
-        </div>
+    <div className={styles.container_P3}>
+        <div className={styles["contenedor-censo_P3"]}>Censo de equipos de cómputo - Plataforma y tipo procesador</div>
+
+      <div className={styles["pregunta-cuadro_P3"]}>
+        Cantidad de población beneficiada por plataforma y tipo de procesador.
+      </div>
+        <div className={styles.scanView_P3}>
 
         <div className={styles.mainContent_P3}>
           {/* Pestañas verticales */}

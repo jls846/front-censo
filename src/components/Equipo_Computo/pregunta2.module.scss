@@ -3,9 +3,29 @@
   flex-direction: column;
   padding: 0;
   margin: 0;
-  min-height: 100vh;
   background-color: #f4f4f4;
 }
+.scanView_P1 {
+  padding: 20px;
+  width: 100%;
+}
+.contenedor-censo_p1 {
+  color: #fff;
+  background-color: #003e79;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  padding: 15px;
+  font-size: 16px;
+}
+
+.pregunta-cuadro_p1 {
+    background-color: #fff;
+    border-left: 6px solid #003e79;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 16px;
+}
+
 
 .scanView_P1 {
   padding: 20px;
@@ -36,7 +56,6 @@
 
   .main-content_P1 {
     display: flex;
-    min-height: 420px;
   }
 
   .tabs_P1 {
@@ -110,6 +129,7 @@
     font-weight: 600;
     font-size: 15px;
     text-align: center;
+    border-radius: 5px;
     min-width: 70px;
   }
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./pregunta2.module.scss";
 import Cookies from "js-cookie";
+import style from "styled-jsx/style";
 type OsEntry = {
   os: string;
   count: number;
@@ -79,11 +80,13 @@ export default function Pregunta2() {
   const currentData = data[activeTab];
 
   return (
-    <div className={styles.scanView_P1}>
-      <div className={styles.container_P1}>
-        <div className="contenedor-censo">
-          Censo de equipos — Sistemas Operativos
-        </div>
+    <div className={styles.container_P1}>
+      <div className={styles["contenedor-censo_p1"]}>Censo de equipos de cómputo - Sitema Operativo</div>
+
+      <div className={styles["pregunta-cuadro_p1"]}>
+        Número de equipos de cómputo por cada categoría y perfil de usuario.
+      </div>
+      <div className={styles.scanView_P1}>
 
         <div className={styles["main-content_P1"]}>
           {/* Tabs */}

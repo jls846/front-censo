@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import "./pregunta1.1.css";
+import style from "./pregunta1_1.module.scss";
 
 type RawEntry = {
   uso: string;
@@ -11,7 +11,6 @@ type RawEntry = {
   total: string;
 };
 
-// Índices para columnas
 const USO_INDEX: Record<string, number> = {
   ALUMNO: 0,
   PROFESOR: 1,
@@ -20,7 +19,6 @@ const USO_INDEX: Record<string, number> = {
   ADMINISTRATIVO: 4,
 };
 
-// Mapeo categoría → tabla + sistema operativo
 const CATEGORIA_MAP: Record<string, { tabla: number; so: string }> = {
   "ESCRITORIO PC": { tabla: 0, so: "Windows" },
   "ESCRITORIO MAC OS": { tabla: 0, so: "Mac OS" },
@@ -28,7 +26,7 @@ const CATEGORIA_MAP: Record<string, { tabla: number; so: string }> = {
   "PORTÁTILES WINDOWS": { tabla: 2, so: "Windows" },
   "PORTÁTILES MAC OS": { tabla: 2, so: "Mac OS" },
   "TABLETA iPAD OS": { tabla: 1, so: "Mac OS" },
-  "SERVIDOR": { tabla: 3, so: "Linux" },
+  SERVIDOR: { tabla: 3, so: "Linux" },
 };
 
 const TITULOS_TABLAS = [
@@ -41,7 +39,6 @@ const TITULOS_TABLAS = [
 const SISTEMAS_OPERATIVOS = ["Windows", "Linux", "Mac OS"];
 
 export default function Pregunta1() {
-  // Estado: 4 tablas × 3 SO × 5 columnas
   const [tablas, setTablas] = useState<number[][][]>(
     Array.from({ length: 4 }, () =>
       Array.from({ length: 3 }, () => Array(5).fill(0))
@@ -61,9 +58,7 @@ export default function Pregunta1() {
     axios
       .get<RawEntry[]>(
         `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_tipoUso`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
         const nuevaTablas = Array.from({ length: 4 }, () =>
@@ -88,24 +83,10 @@ export default function Pregunta1() {
 
         setTablas(nuevaTablas);
       })
-      .catch((err) => {
-        console.error("Error al cargar datos", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch((err) => console.error("Error al cargar datos", err))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <div className="contenedor-pregunta">
-        <div className="contenedor-censo">Censo de equipos de cómputo</div>
-        <div className="pregunta-cuadro">Cargando datos...</div>
-      </div>
-    );
-  }
-
-  // Renderizar una tabla
   const renderTabla = (tablaIndex: number) => {
     const datosSO = tablas[tablaIndex];
 
@@ -119,19 +100,22 @@ export default function Pregunta1() {
     const totalGeneral = totalesColumnas.reduce((a, b) => a + b, 0);
 
     return (
-      <div className="tabla-contenedor" key={tablaIndex}>
-        <table className="tabla">
+      <div className={style["tabla-contenedor"]} key={tablaIndex}>
+        <table className={style.tabla}>
           <thead>
             <tr>
-              <th className="azul-marino">{TITULOS_TABLAS[tablaIndex]}</th>
-              <th className="rosa-fuerte">Alumnos</th>
-              <th className="rosa-fuerte">Profesores</th>
-              <th className="rosa-fuerte">Técnicos Académicos</th>
-              <th className="rosa-fuerte">Investigadores</th>
-              <th className="rosa-fuerte">Administrativos</th>
-              <th className="azul-marino">Total</th>
+              <th className={style["azul-marino"]}>
+                {TITULOS_TABLAS[tablaIndex]}
+              </th>
+              <th className={style["rosa-fuerte"]}>Alumnos</th>
+              <th className={style["rosa-fuerte"]}>Profesores</th>
+              <th className={style["rosa-fuerte"]}>Técnicos Académicos</th>
+              <th className={style["rosa-fuerte"]}>Investigadores</th>
+              <th className={style["rosa-fuerte"]}>Administrativos</th>
+              <th className={style["azul-marino"]}>Total</th>
             </tr>
           </thead>
+
           <tbody>
             {SISTEMAS_OPERATIVOS.map((so, soIndex) => {
               const valores = datosSO[soIndex];
@@ -142,22 +126,22 @@ export default function Pregunta1() {
                   <td>{so}</td>
                   {valores.map((valor, colIndex) => (
                     <td key={colIndex}>
-                      <div className="input-contenedor">
+                      <div className={style["input-contenedor"]}>
                         <input type="number" value={valor} readOnly />
                       </div>
                     </td>
                   ))}
-                  <td>{totalFila}</td>
+                  <td className={style["total-celda"]}>{totalFila}</td>
                 </tr>
               );
             })}
 
-            <tr className="fila-total">
-              <td className="negrita">Total</td>
+            <tr className={style["fila-total"]}>
+              <td>Total</td>
               {totalesColumnas.map((t, i) => (
                 <td key={i}>{t}</td>
               ))}
-              <td className="negrita">{totalGeneral}</td>
+              <td className={style["total-celda"]}>{totalGeneral}</td>
             </tr>
           </tbody>
         </table>
@@ -165,21 +149,29 @@ export default function Pregunta1() {
     );
   };
 
-  return (
-    <div className="contenedor-pregunta">
-      <div className="contenedor-censo">Censo de equipos de cómputo</div>
+  if (loading) {
+    return (
+      <div className={style["contenedor-pregunta"]}>
+        <div className={style["contenedor-censo"]}>Censo de equipos</div>
+        <div className={style["pregunta-cuadro"]}>Cargando datos...</div>
+      </div>
+    );
+  }
 
-      <div className="pregunta-cuadro">
-        Número de equipos de cómputo
-        por cada categoría enlistada, de acuerdo con el perfil de usuario.
+  return (
+    <div className={style["contenedor-pregunta"]}>
+      <div className={style["contenedor-censo"]}>Censo de equipos de cómputo</div>
+
+      <div className={style["pregunta-cuadro"]}>
+        Número de equipos de cómputo por cada categoría y perfil de usuario.
       </div>
 
-      <div className="contenedor-tablas">
+      <div className={style["contenedor-tablas"]}>
         {renderTabla(0)}
         {renderTabla(1)}
       </div>
 
-      <div className="contenedor-tablas">
+      <div className={style["contenedor-tablas"]}>
         {renderTabla(2)}
         {renderTabla(3)}
       </div>
