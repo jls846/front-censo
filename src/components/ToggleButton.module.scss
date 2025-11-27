@@ -1,0 +1,92 @@
+:root {
+  --bg-off: #fff;
+  --bg-on: linear-gradient(90deg, #003e79 0%, #015cb8 100%);
+  --thumb-off: #015cb8;
+  --thumb-on: #fff;
+  --shadow: 0 6px 18px rgba(99, 102, 241, 0.18);
+}
+
+.toggle {
+  --padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 999px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  outline: none;
+}
+
+.toggle:active {
+  transform: scale(0.98);
+}
+
+.track {
+  width: 70px;
+  height: 34px;
+  background: var(--bg-off);
+  border-radius: 999px;
+  display: inline-block;
+  padding: var(--padding);
+  box-sizing: border-box;
+  position: relative;
+  transition: background 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms ease;
+  box-shadow: none;
+}
+
+/* When the component has the `on` class, style the inner track and thumb accordingly. */
+.on .track {
+  background: var(--bg-on);
+  box-shadow: var(--shadow);
+}
+
+.thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--thumb-off);
+  border-radius: 50%;
+  display: block;
+  transform: translateX(0);
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms ease;
+  box-shadow: 0 4px 10px rgba(16,24,40,0.12);
+}
+
+.on .thumb {
+  background: var(--thumb-on);
+  transform: translateX(38px);
+  box-shadow: 0 6px 16px rgba(91, 90, 255, 0.18);
+}
+
+.label {
+position: absolute;
+right: 10px;
+top: 8px;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: 0.2px;
+}
+
+.on .label {
+    right: 45%;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.12);
+}
+
+/* Focus visible for accessibility */
+.toggle:focus-visible .track {
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+}
+
+/* Small responsive tweak */
+@media (max-width: 420px) {
+  .track { width: 52px; height: 30px; }
+  .thumb { width: 20px; height: 20px; }
+  .on .thumb { transform: translateX(24px); }
+  .label { font-size: 13px; }
+}
