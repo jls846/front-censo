@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import style from "./pregunta1EP.module.scss";
 import axios from "axios";
 import Cookies from "js-cookie";
-import ToggleButton from "../ToggleButton";
+import ToggleButton from "../Toggle/ToggleButton";
 
 interface EquiposImpresion {
   inyeccionTinta: string;

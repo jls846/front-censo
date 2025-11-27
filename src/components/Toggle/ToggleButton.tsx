@@ -1,8 +1,8 @@
 // ToggleButton.tsx
 // Usa este archivo como `ToggleButton.tsx`
 
-import React, { useState } from 'react';
-import styles from './ToggleButton.module.scss';
+import React, { useState } from "react";
+import styles from "./ToggleButton.module.scss";
 
 export type ToggleButtonProps = {
   /** estado inicial: true -> presionado ("desuso") */
@@ -19,9 +19,9 @@ export type ToggleButtonProps = {
 const ToggleButton: React.FC<ToggleButtonProps> = ({
   defaultOn = false,
   onChange,
-  offLabel = 'Uso',
-  onLabel = 'Baja',
-  className = '',
+  offLabel = "Uso",
+  onLabel = "Baja",
+  className = "",
 }) => {
   const [on, setOn] = useState<boolean>(defaultOn);
 
@@ -32,19 +32,20 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   }
 
   return (
-    <button
-      type="button"
-      aria-pressed={on}
-      className={`${styles.toggle} ${on ? styles.on : ''} ${className}`}
-      onClick={toggle}
-      title={on ? onLabel : offLabel}
-    >
-      <span className={styles.track}>
-        <span className={styles.thumb} />
-      <span className={styles.label}>{on ? onLabel : offLabel}</span>
-
-      </span>
-    </button>
+    <section className={styles.containerToggle}>
+      <button
+        type="button"
+        aria-pressed={on}
+        className={`${styles.toggle} ${on ? styles.on : ""} ${className}`}
+        onClick={toggle}
+        title={on ? onLabel : offLabel}
+      >
+        <span className={styles.track}>
+          <span className={styles.thumb} />
+          <span className={styles.label}>{on ? onLabel : offLabel}</span>
+        </span>
+      </button>
+    </section>
   );
 };
 
