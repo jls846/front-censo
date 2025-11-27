@@ -3,17 +3,16 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 import "../../styles/layout/ForgotPasswordPage.scss";
 
 export default function UpdateUserPage() {
   const [id_User, setId_User] = useState("");
   const [nombre, setNombre] = useState("");
-  const [contrasena, setContrasena] = useState("");
+  const [contrasenaN, setContrasenaN] = useState("");
+  const [contrasenaV, setContrasenaV] = useState("");
   const [tipoUsuario, setTipoUsuario] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const userIdList = [1, 2, 3, 10, 11, 12, 100, 101, 150];
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -27,8 +26,13 @@ export default function UpdateUserPage() {
       return;
     }
 
-    if (contrasena && contrasena.length < 6) {
-      toast.error("La contraseña debe tener al menos 6 caracteres.");
+    if (contrasenaN && contrasenaN.length < 6) {
+      toast.error("La nueva contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+
+    if (contrasenaV && contrasenaV.length < 6) {
+      toast.error("La contraseña actual debe tener al menos 6 caracteres.");
       return;
     }
 
@@ -37,34 +41,30 @@ export default function UpdateUserPage() {
       return;
     }
 
-    // 🔒 Tu backend (dejado comentado)
-    /*
-    setLoading(true);
-
     try {
-      const body = { id_User: Number(id_User) };
-      if (nombre) body.nombre = nombre;
-      if (contrasena) body.contrasena = contrasena;
-      if (tipoUsuario) body.tipoUsuario = Number(tipoUsuario);
+      setLoading(true);
 
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/rauth/update`,
-        body
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/UpdateUsuario`,
+        {
+          id_User: Number(id_User),
+          nombre,
+          contrasenaN,
+          contrasenaV,
+          tipoUsuario: tipoUsuario ? Number(tipoUsuario) : undefined,
+        },
+        { headers }
       );
 
-      toast.success("Usuario actualizado correctamente.");
-      setId_User("");
-      setNombre("");
-      setContrasena("");
-      setTipoUsuario("");
-    } catch (err) {
-      ...
+      toast.success("Usuario actualizado correctamente");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Error al actualizar");
     } finally {
       setLoading(false);
     }
-    */
-
-    toast.success("✅ Listo para enviar. Backend aún en desarrollo.");
   };
 
   return (
@@ -74,18 +74,7 @@ export default function UpdateUserPage() {
         <p>Ingresa el ID y los campos que deseas modificar.</p>
 
         <form onSubmit={handleSubmit} className="forgot-form">
-          {/* Input con autocompletar */}
-          <div>
-            <label>ID de usuario *</label>
-            <input
-              type="text"
-              list="id_suggestions"
-              placeholder="ID del usuario"
-              value={id_User}
-              onChange={(e) => setId_User(e.target.value)}
-              required
-            />
-          </div>
+          
 
           <div>
             <label>Nombre (opcional)</label>
@@ -102,25 +91,24 @@ export default function UpdateUserPage() {
             <input
               type="password"
               placeholder="Nueva contraseña"
-              value={contrasena}
-              onChange={(e) => setContrasena(e.target.value)}
+              value={contrasenaN}
+              onChange={(e) => setContrasenaN(e.target.value)}
             />
           </div>
 
           <div>
-            <label>Tipo de usuario (opcional)</label>
-            <select
-              value={tipoUsuario}
-              onChange={(e) => setTipoUsuario(e.target.value)}
-            >
-              <option value="">Seleccionar tipo</option>
-              <option value="1">1 - Administrador</option>
-              <option value="2">2 - Operador</option>
-            </select>
+            <label>Contraseña actual (opcional)</label>
+            <input
+              type="password"
+              placeholder="Contraseña actual"
+              value={contrasenaV}
+              onChange={(e) => setContrasenaV(e.target.value)}
+            />
           </div>
 
+
           <button type="submit" disabled={loading}>
-            {loading ? "Actualizando..." : "Actualizar contraseña"}
+            {loading ? "Actualizando..." : "Actualizar"}
           </button>
         </form>
       </div>
