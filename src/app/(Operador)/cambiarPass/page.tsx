@@ -7,37 +7,25 @@ import Cookies from "js-cookie";
 import "../../styles/layout/ForgotPasswordPage.scss";
 
 export default function UpdateUserPage() {
-  const [id_User, setId_User] = useState("");
   const [nombre, setNombre] = useState("");
   const [contrasenaN, setContrasenaN] = useState("");
   const [contrasenaV, setContrasenaV] = useState("");
-  const [tipoUsuario, setTipoUsuario] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!id_User || isNaN(Number(id_User))) {
-      toast.error("El ID de usuario es obligatorio y debe ser un número.");
-      return;
-    }
-
-    if (nombre && nombre.trim().length < 3) {
+    if (!nombre || nombre.trim().length < 3) {
       toast.error("El nombre debe tener al menos 3 caracteres.");
       return;
     }
 
-    if (contrasenaN && contrasenaN.length < 6) {
+    if (!contrasenaN || contrasenaN.length < 6) {
       toast.error("La nueva contraseña debe tener al menos 6 caracteres.");
       return;
     }
 
-    if (contrasenaV && contrasenaV.length < 6) {
+    if (!contrasenaV || contrasenaV.length < 6) {
       toast.error("La contraseña actual debe tener al menos 6 caracteres.");
-      return;
-    }
-
-    if (tipoUsuario && isNaN(Number(tipoUsuario))) {
-      toast.error("El tipo de usuario debe ser un número.");
       return;
     }
 
@@ -50,11 +38,9 @@ export default function UpdateUserPage() {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/UpdateUsuario`,
         {
-          id_User: Number(id_User),
           nombre,
           contrasenaN,
           contrasenaV,
-          tipoUsuario: tipoUsuario ? Number(tipoUsuario) : undefined,
         },
         { headers }
       );
@@ -71,8 +57,6 @@ export default function UpdateUserPage() {
     <section className="forgot-password-page">
       <div className="forgot-form-container">
         <h1>Actualizar contraseña</h1>
-        <p>Ingresa el ID y los campos que deseas modificar.</p>
-
         <form onSubmit={handleSubmit} className="forgot-form">
           
           <div>

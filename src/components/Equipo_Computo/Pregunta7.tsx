@@ -17,10 +17,11 @@ type RespuestaAntiguedad = {
 
 export default function Pregunta7() {
   const [datos, setDatos] = useState([
-    { nombre: "Impresión", valores: ["0.00", "0.00", "0.00", "0.00", "0.00"] },
+    { nombre: "Impresión", valores: ["0.00", "0.00", "0.00", "0.00"] },
     {
       nombre: "Digitalización",
-      valores: ["0.00", "0.00", "0.00", "0.00", "0.00"],
+      valores: ["0.00", "0.00", "0.00", "0.00"
+      ],
     },
   ]);
 
@@ -40,7 +41,9 @@ export default function Pregunta7() {
 
     for (const item of items) {
       const total = Number(item.total) || 0;
-      const antig = item.antiguedad ? item.antiguedad.toUpperCase().trim() : null;
+      const antig = item.antiguedad
+        ? item.antiguedad.toUpperCase().trim()
+        : null;
 
       switch (antig) {
         case "MENORES DE 2":
@@ -62,7 +65,7 @@ export default function Pregunta7() {
 
     const total = menores2 + entre2_3 + entre4_5 + mayores6 + notfound;
 
-    if (total === 0) return ["0.00", "0.00", "0.00", "0.00", "0.00"];
+    if (total === 0) return ["0.00", "0.00", "0.00", "0.00"];
 
     const pct = (v: number) => ((v / total) * 100).toFixed(2);
 
@@ -71,7 +74,6 @@ export default function Pregunta7() {
       pct(entre2_3),
       pct(entre4_5),
       pct(mayores6),
-      pct(notfound),
     ];
   };
 
@@ -93,7 +95,10 @@ export default function Pregunta7() {
 
         setDatos([
           { nombre: "Impresión", valores: transformarDatos(impresion) },
-          { nombre: "Digitalización", valores: transformarDatos(digitalizacion) },
+          {
+            nombre: "Digitalización",
+            valores: transformarDatos(digitalizacion),
+          },
         ]);
       })
       .catch((err) => console.error("Error cargando datos:", err))
@@ -103,11 +108,13 @@ export default function Pregunta7() {
   const calcularTotalFila = (valores: string[]) =>
     valores.reduce((t, v) => t + Number(v), 0);
 
-  if (loading) return <div className="contenedor-pregunta">Cargando datos...</div>;
-
   return (
     <div className="contenedor-pregunta">
-      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
+      <div className="contenedor-censo">
+        Censo de equipos periféricos - Equipo de digitalización
+      </div>
+
+      <div className="pregunta-cuadro">
         Antigüedad que tienen los equipos periféricos del área universitaria.
       </div>
 
@@ -120,7 +127,7 @@ export default function Pregunta7() {
               <th className="rosa-fuerte">Entre 2 y 3 años</th>
               <th className="rosa-fuerte">Entre 4 y 5 años</th>
               <th className="rosa-fuerte">Mayor a 6 años</th>
-              <th className="rosa-fuerte">No registrados</th>
+
               <th className="azul-marino">Total</th>
             </tr>
           </thead>
@@ -142,7 +149,11 @@ export default function Pregunta7() {
                     </td>
                   ))}
 
-                  <td className={`total-celda ${total > 100.1 ? "total-error" : ""}`}>
+                  <td
+                    className={`total-celda ${
+                      total > 100.1 ? "total-error" : ""
+                    }`}
+                  >
                     {total.toFixed(2)}%
                   </td>
                 </tr>

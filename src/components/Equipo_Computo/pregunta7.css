@@ -1,5 +1,7 @@
 .contenedor-pregunta {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .contenedor-censo{
@@ -7,7 +9,6 @@
   color: white;
   padding: 15px;
   font-size: 16px;
-  margin-bottom: 25px;
   border-radius: 4px;
 }
 
@@ -17,7 +18,6 @@
   padding: 15px;
   border-radius: 8px;
   font-size: 16px;
-  margin-bottom: 25px;
 }
 
 .tabla-contenedor {
