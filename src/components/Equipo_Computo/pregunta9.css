@@ -1,13 +1,16 @@
 
 .pregunta-cuadro {
-  border-left: 6px solid #003e79;
+  border-left: 10px solid #003e79;
   padding: 15px;
   border-radius: 8px;
-  margin-top:10px ;
-  margin-bottom: 10px;
   font-size: 16px;
 }
 
+.contenedor-pregunta{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .tabla-contenedor {
   background: white;

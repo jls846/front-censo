@@ -14,17 +14,32 @@ export default function UpdateUserPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!nombre || nombre.trim().length < 3) {
+    if (!nombre && !contrasenaV && !contrasenaN) {
+      toast.error("No hay cambios realizados");
+      return;
+    }
+
+    if (!nombre && !contrasenaV) {
+      toast.error("Coloca la contraseña actual");
+      return;
+    }
+
+    if (!nombre && !contrasenaV) {
+      toast.error("");
+      return;
+    }
+
+    if (nombre && nombre.trim().length < 3) {
       toast.error("El nombre debe tener al menos 3 caracteres.");
       return;
     }
 
-    if (!contrasenaN || contrasenaN.length < 6) {
+    if (contrasenaN && contrasenaN.length < 5) {
       toast.error("La nueva contraseña debe tener al menos 6 caracteres.");
       return;
     }
 
-    if (!contrasenaV || contrasenaV.length < 6) {
+    if (contrasenaV && contrasenaV.length < 5) {
       toast.error("La contraseña actual debe tener al menos 6 caracteres.");
       return;
     }
@@ -34,20 +49,35 @@ export default function UpdateUserPage() {
 
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
+      const body: any = {};
+
+      if (nombre && nombre.trim() !== "") {
+        body.nombre = nombre;
+      }
+
+      if (contrasenaN && contrasenaN.trim() !== "") {
+        body.contraseñaN = contrasenaN;
+      }
+
+      if (contrasenaV && contrasenaV.trim() !== "") {
+        body.contraseñaV = contrasenaV;
+      }
+
+      if (Object.keys(body).length === 0) {
+        toast.error("No hay campos para actualizar");
+        setLoading(false);
+        return;
+      }
 
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/update`,
-        {
-          nombre,
-          contrasenaN,
-          contrasenaV,
-        },
+        body,
         { headers }
       );
 
       toast.success("Usuario actualizado correctamente");
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Error al actualizar");
+      toast.error("Error al actualizar usuario");
     } finally {
       setLoading(false);
     }
@@ -58,7 +88,6 @@ export default function UpdateUserPage() {
       <div className="forgot-form-container">
         <h1>Actualizar contraseña</h1>
         <form onSubmit={handleSubmit} className="forgot-form">
-          
           <div>
             <label>Nombre (opcional)</label>
             <input
@@ -80,7 +109,7 @@ export default function UpdateUserPage() {
           </div>
 
           <div>
-            <label>Contraseña actual (opcional)</label>
+            <label>Contraseña actual </label>
             <input
               type="password"
               placeholder="Contraseña actual"
