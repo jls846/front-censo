@@ -212,3 +212,31 @@
     border-bottom: 3px solid #0056b3;
   }
 }
+@media (max-width: 1024px) {
+  .scanView_P3 .mainContent_P3 {
+    flex-direction: column;
+  }
+
+  .scanView_P3 .tabs_P3 {
+    width: 100%;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    overflow-x: auto;
+  }
+
+  .scanView_P3 .tab_P3 {
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+
+  .scanView_P3 .active_P3 {
+    border-left: none;
+    border-bottom: 3px solid #0056b3;
+  }
+
+  .table_P3 {
+    min-width: 650px;
+  }
+}

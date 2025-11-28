@@ -80,6 +80,8 @@ export default function Pregunta8() {
 
   return (
     <div className="container">
+      
+      <div className="contenedor-censo">Censo de equipos de cómputo - Proyectos</div>
       <div className="pregunta-cuadro">Numero de proyectos.</div>
       <div className="controls">
         <div className="show-records">
