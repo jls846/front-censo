@@ -31,13 +31,16 @@ interface RawOsEntry {
   sistema_operativo: string;
   total: string;
 }
-// ✔ Función profesional para transformar tu JSON a OsEntry[]
+// Función profesional para transformar tu JSON a OsEntry[]
 function transformPlatform(raw: RawOsEntry[]): OsEntry[] {
   const rows: OsEntry[] = raw.map((item) => ({
     os: item.sistema_operativo,
     count: Number(item.total), // Convierte string a número
   }));
 
+  rows.sort((a, b) =>
+    b.os.localeCompare(a.os, undefined, { numeric: true, sensitivity: "base" })
+  );
   const total = rows.reduce((acc, r) => acc + r.count, 0);
 
   rows.push({
