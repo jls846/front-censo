@@ -86,7 +86,7 @@ export default function UpdateUserPage() {
   return (
     <section className="forgot-password-page">
       <div className="forgot-form-container">
-        <h1>Actualizar contraseña</h1>
+        <h1>Actualiza tus datos</h1>
         <form onSubmit={handleSubmit} className="forgot-form">
           <div>
             <label>Nombre (opcional)</label>
