@@ -41,7 +41,7 @@ function BarNavigation() {
         </li>
         <li className="subMenu" onClick={toggleMenu}>
           <Link href="/cambiarPass" className="links">
-            <span>Cambiar contrasena</span>
+            <span>Cambiar datos</span>
           </Link>
         </li>
         <li className="subMenu">
