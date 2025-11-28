@@ -46,7 +46,7 @@ export default function Pregunta10() {
 
   if (loading) {
     return (
-      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
+      <div className="pregunta-cuadro">
         Cargando datos de garantía...
       </div>
     );
@@ -54,7 +54,7 @@ export default function Pregunta10() {
 
   return (
     <>
-      <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
+      <div className="pregunta-cuadro">
         Equipos de cómputo que tienen garantía de proveedor
       </div>
 
