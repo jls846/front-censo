@@ -5,6 +5,7 @@ import axios from "axios";
 import styles from "./pregunta2.module.scss";
 import Cookies from "js-cookie";
 import style from "styled-jsx/style";
+import ToggleButton from "../Toggle/ToggleButton";
 type OsEntry = {
   os: string;
   count: number;
@@ -87,7 +88,7 @@ export default function Pregunta2() {
       <div className={styles["contenedor-censo_p1"]}>Censo de equipos de cómputo - Sitema Operativo</div>
 
       <div className={styles["pregunta-cuadro_p1"]}>
-        Número de equipos de cómputo por cada categoría y perfil de usuario.
+        Número de equipos de cómputo por cada categoría y perfil de usuario.<ToggleButton/>
       </div>
       <div className={styles.scanView_P1}>
 

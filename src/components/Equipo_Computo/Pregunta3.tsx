@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import styles from "./pregunta3.module.scss";
+import ToggleButton from "../Toggle/ToggleButton";
 
 type ProcessorEntry = {
   tipo: string;
@@ -144,7 +145,7 @@ export default function Pregunta3_2() {
         <div className={styles["contenedor-censo_P3"]}>Censo de equipos de cómputo - Plataforma y tipo procesador</div>
 
       <div className={styles["pregunta-cuadro_P3"]}>
-        Cantidad de población beneficiada por plataforma y tipo de procesador.
+        Cantidad de población beneficiada por plataforma y tipo de procesador.<ToggleButton/>
       </div>
         <div className={styles.scanView_P3}>
 

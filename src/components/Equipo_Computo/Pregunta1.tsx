@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import style from "./pregunta1_1.module.scss";
+import ToggleButton from "../Toggle/ToggleButton";
 
 type RawEntry = {
   uso: string;
@@ -163,7 +164,7 @@ export default function Pregunta1() {
       <div className={style["contenedor-censo"]}>Censo de equipos de cómputo</div>
 
       <div className={style["pregunta-cuadro"]}>
-        Número de equipos de cómputo por cada categoría y perfil de usuario.
+        Número de equipos de cómputo por cada categoría y perfil de usuario.<ToggleButton/>
       </div>
 
       <div className={style["contenedor-tablas"]}>

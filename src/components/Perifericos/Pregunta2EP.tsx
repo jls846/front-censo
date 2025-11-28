@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./pregunta2EP.module.scss";
 import axios from "axios";
 import Cookies from "js-cookie";
+import ToggleButton from "../Toggle/ToggleButton";
 
 interface EquiposPoblacion {
   alumnos: string;
@@ -97,7 +98,7 @@ export default function Pregunta2EP() {
   return (
     <div className={styles.container_P2}>
       <div className="pregunta-cuadro">
-        Equipos de impresión de acuerdo con la población universitaria.
+        Equipos de impresión de acuerdo con la población universitaria.<ToggleButton/>
       </div>
 
       <div className={styles.row_P2}>

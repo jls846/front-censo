@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import "./pregunta9.css";
 import Pregunta10 from "./pregunta10";
+import ToggleButton from "../Toggle/ToggleButton";
 
 type AntiguedadItem = {
   antiguedad: string | null;
@@ -126,7 +127,7 @@ export default function Pregunta9() {
 
       {/* Pregunta 9: Antigüedad */}
       <div className="pregunta-cuadro">
-        Antigüedad que tienen los equipos de cómputo del área universitaria.
+        Antigüedad que tienen los equipos de cómputo del área universitaria.<ToggleButton/>
       </div>
 
       <div className="tabla-contenedor">

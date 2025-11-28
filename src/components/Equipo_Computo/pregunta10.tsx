@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./pregunta10.css";
+import ToggleButton from "../Toggle/ToggleButton";
 
 export default function Pregunta10() {
   const [garantia, setGarantia] = useState({
@@ -55,7 +56,7 @@ export default function Pregunta10() {
   return (
     <>
       <div className="pregunta-cuadro">
-        Equipos de cómputo que tienen garantía de proveedor
+        Equipos de cómputo que tienen garantía de proveedoro.<ToggleButton/>
       </div>
 
       <div className="tabla-contenedor">

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "@/app/styles/layout/pregunta4EP.scss";
 import Cookies from "js-cookie";
 import axios from "axios";
+import ToggleButton from "../Toggle/ToggleButton";
 
 interface EquiposDigitalizacion {
   digitalizadorCamaPlana: string;
@@ -76,7 +77,7 @@ export default function Pregunta4EP() {
       </div>
 
       <div className="pregunta-cuadro">
-        Número de equipos de digitalización.
+        Número de equipos de digitalización.<ToggleButton/>
       </div>
 
       <div className="grid">

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import "./pregunta7.css";
+import ToggleButton from "../Toggle/ToggleButton";
 
 type AntiguedadItem = {
   antiguedad: string | null;
@@ -115,7 +116,7 @@ export default function Pregunta7() {
       </div>
 
       <div className="pregunta-cuadro">
-        Antigüedad que tienen los equipos periféricos del área universitaria.
+        Antigüedad que tienen los equipos periféricos del área universitaria.<ToggleButton/>
       </div>
 
       <div className="tabla-contenedor">

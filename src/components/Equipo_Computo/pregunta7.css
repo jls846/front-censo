@@ -4,7 +4,7 @@
   gap: 10px;
 }
 
-.contenedor-censo{
+.contenedor-censo {
   background-color: #003e79;
   color: white;
   padding: 15px;
@@ -13,6 +13,7 @@
 }
 
 .pregunta-cuadro {
+  position: relative;
   background-color: #fff;
   border-left: 10px solid #003e79;
   padding: 15px;
@@ -40,7 +41,6 @@
 .tabla td {
   border: 1px solid #ddd;
   padding: 12px;
-  
 }
 
 .tabla th {
@@ -77,16 +77,15 @@
 .input-contenedor input {
   width: 100%;
   padding: 6px 6px 6px 6px;
-  border: 2px solid #003e79; 
+  border: 2px solid #003e79;
   border-radius: 6px;
   font-size: 14px;
   color: #333;
-  text-align: center; 
+  text-align: center;
   outline: none;
   background-color: rgb(232, 226, 226);
   box-sizing: border-box;
 }
-
 
 .input-contenedor input::-webkit-inner-spin-button,
 .input-contenedor input::-webkit-outer-spin-button {
@@ -106,11 +105,10 @@
   opacity: 1;
 }
 
- 
 .input-contenedor .porcentaje {
   position: absolute;
-   
-  right: 8px; 
+
+  right: 8px;
   color: #555;
   font-weight: bold;
   pointer-events: none;
@@ -131,4 +129,3 @@
   background-color: #ffcccc;
   color: #a80000;
 }
-

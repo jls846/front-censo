@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "../../app/styles/layout/pregunta7.scss";
+import ToggleButton from "../Toggle/ToggleButton";
 
 interface Dato {
   nombre: string;
@@ -82,7 +83,7 @@ export default function Pregunta8() {
     <div className="container">
       
       <div className="contenedor-censo">Censo de equipos de cómputo - Proyectos</div>
-      <div className="pregunta-cuadro">Numero de proyectos.</div>
+      <div className="pregunta-cuadro">Numero de proyectos.<ToggleButton/></div>
       <div className="controls">
         <div className="show-records">
           Mostrar

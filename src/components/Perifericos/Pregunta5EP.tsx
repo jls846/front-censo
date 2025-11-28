@@ -4,6 +4,7 @@ import styles from "./pregunta2EP.module.scss";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import ToggleButton from "../Toggle/ToggleButton";
 
 interface EquiposPoblacion {
   alumnos: string;
@@ -98,7 +99,7 @@ export default function Pregunta5EP() {
     <div className="container">
       <div className="pregunta-cuadro">
         Número de equipos de digitalización de acuerdo con la población
-        universitaria.
+        universitaria.<ToggleButton/>
       </div>
 
       <div className={styles.row_P2}>

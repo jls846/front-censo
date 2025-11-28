@@ -6,18 +6,19 @@
   font-size: 16px;
 }
 
-.contenedor-pregunta{
+.contenedor-pregunta {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 .pregunta-cuadro {
-    background-color: #fff;
-    border-left: 10px solid #003e79;
-    border-radius: 8px;
-    padding: 15px;
-    font-size: 16px;
+  position: relative;
+  background-color: #fff;
+  border-left: 10px solid #003e79;
+  border-radius: 8px;
+  padding: 15px;
+  font-size: 16px;
 }
 
 .tabla-contenedor {
@@ -37,7 +38,8 @@
   color: black;
   table-layout: fixed;
 
-  th, td {
+  th,
+  td {
     border: 1px solid #ddd;
     padding: 12px;
   }
@@ -73,7 +75,7 @@
 
   input {
     width: 100%;
-    padding: 6px 25px 6px 6px;
+    padding: 6px 6px 6px 6px;
     border: 2px solid #003e79;
     border-radius: 6px;
     font-size: 14px;

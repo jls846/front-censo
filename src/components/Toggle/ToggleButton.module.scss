@@ -8,8 +8,9 @@
 }
 
 .containerToggle{
-    display: flex;
-    justify-content: end;
+  position: absolute;
+  right: 10px;
+  top: 15%;
 }
 
 .toggle {

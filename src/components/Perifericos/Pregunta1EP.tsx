@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import style from "./pregunta1EP.module.scss";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -121,9 +121,8 @@ export default function Pregunta1EP() {
         Censo de equipos periféricos - Equipo de Impresion
       </div>
 
-      <div className="pregunta-cuadro">Equipos de impresión.</div>
+      <div className="pregunta-cuadro">Equipos de impresión.<ToggleButton/></div>
 
-      <ToggleButton/>
       <div className={style.grid}>
         {/* Columna 1 */}
         <div className="item">

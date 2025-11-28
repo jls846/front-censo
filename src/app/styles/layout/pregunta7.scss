@@ -1,17 +1,20 @@
-.contenedor-censo{
+.contenedor-censo {
   color: #fff;
   background-color: #003e79;
   border-radius: 4px;
   padding: 15px;
   font-size: 16px;
 }
+
 .pregunta-cuadro {
-    background-color: #fff;
-    border-left: 10px solid #003e79;
-    border-radius: 8px;
-    padding: 15px;
-    font-size: 16px;
+  position: relative;
+  background-color: #fff;
+  border-left: 10px solid #003e79;
+  border-radius: 8px;
+  padding: 15px;
+  font-size: 16px;
 }
+
 .container {
   max-width: 100%;
   display: flex;
@@ -53,7 +56,7 @@
 
 .table-container {
   background-color: #fff;
-  border-radius:0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
@@ -73,8 +76,6 @@ thead th {
   cursor: pointer;
   user-select: none;
   transition: background-color 0.3s;
-  
-  
 
   &:hover {
     background-color: #0056b3;
@@ -119,7 +120,7 @@ tr:nth-child(even) {
     }
 
     &.active {
-      background-color:#0056b3;
+      background-color: #0056b3;
       color: #fff;
       border-color: #0056b3;
       font-weight: 600;
