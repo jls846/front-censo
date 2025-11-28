@@ -21,8 +21,7 @@ export default function Pregunta7() {
     { nombre: "Impresión", valores: ["0.00", "0.00", "0.00", "0.00"] },
     {
       nombre: "Digitalización",
-      valores: ["0.00", "0.00", "0.00", "0.00"
-      ],
+      valores: ["0.00", "0.00", "0.00", "0.00"],
     },
   ]);
 
@@ -70,12 +69,7 @@ export default function Pregunta7() {
 
     const pct = (v: number) => ((v / total) * 100).toFixed(2);
 
-    return [
-      pct(menores2),
-      pct(entre2_3),
-      pct(entre4_5),
-      pct(mayores6),
-    ];
+    return [pct(menores2), pct(entre2_3), pct(entre4_5), pct(mayores6)];
   };
 
   // ------------------------------
@@ -85,8 +79,9 @@ export default function Pregunta7() {
     const token = Cookies.get("token");
 
     axios
-      .get<RespuestaAntiguedad>(
+      .post<RespuestaAntiguedad>(
         `${api_url}/equipos/reporte/contar_perifericos_antiguedad`,
+        ["EN DESUSO", "EN USO"],
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -116,7 +111,8 @@ export default function Pregunta7() {
       </div>
 
       <div className="pregunta-cuadro">
-        Antigüedad que tienen los equipos periféricos del área universitaria.<ToggleButton/>
+        Antigüedad que tienen los equipos periféricos del área universitaria.
+        <ToggleButton />
       </div>
 
       <div className="tabla-contenedor">

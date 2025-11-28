@@ -25,7 +25,11 @@ export default function Pregunta8() {
     const headers = { Authorization: `Bearer ${token}` };
 
     axios
-      .get(`${api_url}/equipos/reporte/contar_proyecto`, { headers })
+      .post(
+        `${api_url}/equipos/reporte/contar_proyecto`,
+        ["EN DESUSO", "EN USO"],
+        { headers }
+      )
       .then((res) => {
         const formato: Dato[] = res.data.map((item: any) => ({
           nombre: item.proyecto || "SIN PROYECTO",
@@ -75,15 +79,20 @@ export default function Pregunta8() {
   const startItem = (currentPage - 1) * recordsPerPage + 1;
   const endItem = Math.min(startItem + recordsPerPage - 1, sortedData.length);
   const totalLaboratorios = data.reduce(
-    (sum, item) => sum + (item.nombre != "NO_APLICA" ? Number(item.cantidad):0),
+    (sum, item) =>
+      sum + (item.nombre != "NO_APLICA" ? Number(item.cantidad) : 0),
     0
   );
 
   return (
     <div className="container">
-      
-      <div className="contenedor-censo">Censo de equipos de cómputo - Proyectos</div>
-      <div className="pregunta-cuadro">Numero de proyectos.<ToggleButton/></div>
+      <div className="contenedor-censo">
+        Censo de equipos de cómputo - Proyectos
+      </div>
+      <div className="pregunta-cuadro">
+        Numero de proyectos.
+        <ToggleButton />
+      </div>
       <div className="controls">
         <div className="show-records">
           Mostrar

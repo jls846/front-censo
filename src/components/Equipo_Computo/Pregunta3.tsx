@@ -35,7 +35,10 @@ const PLATFORM_LABELS: Record<PlatformKey, string> = {
 };
 
 // Mapeo de "uso" del JSON a campos en ProcessorEntry
-const USO_TO_FIELD: Record<string, keyof Omit<ProcessorEntry, "tipo" | "total" | "isTotal">> = {
+const USO_TO_FIELD: Record<
+  string,
+  keyof Omit<ProcessorEntry, "tipo" | "total" | "isTotal">
+> = {
   ALUMNO: "alumnos",
   PROFESOR: "profesores",
   "TÉCNICO ACADEMICO": "tecnicos",
@@ -44,7 +47,9 @@ const USO_TO_FIELD: Record<string, keyof Omit<ProcessorEntry, "tipo" | "total" |
 };
 
 // Transforma un array plano del tipo [{procesador, uso, total}] en ProcessorEntry[]
-function transformProcessorData(rawArray: { procesador: string; uso: string; total: string }[]): ProcessorEntry[] {
+function transformProcessorData(
+  rawArray: { procesador: string; uso: string; total: string }[]
+): ProcessorEntry[] {
   const map = new Map<string, ProcessorEntry>();
 
   for (const item of rawArray) {
@@ -85,12 +90,24 @@ function transformProcessorData(rawArray: { procesador: string; uso: string; tot
   // Calculamos los totales generales
   const grandTotal: ProcessorEntry = {
     tipo: "Total",
-    alumnos: rows.reduce((sum, r) => sum + parseInt(r.alumnos || "0"), 0).toString(),
-    profesores: rows.reduce((sum, r) => sum + parseInt(r.profesores || "0"), 0).toString(),
-    tecnicos: rows.reduce((sum, r) => sum + parseInt(r.tecnicos || "0"), 0).toString(),
-    investigadores: rows.reduce((sum, r) => sum + parseInt(r.investigadores || "0"), 0).toString(),
-    administrativos: rows.reduce((sum, r) => sum + parseInt(r.administrativos || "0"), 0).toString(),
-    total: rows.reduce((sum, r) => sum + parseInt(r.total || "0"), 0).toString(),
+    alumnos: rows
+      .reduce((sum, r) => sum + parseInt(r.alumnos || "0"), 0)
+      .toString(),
+    profesores: rows
+      .reduce((sum, r) => sum + parseInt(r.profesores || "0"), 0)
+      .toString(),
+    tecnicos: rows
+      .reduce((sum, r) => sum + parseInt(r.tecnicos || "0"), 0)
+      .toString(),
+    investigadores: rows
+      .reduce((sum, r) => sum + parseInt(r.investigadores || "0"), 0)
+      .toString(),
+    administrativos: rows
+      .reduce((sum, r) => sum + parseInt(r.administrativos || "0"), 0)
+      .toString(),
+    total: rows
+      .reduce((sum, r) => sum + parseInt(r.total || "0"), 0)
+      .toString(),
     isTotal: true,
   };
 
@@ -112,7 +129,11 @@ export default function Pregunta3_2() {
 
     const headers = { Authorization: `Bearer ${token}` };
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_procesador`, { headers })
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_procesador`,
+        ["EN DESUSO", "EN USO"],
+        { headers }
+      )
       .then((res) => {
         const json = res.data; // array de 5 arreglos
 
@@ -134,28 +155,34 @@ export default function Pregunta3_2() {
       });
   }, []);
 
-  if (loading) return <div className={styles.scanView_P3}>Cargando datos...</div>;
+  if (loading)
+    return <div className={styles.scanView_P3}>Cargando datos...</div>;
 
-  if (!data) return <div className={styles.scanView_P3}>Error al cargar los datos.</div>;
+  if (!data)
+    return <div className={styles.scanView_P3}>Error al cargar los datos.</div>;
 
   const currentData = data[activeTab];
 
   return (
     <div className={styles.container_P3}>
-        <div className={styles["contenedor-censo_P3"]}>Censo de equipos de cómputo - Plataforma y tipo procesador</div>
+      <div className={styles["contenedor-censo_P3"]}>
+        Censo de equipos de cómputo - Plataforma y tipo procesador
+      </div>
 
       <div className={styles["pregunta-cuadro_P3"]}>
-        Cantidad de población beneficiada por plataforma y tipo de procesador.<ToggleButton/>
+        Cantidad de población beneficiada por plataforma y tipo de procesador.
+        <ToggleButton />
       </div>
-        <div className={styles.scanView_P3}>
-
+      <div className={styles.scanView_P3}>
         <div className={styles.mainContent_P3}>
           {/* Pestañas verticales */}
           <div className={styles.tabs_P3}>
             {Object.entries(PLATFORM_LABELS).map(([key, label]) => (
               <button
                 key={key}
-                className={`${styles.tab_P3} ${activeTab === key ? styles.active_P3 : ""}`}
+                className={`${styles.tab_P3} ${
+                  activeTab === key ? styles.active_P3 : ""
+                }`}
                 onClick={() => setActiveTab(key as PlatformKey)}
                 aria-selected={activeTab === key}
               >
@@ -173,7 +200,10 @@ export default function Pregunta3_2() {
                     <thead>
                       <tr>
                         <th rowSpan={2} className={styles.headerProcesador}>
-                          {activeTab.includes("apple") ? "Plataforma Apple" : "Plataforma PC"} <br />
+                          {activeTab.includes("apple")
+                            ? "Plataforma Apple"
+                            : "Plataforma PC"}{" "}
+                          <br />
                           Tipo de procesador
                         </th>
                         <th colSpan={5} className={styles.headerPoblacion}>
@@ -186,7 +216,9 @@ export default function Pregunta3_2() {
                       <tr>
                         <th className={styles.subHeader}>Alumnos</th>
                         <th className={styles.subHeader}>Profesores</th>
-                        <th className={styles.subHeader}>Técnicos Académicos</th>
+                        <th className={styles.subHeader}>
+                          Técnicos Académicos
+                        </th>
                         <th className={styles.subHeader}>Investigadores</th>
                         <th className={styles.subHeader}>Administrativos</th>
                       </tr>
@@ -195,7 +227,11 @@ export default function Pregunta3_2() {
                       {currentData.map((item, index) => (
                         <tr
                           key={index}
-                          className={item.isTotal ? styles.totalRow_P3 : styles.dataRow_P3}
+                          className={
+                            item.isTotal
+                              ? styles.totalRow_P3
+                              : styles.dataRow_P3
+                          }
                         >
                           <td className={styles.processor_P3}>{item.tipo}</td>
                           <td>

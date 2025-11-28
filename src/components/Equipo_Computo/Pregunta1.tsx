@@ -57,8 +57,9 @@ export default function Pregunta1() {
     }
 
     axios
-      .get<RawEntry[]>(
+      .post<RawEntry[]>(
         `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_tipoUso`,
+        ["EN DESUSO", "EN USO"],
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
@@ -161,10 +162,13 @@ export default function Pregunta1() {
 
   return (
     <div className={style["contenedor-pregunta"]}>
-      <div className={style["contenedor-censo"]}>Censo de equipos de cómputo</div>
+      <div className={style["contenedor-censo"]}>
+        Censo de equipos de cómputo
+      </div>
 
       <div className={style["pregunta-cuadro"]}>
-        Número de equipos de cómputo por cada categoría y perfil de usuario.<ToggleButton/>
+        Número de equipos de cómputo por cada categoría y perfil de usuario.
+        <ToggleButton />
       </div>
 
       <div className={style["contenedor-tablas"]}>

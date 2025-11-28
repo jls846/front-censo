@@ -41,9 +41,13 @@ export default function Pregunta1EP() {
     const headers = { Authorization: `Bearer ${token}` };
 
     axios
-      .get(`${api_url}/equipos/reporte/equipos_impesion_group/impresoras`, {
-        headers,
-      })
+      .post(
+        `${api_url}/equipos/reporte/equipos_impesion_group/impresoras`,
+        ["EN DESUSO", "EN USO"],
+        {
+          headers,
+        }
+      )
       .then((res) => {
         const data = res.data;
 
@@ -121,7 +125,10 @@ export default function Pregunta1EP() {
         Censo de equipos periféricos - Equipo de Impresion
       </div>
 
-      <div className="pregunta-cuadro">Equipos de impresión.<ToggleButton/></div>
+      <div className="pregunta-cuadro">
+        Equipos de impresión.
+        <ToggleButton />
+      </div>
 
       <div className={style.grid}>
         {/* Columna 1 */}

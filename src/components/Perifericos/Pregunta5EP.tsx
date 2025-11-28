@@ -32,9 +32,13 @@ export default function Pregunta5EP() {
     const headers = { Authorization: `Bearer ${token}` };
 
     axios
-      .get(`${api_url}/equipos/reporte/contar_periferico_tipoUso/dijtales`, {
-        headers,
-      })
+      .post(
+        `${api_url}/equipos/reporte/contar_periferico_tipoUso/dijtales`,
+        ["EN DESUSO", "EN USO"],
+        {
+          headers,
+        }
+      )
       .then((res) => {
         const data = res.data;
 
@@ -99,7 +103,8 @@ export default function Pregunta5EP() {
     <div className="container">
       <div className="pregunta-cuadro">
         Número de equipos de digitalización de acuerdo con la población
-        universitaria.<ToggleButton/>
+        universitaria.
+        <ToggleButton />
       </div>
 
       <div className={styles.row_P2}>

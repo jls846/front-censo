@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./pregunta2.module.scss";
 import Cookies from "js-cookie";
-import style from "styled-jsx/style";
 import ToggleButton from "../Toggle/ToggleButton";
 type OsEntry = {
   os: string;
@@ -60,11 +59,15 @@ export default function Pregunta2() {
   // ✔ GET AXIOS PROFESIONAL
   useEffect(() => {
     const token = Cookies.get("token");
-    const headers = {Authorization: `Bearer ${token}`};
+    const headers = { Authorization: `Bearer ${token}` };
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_sistemasOperativos`,{headers})
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_sistemasOperativos`,
+        ["EN DESUSO", "EN USO"],
+        { headers }
+      )
       .then((res) => {
-        const json = res.data; 
+        const json = res.data;
 
         const formatted: PlatformData = {
           "pc-desktop": transformPlatform(json[0]),
@@ -85,13 +88,15 @@ export default function Pregunta2() {
 
   return (
     <div className={styles.container_P1}>
-      <div className={styles["contenedor-censo_p1"]}>Censo de equipos de cómputo - Sitema Operativo</div>
+      <div className={styles["contenedor-censo_p1"]}>
+        Censo de equipos de cómputo - Sitema Operativo
+      </div>
 
       <div className={styles["pregunta-cuadro_p1"]}>
-        Número de equipos de cómputo por cada categoría y perfil de usuario.<ToggleButton/>
+        Número de equipos de cómputo por cada categoría y perfil de usuario.
+        <ToggleButton />
       </div>
       <div className={styles.scanView_P1}>
-
         <div className={styles["main-content_P1"]}>
           {/* Tabs */}
           <div className={styles.tabs_P1}>

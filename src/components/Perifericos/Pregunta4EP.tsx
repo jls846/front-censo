@@ -26,9 +26,13 @@ export default function Pregunta4EP() {
     const token = Cookies.get("token");
     const headers = { Authorization: `Bearer ${token}` };
     axios
-      .get(`${api_url}/equipos/reporte/equipos_impesion_group/dijitales`, {
-        headers,
-      })
+      .post(
+        `${api_url}/equipos/reporte/equipos_impesion_group/dijitales`,
+        ["EN DESUSO", "EN USO"],
+        {
+          headers,
+        }
+      )
       .then((res) => {
         const data = res.data;
 
@@ -77,7 +81,8 @@ export default function Pregunta4EP() {
       </div>
 
       <div className="pregunta-cuadro">
-        Número de equipos de digitalización.<ToggleButton/>
+        Número de equipos de digitalización.
+        <ToggleButton />
       </div>
 
       <div className="grid">

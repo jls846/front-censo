@@ -31,9 +31,13 @@ export default function Pregunta2EP() {
     const headers = { Authorization: `Bearer ${token}` };
 
     axios
-      .get(`${api_url}/equipos/reporte/contar_periferico_tipoUso/impresoras`, {
-        headers,
-      })
+      .post(
+        `${api_url}/equipos/reporte/contar_periferico_tipoUso/impresoras`,
+        ["EN DESUSO", "EN USO"],
+        {
+          headers,
+        }
+      )
       .then((res) => {
         const data = res.data;
 
@@ -98,7 +102,8 @@ export default function Pregunta2EP() {
   return (
     <div className={styles.container_P2}>
       <div className="pregunta-cuadro">
-        Equipos de impresión de acuerdo con la población universitaria.<ToggleButton/>
+        Equipos de impresión de acuerdo con la población universitaria.
+        <ToggleButton />
       </div>
 
       <div className={styles.row_P2}>

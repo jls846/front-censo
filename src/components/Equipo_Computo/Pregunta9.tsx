@@ -10,7 +10,7 @@ import ToggleButton from "../Toggle/ToggleButton";
 type AntiguedadItem = {
   antiguedad: string | null;
   total: string;
-  porcentaje: string; 
+  porcentaje: string;
 };
 
 type ApiResponse = {
@@ -21,16 +21,24 @@ type ApiResponse = {
 
 export default function Pregunta9() {
   const [datos, setDatos] = useState([
-    { nombre: "Computadoras de Escritorio", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
-    { nombre: "Computadoras Portátiles", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
-    { nombre: "Alto Rendimiento", valores: ["0.00", "0.00", "0.00", "0.00","0.00"] },
+    {
+      nombre: "Computadoras de Escritorio",
+      valores: ["0.00", "0.00", "0.00", "0.00", "0.00"],
+    },
+    {
+      nombre: "Computadoras Portátiles",
+      valores: ["0.00", "0.00", "0.00", "0.00", "0.00"],
+    },
+    {
+      nombre: "Alto Rendimiento",
+      valores: ["0.00", "0.00", "0.00", "0.00", "0.00"],
+    },
   ]);
 
   const [loading, setLoading] = useState(true);
 
   // Transforma los datos del backend al formato de 4 columnas con % calculados
   const transformarDatos = (items: AntiguedadItem[]): string[] => {
-
     let menores2 = 0;
     let entre2_3 = 0;
     let entre4_6 = 0;
@@ -54,20 +62,28 @@ export default function Pregunta9() {
         case "ENTRE 6 Y MAYORES":
           mayores6 += total;
           break;
-                // Cualquier otro valor (aunque no debería haber) lo meteríamos en mayores6
-        default:notfound += total; break;
+        // Cualquier otro valor (aunque no debería haber) lo meteríamos en mayores6
+        default:
+          notfound += total;
+          break;
       }
     }
 
-    const totalEquipo = menores2 + mayores6+ entre2_3 + entre4_6 + notfound;
+    const totalEquipo = menores2 + mayores6 + entre2_3 + entre4_6 + notfound;
 
     if (totalEquipo === 0) {
-      return ["0.00", "0.00", "0.00", "0.00","0.00"];
+      return ["0.00", "0.00", "0.00", "0.00", "0.00"];
     }
 
     const pct = (valor: number) => ((valor / totalEquipo) * 100).toFixed(2);
 
-    return [pct(menores2), pct(entre2_3), pct(entre4_6), pct(mayores6),pct(notfound)];
+    return [
+      pct(menores2),
+      pct(entre2_3),
+      pct(entre4_6),
+      pct(mayores6),
+      pct(notfound),
+    ];
   };
 
   useEffect(() => {
@@ -79,9 +95,13 @@ export default function Pregunta9() {
     }
 
     axios
-      .get<ApiResponse>(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_antiguedad`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .post<ApiResponse>(
+        `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_antiguedad`,
+        ["EN DESUSO", "EN USO"],
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         const { escritorios, portatiles, altoRendimiento } = res.data;
 
@@ -117,7 +137,9 @@ export default function Pregunta9() {
 
   return (
     <div className="contenedor-pregunta">
-      <div className="contenedor-censo">Censo de equipos de cómputo - Generales</div>
+      <div className="contenedor-censo">
+        Censo de equipos de cómputo - Generales
+      </div>
       {/* Pregunta intro (servidores) */}
       {/* <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
         Indique cuantos servidores son utilizados en ambientes productivos y si en ellos se almacenan datos personales.
@@ -127,7 +149,8 @@ export default function Pregunta9() {
 
       {/* Pregunta 9: Antigüedad */}
       <div className="pregunta-cuadro">
-        Antigüedad que tienen los equipos de cómputo del área universitaria.<ToggleButton/>
+        Antigüedad que tienen los equipos de cómputo del área universitaria.
+        <ToggleButton />
       </div>
 
       <div className="tabla-contenedor">
@@ -162,7 +185,11 @@ export default function Pregunta9() {
                       </div>
                     </td>
                   ))}
-                  <td className={`total-celda ${total > 100.1 ? "total-error" : ""}`}>
+                  <td
+                    className={`total-celda ${
+                      total > 100.1 ? "total-error" : ""
+                    }`}
+                  >
                     {total.toFixed(2)}%
                   </td>
                 </tr>
@@ -172,8 +199,7 @@ export default function Pregunta9() {
         </table>
       </div>
 
-      <Pregunta10/>
-
+      <Pregunta10 />
     </div>
   );
 }

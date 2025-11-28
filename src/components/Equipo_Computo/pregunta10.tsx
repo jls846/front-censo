@@ -24,9 +24,13 @@ export default function Pregunta10() {
     }
 
     axios
-      .get<number[]>(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/garantia`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .post<number[]>(
+        `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/garantia`,
+        ["EN DESUSO", "EN USO"],
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         const [escritorio, portatil, altoRendimiento] = res.data;
 
@@ -46,17 +50,14 @@ export default function Pregunta10() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="pregunta-cuadro">
-        Cargando datos de garantía...
-      </div>
-    );
+    return <div className="pregunta-cuadro">Cargando datos de garantía...</div>;
   }
 
   return (
     <>
       <div className="pregunta-cuadro">
-        Equipos de cómputo que tienen garantía de proveedoro.<ToggleButton/>
+        Equipos de cómputo que tienen garantía de proveedoro.
+        <ToggleButton />
       </div>
 
       <div className="tabla-contenedor">
@@ -72,20 +73,12 @@ export default function Pregunta10() {
             <tr>
               <td>
                 <div className="input-contenedor input-sp">
-                  <input
-                    type="number"
-                    value={garantia.escritorio}
-                    readOnly 
-                  />
+                  <input type="number" value={garantia.escritorio} readOnly />
                 </div>
               </td>
               <td>
                 <div className="input-contenedor input-sp">
-                  <input
-                    type="number"
-                    value={garantia.portatil}
-                    readOnly
-                  />
+                  <input type="number" value={garantia.portatil} readOnly />
                 </div>
               </td>
               <td>
