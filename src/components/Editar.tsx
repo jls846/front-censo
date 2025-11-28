@@ -610,6 +610,24 @@ export default function Editar() {
                 ))}
               </select>
             </div>
+            {mostrarCamposComputadora && (
+              <div className="formGroup">
+                <label>Laboratorio</label>
+                <select
+                  value={formData.id_laboratorio}
+                  onChange={(e) =>
+                    handleInputChange("id_laboratorio", e.target.value)
+                  }
+                >
+                  <option value="">Selecciona laboratorio</option>
+                  {laboratorios.map((lab) => (
+                    <option key={lab.id_laboratorio} value={lab.id_laboratorio}>
+                      {lab.laboratorio}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
 
           {/* Columna 2 */}
@@ -747,24 +765,7 @@ export default function Editar() {
                 placeholder="Selecciona una Adscripción"
               />
             </div>
-            {mostrarCamposComputadora && (
-              <div className="formGroup">
-                <label>Laboratorio</label>
-                <select
-                  value={formData.id_laboratorio}
-                  onChange={(e) =>
-                    handleInputChange("id_laboratorio", e.target.value)
-                  }
-                >
-                  <option value="">Selecciona laboratorio</option>
-                  {laboratorios.map((lab) => (
-                    <option key={lab.id_laboratorio} value={lab.id_laboratorio}>
-                      {lab.laboratorio}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+            
           </div>
 
           {/* Columna 3 */}
