@@ -79,7 +79,7 @@ export default function Pregunta9() {
     }
 
     axios
-      .get<ApiResponse>("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_antiguedad", {
+      .get<ApiResponse>(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_antiguedad`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

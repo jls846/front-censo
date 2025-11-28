@@ -10,7 +10,7 @@ export default function DownloadReporteXLSX() {
 
     try {
       const response = await fetch(
-        "https://venus.acatlan.unam.mx/censo_test/equipos/reporteXLSX",{headers}
+        `${process.env.NEXT_PUBLIC_API_URL}/equipos/reporteXLSX`,{headers}
       );
 
       if (!response.ok) {

@@ -62,7 +62,7 @@ export default function Pregunta2() {
     const token = Cookies.get("token");
     const headers = {Authorization: `Bearer ${token}`};
     axios
-      .get("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_sistemasOperativos",{headers})
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_sistemasOperativos`,{headers})
       .then((res) => {
         const json = res.data; 
 

@@ -24,7 +24,7 @@ export default function Pregunta10() {
     }
 
     axios
-      .get<number[]>("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/garantia", {
+      .get<number[]>(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/garantia`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

@@ -436,7 +436,7 @@ export default function Editar() {
 
       setSuggestions((prev) => ({
         ...prev,
-        adscripcion: matches.slice(0, 5),
+        adscripcion: matches.slice(0, 20),
       }));
       return;
     }

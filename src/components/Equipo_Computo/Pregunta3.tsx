@@ -112,7 +112,7 @@ export default function Pregunta3_2() {
 
     const headers = { Authorization: `Bearer ${token}` };
     axios
-      .get("https://venus.acatlan.unam.mx/censo_test/equipos/reporte/tipoEquipos_procesador", { headers })
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/equipos/reporte/tipoEquipos_procesador`, { headers })
       .then((res) => {
         const json = res.data; // array de 5 arreglos
 
