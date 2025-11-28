@@ -116,6 +116,7 @@ export default function Pregunta9() {
 
   return (
     <div className="contenedor-pregunta">
+      <div className="contenedor-censo">Censo de equipos de cómputo - Generales</div>
       {/* Pregunta intro (servidores) */}
       {/* <div className="pregunta-cuadro" style={{ marginTop: "30px" }}>
         Indique cuantos servidores son utilizados en ambientes productivos y si en ellos se almacenan datos personales.
