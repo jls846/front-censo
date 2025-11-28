@@ -39,6 +39,11 @@ function BarNavigation() {
             <span>Agregar equipo</span>
           </Link>
         </li>
+        <li className="subMenu" onClick={toggleMenu}>
+          <Link href="/cambiarPass" className="links">
+            <span>Cambiar contrasena</span>
+          </Link>
+        </li>
         <li className="subMenu">
           <button className="logout-button" onClick={cerrarSesion}>
             Cerrar sesión
