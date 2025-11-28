@@ -35,8 +35,8 @@ export default function UpdateUserPage() {
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
 
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/UpdateUsuario`,
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/update`,
         {
           nombre,
           contrasenaN,

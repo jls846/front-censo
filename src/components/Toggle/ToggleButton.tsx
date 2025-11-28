@@ -1,17 +1,10 @@
-// ToggleButton.tsx
-// Usa este archivo como `ToggleButton.tsx`
-
 import React, { useState } from "react";
 import styles from "./ToggleButton.module.scss";
 
 export type ToggleButtonProps = {
-  /** estado inicial: true -> presionado ("desuso") */
   defaultOn?: boolean;
-  /** callback cuando cambia el estado */
   onChange?: (on: boolean) => void;
-  /** texto cuando está apagado (por defecto: "uso") */
   offLabel?: string;
-  /** texto cuando está encendido (por defecto: "desuso") */
   onLabel?: string;
   className?: string;
 };
