@@ -80,6 +80,8 @@ export default function Pregunta7EP() {
   
   return (
     <div className="container">
+      
+      <div className="contenedor-censo">Censo de equipos de cómputo - Laboratorio</div>
       <div className="pregunta-cuadro">Numero de laboratorios.</div>
 
       <div className="controls">
